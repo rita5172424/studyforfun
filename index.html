@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的教學小工具百寶箱</title>
+    <!-- 引入 Tailwind CSS 讓畫面瞬間變得簡潔漂亮 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col justify-between">
+
+    <!-- 頂部標題列 -->
+    <header class="bg-indigo-600 text-white shadow-md py-6 px-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold">老師的教學小工具百寶箱</h1>
+            <p class="text-indigo-200 mt-1">互動、流暢、免等待的課堂得力助手</p>
+        </div>
+    </header>
+
+    <!-- 主要內容區：工具清單 -->
+    <main class="max-w-4xl mx-auto w-full p-6 flex-grow">
+        <h2 class="text-xl font-semibold text-slate-700 mb-4">現有工具列表</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 工具卡片 1：分類配對快手 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition">
+                <div class="text-indigo-600 font-bold text-sm mb-1">互動遊戲</div>
+                <h3 class="text-xl font-bold text-slate-800 mb-2">分類配對快手</h3>
+                <p class="text-slate-600 text-sm mb-4">透過趣味配對與分類機制，幫助學生快速掌握核心概念與詞彙。</p>
+                <!-- 連結到你的分類配對快手網頁檔案名稱 -->
+                <a href="./pairing-game.html" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition">
+                    進入工具 ➔
+                </a>
+            </div>
+
+            <!-- 預留未來其他工具的卡片位置 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 opacity-60">
+                <div class="text-slate-400 font-bold text-sm mb-1">敬請期待</div>
+                <h3 class="text-xl font-bold text-slate-400 mb-2">下一個教學工具</h3>
+                <p class="text-slate-400 text-sm mb-4">未來開發的新工具可以直接在這裡新增卡片連結。</p>
+                <span class="inline-block bg-slate-200 text-slate-500 px-4 py-2 rounded-lg text-sm font-medium cursor-not-allowed">
+                    準備中
+                </span>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white border-t border-slate-200 text-center py-4 text-slate-400 text-sm">
+        &copy; 2026 教學小工具系統 | 打造流暢無延遲的課堂體驗
+    </footer>
+
+</body>
+</html>
