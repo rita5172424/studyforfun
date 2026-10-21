@@ -7,11 +7,9 @@
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 定義順暢的轉場與微互動基礎 */
         .tool-card {
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* 載入中遮罩與動畫 */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -50,7 +48,7 @@
             <div>
                 <span class="bg-indigo-500 text-indigo-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Teacher's Hub</span>
                 <h1 class="text-3xl font-extrabold mt-2 tracking-tight">國中特教課堂百寶箱</h1>
-                <p class="text-indigo-200 mt-1 text-sm md:text-base">專為互動教學設計的極速網頁工具集（支援 Excel 題庫）</p>
+                <p class="text-indigo-200 mt-1 text-sm md:text-base">專為互動教學與行為支持設計的極速網頁工具集</p>
             </div>
             <div class="bg-indigo-700/60 border border-indigo-400/30 px-4 py-3 rounded-xl text-sm">
                 <p class="font-medium">💡 操作小提示：</p>
@@ -61,13 +59,14 @@
 
     <!-- 主要內容區：工具卡片網格 -->
     <main class="max-w-6xl mx-auto w-full p-6 flex-grow">
-        <h2 class="text-xl font-bold text-slate-700 mb-6 flex items-center gap-2">
-            <span>📚 課堂互動與遊戲工具清單</span>
-        </h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 區塊一：互動遊戲與競賽 -->
+        <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+            <span>🎮 互動遊戲與競賽工具</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
 
-            <!-- 01_pairing-game (分類配對快手) -->
+            <!-- 01_pairing-game -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
@@ -77,30 +76,13 @@
                     <h3 class="text-lg font-bold text-slate-800 mb-1">分類配對快手</h3>
                     <p class="text-slate-600 text-xs leading-relaxed mb-4">趣味配對與分類機制，幫助學生快速掌握核心詞彙與概念。</p>
                 </div>
-                <!-- 滿足 5 種互動狀態的按鈕設計 -->
                 <a href="./01_pairing-game.html" onclick="showLoading(event, this.href)" 
                    class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
                     進入工具 ➔
                 </a>
             </div>
 
-            <!-- 02_lucky-draw (抽籤板 - 8個位置) -->
-            <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">02</span>
-                        <span class="text-xs text-slate-400 font-medium">班級管理</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-1">小教室座位抽籤板</h3>
-                    <p class="text-slate-600 text-xs leading-relaxed mb-4">對應兩排共 8 個座位，色彩流動輪替直到特殊顏色停下抽中。</p>
-                </div>
-                <a href="./02_lucky-draw.html" onclick="showLoading(event, this.href)" 
-                   class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
-                    進入工具 ➔
-                </a>
-            </div>
-
-            <!-- 03_slashing-game (切切樂) -->
+            <!-- 03_slashing-game -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
@@ -116,7 +98,7 @@
                 </a>
             </div>
 
-            <!-- 04_ultimate-tug (終極拔河) -->
+            <!-- 04_ultimate-tug -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
@@ -132,7 +114,7 @@
                 </a>
             </div>
 
-            <!-- 05_qa-bingo (問答Bingo) -->
+            <!-- 05_qa-bingo -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
@@ -148,28 +130,52 @@
                 </a>
             </div>
 
-            <!-- 06_timer-tool (課堂計時器) -->
+        </div>
+
+        <!-- 區塊二：班級管理、時間與行為支持 -->
+        <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+            <span>⏱️ 班級管理、時間與情緒支持</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+
+            <!-- 02_lucky-draw -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
-                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">06</span>
-                        <span class="text-xs text-slate-400 font-medium">節奏掌控</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">02</span>
+                        <span class="text-xs text-slate-400 font-medium">班級管理</span>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-1">動態大字計時器</h3>
-                    <p class="text-slate-600 text-xs leading-relaxed mb-4">精準設定時間倒數，並可自由輸入大大的提示文字隨時提醒學生。</p>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">小教室座位抽籤板</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">對應兩排共 8 個座位，色彩流動輪替直到特殊顏色停下抽中。</p>
                 </div>
-                <a href="./06_timer-tool.html" onclick="showLoading(event, this.href)" 
+                <a href="./02_lucky-draw.html" onclick="showLoading(event, this.href)" 
                    class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
                     進入工具 ➔
                 </a>
             </div>
 
-            <!-- 07_bonus-system (加分排行榜 - 新增規劃) -->
+            <!-- 06_visual-timer (整併後：視覺沙漏 + 大字計時器) -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-md">07</span>
-                        <span class="text-xs text-emerald-600 font-medium">加分系統</span>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">06</span>
+                        <span class="text-xs text-blue-600 font-medium">時間管理</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">視覺沙漏與大字計時器</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">直覺時間流逝視覺化，並支援自由輸入放大提示文字與精準倒數。</p>
+                </div>
+                <a href="./06_visual-timer.html" onclick="showLoading(event, this.href)" 
+                   class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
+                    進入工具 ➔
+                </a>
+            </div>
+
+            <!-- 07_bonus-system -->
+            <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">07</span>
+                        <span class="text-xs text-blue-600 font-medium">加分系統</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-800 mb-1">班級即時星光加分榜</h3>
                     <p class="text-slate-600 text-xs leading-relaxed mb-4">快速幫各組或個人點數加減，帶有特效與音效，提升課堂參與積極度。</p>
@@ -180,23 +186,48 @@
                 </a>
             </div>
 
-            <!-- 08_behavior-timer (專注力倒數沙漏 - 新增規劃) -->
+            <!-- 08_calm-down (全新新增：靜心專區) -->
             <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                 <div>
                     <div class="flex justify-between items-center mb-3">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-md">08</span>
-                        <span class="text-xs text-emerald-600 font-medium">行為管理</span>
+                        <span class="bg-teal-100 text-teal-800 text-xs font-bold px-2.5 py-1 rounded-md">08</span>
+                        <span class="text-xs text-teal-600 font-medium">情緒支持</span>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-800 mb-1">專注力視覺沙漏</h3>
-                    <p class="text-slate-600 text-xs leading-relaxed mb-4">專為特教生設計的直覺時間視覺化工具，幫助理解「還有多久下課/換活動」。</p>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">班級靜心專區</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">引導呼吸與平穩情緒的視覺化畫面，幫助學生明確知道現在要安靜冷靜。</p>
                 </div>
-                <a href="./08_behavior-timer.html" onclick="showLoading(event, this.href)" 
+                <a href="./08_calm-down.html" onclick="showLoading(event, this.href)" 
                    class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
                     進入工具 ➔
                 </a>
             </div>
 
         </div>
+
+        <!-- 區塊三：外部資源與連結 -->
+        <h2 class="text-xl font-bold text-slate-700 mb-4 flex items-center gap-2">
+            <span>🔗 教學資源導航</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <!-- 09_resource-links (全新新增：教學資源連結頁) -->
+            <div class="tool-card bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-md">09</span>
+                        <span class="text-xs text-purple-600 font-medium">外部導航</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">常用教學資源連結</h3>
+                    <p class="text-slate-600 text-xs leading-relaxed mb-4">一鍵快速開啟常用的線上題庫、字典、教材製作與教育局網站。</p>
+                </div>
+                <a href="./09_resource-links.html" onclick="showLoading(event, this.href)" 
+                   class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition shadow-sm active:scale-95 block">
+                    進入工具 ➔
+                </a>
+            </div>
+
+        </div>
+
     </main>
 
     <!-- 頁尾 -->
@@ -207,10 +238,9 @@
     <!-- 載入中過場效果 Script -->
     <script>
         function showLoading(event, url) {
-            event.preventDefault(); // 暫停預設跳轉
-            document.getElementById('loadingOverlay').style.display = 'flex'; // 顯示 Loading 狀態
+            event.preventDefault();
+            document.getElementById('loadingOverlay').style.display = 'flex';
             
-            // 模擬 0.4 秒流暢轉場後正式跳轉
             setTimeout(function() {
                 window.location.href = url;
             }, 400);
