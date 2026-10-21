@@ -226,4 +226,94 @@
             // 確保跑足夠的步數後停在 winningSeat
             let totalSteps = speeds.length;
             for (let step = 0; step < totalSteps; step++) {
-                // 如果勾選排除，跳過已經被抽
+                // 如果勾選排除，跳過已經被抽掉的座位
+                if (excludeChecked) {
+                    while (drawnSeats.includes(currentSeat)) {
+                        currentSeat = (currentSeat % totalSeats) + 1;
+                    }
+                }
+
+                // 如果是最後一步，強制停在中獎號碼
+                if (step === totalSteps - 1) {
+                    currentSeat = winningSeat;
+                }
+
+                // 移除全部人的 active
+                removeActiveForAll();
+
+                // 點亮當前座位
+                const el = document.getElementById(`seat-${currentSeat}`);
+                if (!el.classList.contains('seat-winner')) {
+                    el.classList.add('seat-active');
+                    playBeep(440, 0.04);
+                }
+
+                await sleep(speeds[step]);
+                currentSeat = (currentSeat % totalSeats) + 1;
+            }
+
+            // 動畫結束，顯示中獎結果
+            removeActiveForAll();
+            const winEl = document.getElementById(`seat-${winningSeat}`);
+            winEl.classList.add('seat-winner');
+            winEl.querySelector('.winner-tag').classList.remove('hidden');
+
+            playWinSound();
+            document.getElementById('statusMessage').innerHTML = `🎉 恭喜 <span class="text-emerald-600 font-extrabold text-xl px-1">${winningSeat} 號</span> 座位的同學中獎！`;
+
+            if (excludeChecked) {
+                drawnSeats.push(winningSeat);
+                // 稍後轉為灰色已抽過狀態
+                setTimeout(() => {
+                    winEl.classList.remove('seat-winner');
+                    winEl.classList.add('seat-disabled');
+                }, 2000);
+            }
+
+            isDrawing = false;
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function removeActiveForAll() {
+            for (let i = 1; i <= totalSeats; i++) {
+                document.getElementById(`seat-${i}`).classList.remove('seat-active');
+            }
+        }
+
+        function clearHighlights(excludeChecked) {
+            for (let i = 1; i <= totalSeats; i++) {
+                const el = document.getElementById(`seat-${i}`);
+                el.classList.remove('seat-active');
+                if (!excludeChecked) {
+                    el.classList.remove('seat-winner');
+                    el.querySelector('.winner-tag').classList.add('hidden');
+                }
+            }
+        }
+
+        // 重置所有狀態
+        function resetDraw() {
+            if (isDrawing) return;
+            drawnSeats = [];
+            for (let i = 1; i <= totalSeats; i++) {
+                const el = document.getElementById(`seat-${i}`);
+                el.className = 'seat-card bg-white border-2 border-slate-300 rounded-2xl p-4 sm:p-6 flex flex-col items-center justify-center shadow-sm relative min-h-[100px] sm:min-h-[120px]';
+                el.querySelector('.winner-tag').classList.add('hidden');
+            }
+            document.getElementById('statusMessage').textContent = '已重置！準備就緒，請點擊按鈕開始抽籤。';
+        }
+
+        // 全螢幕切換
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
