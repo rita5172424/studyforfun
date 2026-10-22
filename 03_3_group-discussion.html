@@ -34,7 +34,7 @@
         <!-- 頁面標題 -->
         <div class="text-center shrink-0">
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">🗣️ 小組討論上手指南</h2>
-            <p class="text-slate-500 text-xs sm:text-sm font-bold mt-1">明確分工、專心聆聽、禮貌表達，讓討論高效又愉快！</p>
+            <p class="text-slate-600 text-sm sm:text-base font-bold mt-1">明確分工、專心聆聽、禮貌表達，讓討論高效又愉快！</p>
         </div>
 
         <!-- 🎭 輔助工具箱：角色任務與討論計時器 -->
@@ -45,39 +45,39 @@
                 </h3>
                 
                 <!-- 討論計時器工具 -->
-                <div class="flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-2xl border border-slate-200">
-                    <span class="text-xs font-black text-slate-600">⏱️ 討論倒數：</span>
-                    <span id="timerDisplay" class="font-mono text-base font-black text-rose-600">05:00</span>
-                    <button type="button" onclick="setTimer(3)" class="bg-white hover:bg-rose-50 text-slate-700 font-bold px-2 py-0.5 rounded-lg text-xs border border-slate-200 cursor-pointer">3分</button>
-                    <button type="button" onclick="setTimer(5)" class="bg-white hover:bg-rose-50 text-slate-700 font-bold px-2 py-0.5 rounded-lg text-xs border border-slate-200 cursor-pointer">5分</button>
-                    <button type="button" onclick="startTimer()" id="timerBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-black px-2.5 py-0.5 rounded-lg text-xs cursor-pointer shadow-xs">開始</button>
+                <div class="flex items-center gap-2 bg-slate-100 px-3.5 py-1.5 rounded-2xl border border-slate-200">
+                    <span class="text-xs sm:text-sm font-black text-slate-700">⏱️ 討論倒數：</span>
+                    <span id="timerDisplay" class="font-mono text-lg font-black text-rose-600">05:00</span>
+                    <button type="button" onclick="setTimer(3)" class="bg-white hover:bg-rose-50 text-slate-700 font-bold px-2.5 py-1 rounded-lg text-xs border border-slate-200 cursor-pointer">3分</button>
+                    <button type="button" onclick="setTimer(5)" class="bg-white hover:bg-rose-50 text-slate-700 font-bold px-2.5 py-1 rounded-lg text-xs border border-slate-200 cursor-pointer">5分</button>
+                    <button type="button" onclick="startTimer()" id="timerBtn" class="bg-rose-600 hover:bg-rose-700 text-white font-black px-3 py-1 rounded-lg text-xs cursor-pointer shadow-xs">開始</button>
                 </div>
             </div>
 
             <!-- 4 大角色任務卡片 -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
-                <div onclick="showRoleDetail('🎤 主持人', '負責邀請還沒發言的同學開口發言，並維護討論秩序。')" class="role-card bg-indigo-50/80 p-3 rounded-2xl border border-indigo-200 cursor-pointer flex flex-col justify-between">
-                    <span class="text-xs font-black text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-md w-fit">角色 1</span>
-                    <h4 class="font-black text-indigo-950 text-sm mt-1">🎤 主持引導員</h4>
-                    <p class="text-xs text-slate-600 font-bold mt-1">「換你說說看！」</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div onclick="showRoleDetail('🎤 主持人', '負責邀請還沒發言的同學開口發言，並維護討論秩序。')" class="role-card bg-indigo-50/80 p-3.5 rounded-2xl border border-indigo-200 cursor-pointer flex flex-col justify-between">
+                    <span class="text-xs font-black text-indigo-700 bg-indigo-100 px-2.5 py-0.5 rounded-md w-fit">角色 1</span>
+                    <h4 class="font-black text-indigo-950 text-base mt-1.5">🎤 主持引導員</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 font-bold mt-1">「換你說說看！」</p>
                 </div>
 
-                <div onclick="showRoleDetail('⏱️ 時間管理員', '注意頂部倒數計時器，在剩餘 1 分鐘與時間到時提醒大家。')" class="role-card bg-rose-50/80 p-3 rounded-2xl border border-rose-200 cursor-pointer flex flex-col justify-between">
-                    <span class="text-xs font-black text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md w-fit">角色 2</span>
-                    <h4 class="font-black text-rose-950 text-sm mt-1">⏱️ 時間管理員</h4>
-                    <p class="text-xs text-slate-600 font-bold mt-1">「大家抓緊時間喔！」</p>
+                <div onclick="showRoleDetail('⏱️ 時間管理員', '注意頂部倒數計時器，在剩餘 1 分鐘與時間到時提醒大家。')" class="role-card bg-rose-50/80 p-3.5 rounded-2xl border border-rose-200 cursor-pointer flex flex-col justify-between">
+                    <span class="text-xs font-black text-rose-700 bg-rose-100 px-2.5 py-0.5 rounded-md w-fit">角色 2</span>
+                    <h4 class="font-black text-rose-950 text-base mt-1.5">⏱️ 時間管理員</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 font-bold mt-1">「大家抓緊時間喔！」</p>
                 </div>
 
-                <div onclick="showRoleDetail('📝 記錄員', '將同學們講出的重點，整理簡記在學習單或便利貼上。')" class="role-card bg-amber-50/80 p-3 rounded-2xl border border-amber-200 cursor-pointer flex flex-col justify-between">
-                    <span class="text-xs font-black text-amber-800 bg-amber-100 px-2 py-0.5 rounded-md w-fit">角色 3</span>
-                    <h4 class="font-black text-amber-950 text-sm mt-1">📝 想法記錄員</h4>
-                    <p class="text-xs text-slate-600 font-bold mt-1">「我幫大家記下來！」</p>
+                <div onclick="showRoleDetail('📝 記錄員', '將同學們講出的重點，整理簡記在學習單或便利貼上。')" class="role-card bg-amber-50/80 p-3.5 rounded-2xl border border-amber-200 cursor-pointer flex flex-col justify-between">
+                    <span class="text-xs font-black text-amber-800 bg-amber-100 px-2.5 py-0.5 rounded-md w-fit">角色 3</span>
+                    <h4 class="font-black text-amber-950 text-base mt-1.5">📝 想法記錄員</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 font-bold mt-1">「我幫大家記下來！」</p>
                 </div>
 
-                <div onclick="showRoleDetail('📢 發表員', '代表全小組，在最後向全班同學分享小組討論的結果。')" class="role-card bg-emerald-50/80 p-3 rounded-2xl border border-emerald-200 cursor-pointer flex flex-col justify-between">
-                    <span class="text-xs font-black text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md w-fit">角色 4</span>
-                    <h4 class="font-black text-emerald-950 text-sm mt-1">📢 成果發表員</h4>
-                    <p class="text-xs text-slate-600 font-bold mt-1">「代表小組上台報告！」</p>
+                <div onclick="showRoleDetail('📢 發表員', '代表全小組，在最後向全班同學分享小組討論的結果。')" class="role-card bg-emerald-50/80 p-3.5 rounded-2xl border border-emerald-200 cursor-pointer flex flex-col justify-between">
+                    <span class="text-xs font-black text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-md w-fit">角色 4</span>
+                    <h4 class="font-black text-emerald-950 text-base mt-1.5">📢 成果發表員</h4>
+                    <p class="text-xs sm:text-sm text-slate-700 font-bold mt-1">「代表小組上台報告！」</p>
                 </div>
             </div>
         </div>
@@ -86,20 +86,20 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- 📌 討論順暢 3 步驟 -->
             <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                <h3 class="font-black text-slate-800 text-base sm:text-lg mb-2 pb-1 border-b border-slate-100 flex items-center gap-1.5">
+                <h3 class="font-black text-slate-800 text-base sm:text-lg mb-3 pb-1 border-b border-slate-100 flex items-center gap-1.5">
                     <span>📌 討論順暢 3 步驟</span>
                 </h3>
-                <div class="space-y-2 text-xs sm:text-sm font-bold text-slate-700">
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-center gap-2">
-                        <span class="bg-rose-100 text-rose-800 font-black px-2 py-0.5 rounded shrink-0">1. 👂 聆聽</span>
+                <div class="space-y-2.5 text-sm sm:text-base font-bold text-slate-800">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3">
+                        <span class="bg-rose-100 text-rose-800 font-black px-2.5 py-1 rounded shrink-0 text-xs sm:text-sm">1. 👂 聆聽</span>
                         <span>先聽完同學說話，不隨意打斷。</span>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-center gap-2">
-                        <span class="bg-amber-100 text-amber-800 font-black px-2 py-0.5 rounded shrink-0">2. 💭 思考</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3">
+                        <span class="bg-amber-100 text-amber-800 font-black px-2.5 py-1 rounded shrink-0 text-xs sm:text-sm">2. 💭 思考</span>
                         <span>想想同學說的重點，再想想自己的意見。</span>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-center gap-2">
-                        <span class="bg-emerald-100 text-emerald-800 font-black px-2 py-0.5 rounded shrink-0">3. 💬 表達</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-3">
+                        <span class="bg-emerald-100 text-emerald-800 font-black px-2.5 py-1 rounded shrink-0 text-xs sm:text-sm">3. 💬 表達</span>
                         <span>用禮貌的句型，有自信地說出自己的想法。</span>
                     </div>
                 </div>
@@ -107,26 +107,26 @@
 
             <!-- 🌟 小組合作 3 大原則 -->
             <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between">
-                <h3 class="font-black text-slate-800 text-base sm:text-lg mb-2 pb-1 border-b border-slate-100 flex items-center gap-1.5">
+                <h3 class="font-black text-slate-800 text-base sm:text-lg mb-3 pb-1 border-b border-slate-100 flex items-center gap-1.5">
                     <span>🌟 小組合作 3 大原則</span>
                 </h3>
-                <div class="space-y-2 text-xs sm:text-sm font-bold text-slate-700">
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-start gap-2">
-                        <span class="text-base">🤝</span>
+                <div class="space-y-2.5 text-sm sm:text-base font-bold text-slate-800">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-3">
+                        <span class="text-lg">🤝</span>
                         <div>
                             <span class="font-black text-slate-900">輪流發言：</span>一次一個人說，確保每個人都有機會發表。
                         </div>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-start gap-2">
-                        <span class="text-base">👂</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-3">
+                        <span class="text-lg">👂</span>
                         <div>
-                            <span class="font-black text-slate-900">展現「我有在聽」：</span>看著說話者，或是點點頭、回應「對啊/嗯嗯」。
+                            <span class="font-black text-slate-900">展現「我有在聽」：</span>看著說話者，點點頭、回應「對啊/嗯嗯」。
                         </div>
                     </div>
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 flex items-start gap-2">
-                        <span class="text-base">💡</span>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-3">
+                        <span class="text-lg">💡</span>
                         <div>
-                            <span class="font-black text-slate-900">溫和說明不同想法：</span>講自己的想法就好，不批評「你講得很爛」。
+                            <span class="font-black text-slate-900">溫和說明不同想法：</span>講自己的想法，不批評傷人。
                         </div>
                     </div>
                 </div>
@@ -139,66 +139,66 @@
                 💬 萬用句型庫（不知道怎麼說？選一句看著念！）
             </h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm font-bold">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm sm:text-base font-bold">
                 <!-- 💗 1. 鼓勵同學回答 -->
-                <div class="bg-rose-50/70 p-3.5 rounded-2xl border border-rose-200 flex flex-col gap-2">
-                    <span class="text-xs font-black text-rose-700">💗 1. 鼓勵同學回答（當有人太安靜時）</span>
-                    <div class="flex flex-col gap-1.5">
-                        <button type="button" onclick="copyPhrase('你覺得呢？我想聽聽你的想法。')" class="text-left bg-white p-2 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                <div class="bg-rose-50/70 p-4 rounded-2xl border border-rose-200 flex flex-col gap-2.5">
+                    <span class="text-xs sm:text-sm font-black text-rose-700">💗 1. 鼓勵同學回答（當有人太安靜時）</span>
+                    <div class="flex flex-col gap-2">
+                        <button type="button" onclick="copyPhrase('你覺得呢？我想聽聽你的想法。')" class="text-left bg-white p-2.5 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「你覺得呢？我想聽聽你的想法。」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('沒關係，想到什麼都可以說說看！')" class="text-left bg-white p-2 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('沒關係，想到什麼都可以說說看！')" class="text-left bg-white p-2.5 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「沒關係，想到什麼都可以說說看！」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('你剛剛寫的感覺很棒，要不要分享一下？')" class="text-left bg-white p-2 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('你剛剛寫的感覺很棒，要不要分享一下？')" class="text-left bg-white p-2.5 rounded-xl border border-rose-200 hover:bg-rose-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「你剛剛寫的感覺很棒，要不要分享一下？」 📋
                         </button>
                     </div>
                 </div>
 
                 <!-- 🟢 2. 給予回應與讚賞 -->
-                <div class="bg-emerald-50/70 p-3.5 rounded-2xl border border-emerald-200 flex flex-col gap-2">
-                    <span class="text-xs font-black text-emerald-800">🟢 2. 給予回應與讚賞（當同學剛說完話時）</span>
-                    <div class="flex flex-col gap-1.5">
-                        <button type="button" onclick="copyPhrase('你這個想法蠻有創意的耶！')" class="text-left bg-white p-2 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-200 flex flex-col gap-2.5">
+                    <span class="text-xs sm:text-sm font-black text-emerald-800">🟢 2. 給予回應與讚賞（當同學剛說完話時）</span>
+                    <div class="flex flex-col gap-2">
+                        <button type="button" onclick="copyPhrase('你這個想法蠻有創意的耶！')" class="text-left bg-white p-2.5 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「你這個想法蠻有創意的耶！」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('對耶！我剛剛都沒有想到這個。')" class="text-left bg-white p-2 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('對耶！我剛剛都沒有想到這個。')" class="text-left bg-white p-2.5 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「對耶！我剛剛都沒有想到這個。」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('我補充一下，我覺得還可以加上……')" class="text-left bg-white p-2 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('我補充一下，我覺得還可以加上……')" class="text-left bg-white p-2.5 rounded-xl border border-emerald-200 hover:bg-emerald-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我補充一下，我覺得還可以加上……」 📋
                         </button>
                     </div>
                 </div>
 
                 <!-- 🔵 3. 表達同意意見 -->
-                <div class="bg-indigo-50/70 p-3.5 rounded-2xl border border-indigo-200 flex flex-col gap-2">
-                    <span class="text-xs font-black text-indigo-700">🔵 3. 表達同意意見（當你讚成對方的想法時）</span>
-                    <div class="flex flex-col gap-1.5">
-                        <button type="button" onclick="copyPhrase('我同意你的說法，因為……')" class="text-left bg-white p-2 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                <div class="bg-indigo-50/70 p-4 rounded-2xl border border-indigo-200 flex flex-col gap-2.5">
+                    <span class="text-xs sm:text-sm font-black text-indigo-700">🔵 3. 表達同意意見（當你贊成對方的想法時）</span>
+                    <div class="flex flex-col gap-2">
+                        <button type="button" onclick="copyPhrase('我同意你的說法，因為……')" class="text-left bg-white p-2.5 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我同意你的說法，因為……」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('我也覺得這樣做比較好！')" class="text-left bg-white p-2 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('我也覺得這樣做比較好！')" class="text-left bg-white p-2.5 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我也覺得這樣做比較好！」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('我和想法一樣，我也選這個。')" class="text-left bg-white p-2 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('我和想法一樣，我也選這個。')" class="text-left bg-white p-2.5 rounded-xl border border-indigo-200 hover:bg-indigo-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我和想法一樣，我也選這個。」 📋
                         </button>
                     </div>
                 </div>
 
                 <!-- 🍊 4. 表達不同意見 -->
-                <div class="bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200 flex flex-col gap-2">
-                    <span class="text-xs font-black text-amber-800">🍊 4. 表達不同意見（緩和、有禮貌地表達反對）</span>
-                    <div class="flex flex-col gap-1.5">
-                        <button type="button" onclick="copyPhrase('我覺得你說的有道理，但我還想到……')" class="text-left bg-white p-2 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                <div class="bg-amber-50/70 p-4 rounded-2xl border border-amber-200 flex flex-col gap-2.5">
+                    <span class="text-xs sm:text-sm font-black text-amber-800">🍊 4. 表達不同意見（緩和、有禮貌地表達反對）</span>
+                    <div class="flex flex-col gap-2">
+                        <button type="button" onclick="copyPhrase('我覺得你說的有道理，但我還想到……')" class="text-left bg-white p-2.5 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我覺得你說的有道理，但我還想到……」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('這是一個方法，不過如果我們……會不會更好？')" class="text-left bg-white p-2 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('這是一個方法，不過如果我們……會不會更好？')" class="text-left bg-white p-2.5 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「這是一個方法，不過如果我們……會不會更好？」 📋
                         </button>
-                        <button type="button" onclick="copyPhrase('我的想法有點不一樣，我覺得……')" class="text-left bg-white p-2 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-800 cursor-pointer active:scale-98 transition">
+                        <button type="button" onclick="copyPhrase('我的想法有點不一樣，我覺得……')" class="text-left bg-white p-2.5 rounded-xl border border-amber-200 hover:bg-amber-100 text-slate-900 cursor-pointer active:scale-98 transition shadow-2xs">
                             「我的想法有點不一樣，我覺得……」 📋
                         </button>
                     </div>
@@ -215,7 +215,6 @@
 
     <!-- 腳本邏輯 -->
     <script>
-        // 音效系統
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playBeep() {
             try {
@@ -232,9 +231,8 @@
             } catch (e) {}
         }
 
-        // 計時器邏輯
         let timerInterval = null;
-        let totalSeconds = 300; // 預設 5 分鐘
+        let totalSeconds = 300;
         let isRunning = false;
 
         function updateTimerDisplay() {
@@ -276,7 +274,6 @@
             }
         }
 
-        // 複製句型
         function copyPhrase(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert(`已選擇句型：${text}`);
@@ -285,12 +282,10 @@
             });
         }
 
-        // 顯示角色細節
         function showRoleDetail(title, desc) {
             alert(`${title}\n\n任務說明：${desc}`);
         }
 
-        // 全螢幕
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
