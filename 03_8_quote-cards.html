@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每日指引小卡 | 老師的教學百寶箱</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card-flip {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+        }
+        .card-hidden {
+            transform: scale(0.9) rotateY(90deg);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body id="bgContainer" class="min-h-screen flex flex-col justify-between text-slate-800 transition-colors duration-700 select-none bg-slate-100">
+
+    <!-- 頂部快速工具列 -->
+    <header class="bg-white/80 backdrop-blur border-b border-slate-200 px-6 py-3 flex justify-between items-center shadow-xs shrink-0">
+        <a href="./index.html" class="inline-flex items-center gap-2 text-rose-600 font-extrabold hover:text-rose-800 transition text-base">
+            <span>🏠 返回百寶箱首頁</span>
+        </a>
+        <h1 class="text-lg font-black text-slate-700 hidden sm:block">🌟 每日指引小卡</h1>
+        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer border border-rose-200">
+            🖥️ 全螢幕
+        </button>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main class="max-w-4xl mx-auto w-full px-4 py-6 flex-grow flex flex-col items-center justify-center">
+
+        <!-- 卡片區域 -->
+        <div id="quoteCard" class="card-flip bg-white/90 backdrop-blur p-8 sm:p-12 rounded-3xl shadow-xl border border-slate-200/80 w-full max-w-2xl text-center flex flex-col items-center justify-between min-h-[340px] relative overflow-hidden my-auto">
+            
+            <div class="w-full">
+                <span class="inline-block bg-rose-100 text-rose-800 text-xs sm:text-sm font-black px-3.5 py-1 rounded-full uppercase tracking-wider mb-6">
+                    ✨ Daily Guidance
+                </span>
+                
+                <!-- 名言內容 (大字體) -->
+                <p id="quoteText" class="text-2xl sm:text-3xl font-black text-slate-800 leading-relaxed tracking-wide my-4 px-2">
+                    正在為你翻開今日的指引...
+                </p>
+            </div>
+
+            <!-- 出處/作者 (莫蘭迪色系大字) -->
+            <div id="quoteAuthor" class="text-base sm:text-lg font-bold text-rose-700/80 mt-6 pt-4 border-t border-slate-100 w-full text-right pr-4">
+                ── 智慧小卡
+            </div>
+
+        </div>
+
+        <!-- 抽卡控制按鈕 -->
+        <div class="mt-8 shrink-0">
+            <button type="button" onclick="drawCard()" class="bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-extrabold py-3.5 px-8 rounded-2xl text-base sm:text-lg transition shadow-lg active:scale-95 cursor-pointer flex items-center gap-2">
+                <span>🎲 抽取今日指引小卡</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-white/60 border-t border-slate-200/60 text-center py-3 text-slate-400 text-xs shrink-0">
+        國中特教課堂工具箱 | 03_8_quote-cards.html
+    </footer>
+
+    <!-- 腳本邏輯 -->
+    <script>
+        // 100 句精選每日指引資料庫
+        const quotesPool = [
+            "如果你花太多時間想一件事，你將永遠無法完成它。 ── 李小龍（著名武術家、電影巨星）",
+            "只要我們能善用時間，就永遠不愁時間不夠用。 ── 歌德（德國著名詩人、作家）",
+            "黃金時代在我們前面，不在我們後面。 ── 馬克．吐溫（美國著名小說家）",
+            "不管你有多忙，你必須花時間讓對方覺得他很重要。 ── 玫琳凱．艾施（知名化妝品品牌創辦人）",
+            "有些人看似平凡無奇的一生，卻令他人深深懷念。",
+            "每個人都是自己人生的主角，最後還是要由自己面對自己。",
+            "要重視的不只是自己的利益，還有夥伴的利益。",
+            "只要克服了精神上的障礙，身體的缺陷就不再是障礙。",
+            "性格隨時都可以開始改變。",
+            "自卑感並非只有壞處，它還可以促使我們去改變現狀。",
+            "有時最難走的路，才是最直接的路。只要我們願意走在正途上，沒有做不到的事。",
+            "事情在好起來之前，總會經歷一些考驗。經歷這個過程後，請記住是誰把你拉上岸。",
+            "積極的態度會帶來好結果，因為態度是可以感染別人的。 ── 吉格．金克拉（美國著名勵志作家）",
+            "嘗試做一些你不精通的事，否則你永遠不會成長。 ── 愛默生（美國著名文學家、思想家）",
+            "嘗試一些事，遭遇失敗後從中學習，比你什麼事都不做更好。 ── 馬克．佐克伯（臉書 Facebook 創辦人）",
+            "走得多慢都無所謂，只要你不停下腳步。 ── 安迪．沃荷（美國著名現代藝術家）",
+            "不要因為覺得自己做不到，就放棄一件事！ ── 昌達．科赫哈（知名銀行執行長）",
+            "如果你希望周遭環境改變，答案或許是從「改變自己」開始。 ── 諾曼．文森特．皮爾（美國著名作家、牧師）",
+            "我們無法讓壞事不發生，卻能努力讓它不影響我們！ ── 珍妮佛．勞倫斯（奧斯卡影后、著名演員）",
+            "聰明是一種天賦，而善良是一種選擇。 ── 傑夫．貝佐斯（亞馬遜 Amazon 創辦人）",
+            "每個人都是天才。但如果你用爬樹的能力評斷一條魚，它將終其一生覺得自己是個笨蛋。 ── 愛因斯坦（偉大的物理學家、相對論提出者）",
+            "如果你能鼓舞別人擁有更多的夢想、學習更多、行動更多及改變更多，你就是一位領導者。 ── 西蒙．斯涅克（知名勵志演說家、作家）",
+            "若你有幸成功，就有責任拉下面的人一把！ ── 凱文．史貝西（奧斯卡金像獎影帝）",
+            "成功，就是不斷地練習基本動作！ ── 吉米．隆（美國知名成功學大師）",
+            "不要因為怕辛苦，就拒絕一個想法、夢想或目標，成功通常伴隨著辛苦。 ── 包柏．普克特（知名潛能開發暢銷書作家）",
+            "當你真心渴望某件事，整個宇宙都會聯合起來幫助你完成。 ── 保羅．科爾賀（巴西著名作家、《牧羊少年奇幻之旅》作者）",
+            "不要一心想要成功，而是要成為一個有價值的人。 ── 愛因斯坦（偉大的物理學家、相對論提出者）",
+            "別在乎別人做什麼；做得比自己好，每天突破自己的紀錄，你就是一位成功者！ ── 威廉．博克（美國知名牧師、演說家）",
+            "如果別人朝你扔石頭，不要扔回去，留著做你建樓高的基石吧。",
+            "如果你對每隻向你吠的狗，都停下來扔石頭，你永遠到不了目的地。 ── 邱吉爾（前英國首相、二戰英雄）",
+            "學習只有兩種途徑：一個是閱讀，另一個是與更聰明的人為伍。 ── 威爾．羅傑（美國知名幽默家、演員）",
+            "如果你想得到從未擁有的東西，你就得去做從未做過的事。 ── 湯瑪斯．傑佛遜（美國開國元勛、第三任總統）",
+            "爬上山頂並不是為了讓全世界看到你，而是讓你看到整個世界。",
+            "成功，不是你所站的位置，而是你要去的方向。 ── 小奧利弗．溫德爾．霍姆斯（前美國最高法院大法官）",
+            "強者，強在將人舉起，而非把人壓下。 ── 邁克爾．沃森（英國知名拳擊手）",
+            "當你開始踏上旅途，路就會自己展開。 ── 魯米（古波斯著名哲學詩人）",
+            "每個人都是獨一無二的，有自己的旅程要走。",
+            "持續往前，總比原地踏步好。「過錯」總比「錯過」好。",
+            "只要放下「我是對的」，改以「我可能錯了」提醒自己，很多不必要的衝突就會消失。",
+            "你希望遇到怎樣的人，那麼你就去成為那樣的人！",
+            "讀書，記得住的變成知識，記不住的變成氣質。",
+            "專注在哪裡，力量就在哪裡。",
+            "贈人玫瑰，手留餘香。",
+            "前進，自然會回饋更多動力繼續前進。往上，自然會有新的視野。",
+            "學會控制自己的專注力，就可以控制自己的情緒。",
+            "人一輩子能做好一件事就功德圓滿了。 ── 李國修（臺灣著名舞台劇導演、劇作家）",
+            "假若困境可解，何必心煩意亂？假若困境無解，鬱鬱寡歡又有何用？",
+            "我們只看得見外在，但幾乎所有事都發生在我們的內心。",
+            "一扇幸福的門關閉時，另一扇門會開啟。我們經常花太多時間盯著那扇關閉的門，卻看不到已經為我們打開的另一扇門。 ── 海倫．凱勒（克服盲聾障礙的偉大教育家、作家）",
+            "真正有所發現的旅程不在於尋覓新風景，而在於擁有嶄新的眼光。 ── 普魯斯特（法國著名文學家）",
+            "你怎麼過一天，就怎麼過一生。",
+            "人生沒有白走的路，每一步都算數。",
+            "我們所付出的，都會以某種形式回流到自己身上。",
+            "生命的長度上天決定，但寬度自己決定。",
+            "想要超越自己，必須先勇敢站出來！",
+            "願意幫助別人的人，更容易得到大家的相助。",
+            "一個人走得快，一群人走得遠。",
+            "普通人只想到如何度過時間，有才能的人設法利用時間。 ── 叔本華（德國知名哲學家）",
+            "合理安排時間，就等於節省時間。 ── 培根（英國著名科學家、哲學家）",
+            "生命的價值不在於能活多少天，而在於我們如何善用它。 ── 蒙田（法國著名哲學家、散文家）",
+            "我們必須善用時間，永遠意識到時間總是證明一切。 ── 曼德拉（南非前總統、諾貝爾和平獎得主）",
+            "內在的充實讓我們感到圓滿，即使獨處也能感到自在從容。",
+            "人生苦短，豈容卑微？ ── 迪斯雷利（前英國首相、知名作家）",
+            "一個人終其一生幸福快樂與否，唯有自己可以定義。",
+            "若能善用自己的特長去幫助別人，就能找到生活的意義。",
+            "世界上任何書籍都不能帶給你好運，但是它們能讓你悄悄成為你自己。 ── 赫曼．赫塞（諾貝爾文學獎得主、著名作家）",
+            "命運就是你在關鍵時刻，決定選擇成為怎樣的人。",
+            "在爬山的過程中，才能得到抵達山頂所需的進步。 ── 陶德．史基納（著名極限登山家）",
+            "想要收穫，就要先懂得付出與捨得。",
+            "在人生漫漫長路上，不斷學習新的技能，就是在累積自己的能量。",
+            "創新是將各種不同的想法串聯在一起。 ── 賈伯斯（蘋果公司 Apple 聯合創辦人）",
+            "不要把知識當做防禦的武器，而是打開新世界的工具。",
+            "心靈上的富有，才是真正的富有。 ── 謝清佳（臺灣大學知名教授）",
+            "轉個念頭，人生就會不一樣！",
+            "選擇做什麼很重要，選擇「不做什麼」同樣重要。 ── 葛瑞格．麥基昂（知名時間管理專家、暢銷書作家）",
+            "一個人的一生是否順遂，通常不是所遇到的事情決定的，是想法決定的。",
+            "我們不能用製造問題時的舊想法，來解決眼前的問題。 ── 愛因斯坦（偉大的物理學家、相對論提出者）",
+            "真正幸福的人，是那些已經開始尋找，並知道如何關心別人的人。 ── 史懷哲（偉大的人道主義醫生、諾貝爾和平獎得主）",
+            "大自然是偉大的創作，而人類最偉大的創作盡在書本當中。 ── 赫曼．赫塞（諾貝爾文學獎得主、著名作家）",
+            "別人的經歷都是值得我們學習的寶藏。",
+            "有些人能感受雨，而其他人只是被淋溼了而已。 ── 巴布．馬利（牙買加著名雷鬼音樂巨星）",
+            "你常相處的夥伴，會深深影響你成為什麼樣的人。 ── 吉米．羅恩（美國知名成功學大師）",
+            "願意無私分享的老師，能帶出頂尖的學生，自己也會跟著進步。",
+            "多聽聽別人的經驗，就能幫自己開創更快的學習通道。",
+            "不見得人人都可以成為作家，但人人都可以記錄自己的生活。",
+            "善意和互相幫忙，能讓大家一起走到更好的終點。",
+            "競爭的事情容易讓人患得患失，但伸手助人卻能帶來長久的快樂。",
+            "我們都是社會的一員，多與他人保持良好的互動，生活會更美好。",
+            "學會和他人合作與分工，是幸福生活的重要開始。",
+            "要讓時間發揮最大價值，就是先做好最重要的事。 ── 約翰．麥斯威爾（美國知名領導力專家、作家）",
+            "留一些自由支配的時間給自己，才能更好地學習與成長。 ── 蘇霍姆林斯基（前蘇聯知名教育家）",
+            "成功牽涉到很多因素，做對事情比只做自己喜歡的事更重要。 ── 麥可．戴爾（戴爾電腦 Dell 創辦人）",
+            "積極的態度具有感染力，能為你帶來好運。 ── 吉格．金克拉（美國著名勵志作家）",
+            "改變環境的第一步，往往是先改變我們看待事情的心態。 ── 諾曼．文森特．皮爾（美國著名作家、牧師）",
+            "遇見挫折時，記得保持冷靜，別讓一時的情緒傷害了人際關係。",
+            "懂得欣賞別人的長處，你會發現世界變得更寬廣。",
+            "每天進步一點點，累積起來就是巨大的成就。",
+            "面對未知的挑戰，保持好奇心是最好的解藥。",
+            "當我們懂得對生活抱持感謝，快樂就會隨之而來。",
+            "做好手邊的每一件小事，就是走向偉大的第一步。"
+        ];
+
+        // 多種莫蘭迪淺灰色系背景
+        const grayThemeBg = [
+            "#f1f5f9", // 珍珠灰 (slate-100)
+            "#f3f4f6", // 云霧灰 (gray-100)
+            "#f4f4f5", // 沉穩淺灰 (zinc-100)
+            "#f5f5f4", // 暖暖石灰 (stone-100)
+            "#e2e8f0", // 亞麻灰 (slate-200)
+            "#e5e7eb", // 燕麥灰 (gray-200)
+            "#e4e4e7"  // 青石灰 (zinc-200)
+        ];
+
+        // Web Audio 翻牌輕快音效
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playFlipSound() {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.1);
+            } catch (e) {}
+        }
+
+        let currentIdx = -1;
+
+        function drawCard() {
+            const card = document.getElementById('quoteCard');
+            card.classList.add('card-hidden');
+
+            playFlipSound();
+
+            setTimeout(() => {
+                // 1. 隨機選一句話 (避免跟上一句重複)
+                let randomIdx;
+                do {
+                    randomIdx = Math.floor(Math.random() * quotesPool.length);
+                } while (randomIdx === currentIdx && quotesPool.length > 1);
+                currentIdx = randomIdx;
+
+                const fullQuote = quotesPool[randomIdx];
+                let text = fullQuote;
+                let author = "── 每日智慧指引";
+
+                // 解析內容與作者 (若有 " ── ")
+                if (fullQuote.includes(" ── ")) {
+                    const parts = fullQuote.split(" ── ");
+                    text = parts[0];
+                    author = "── " + parts[1];
+                }
+
+                document.getElementById('quoteText').textContent = text;
+                document.getElementById('quoteAuthor').textContent = author;
+
+                // 2. 隨機變換淺灰色系背景
+                const randomBg = grayThemeBg[Math.floor(Math.random() * grayThemeBg.length)];
+                document.getElementById('bgContainer').style.backgroundColor = randomBg;
+
+                // 3. 卡片翻回呈現
+                card.classList.remove('card-hidden');
+            }, 300);
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {});
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        // 頁面載入時自動抽一張卡片
+        window.onload = function() {
+            drawCard();
+        };
+    </script>
+</body>
+</html>
