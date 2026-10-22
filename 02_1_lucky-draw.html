@@ -150,7 +150,7 @@
         國中特教課堂工具箱 | 02_1_lucky-draw.html
     </footer>
 
-    <!-- 重新編寫且穩定可靠的抽籤邏輯 -->
+    <!-- 10秒儀式感抽籤邏輯 -->
     <script>
         const totalSeats = 8;
         let drawnSeats = []; // 儲存已被抽中的座位編號
@@ -171,9 +171,7 @@
                 gain.connect(audioCtx.destination);
                 osc.start();
                 osc.stop(audioCtx.currentTime + duration);
-            } catch (e) {
-                // 忽略音效錯誤，確保主程式不受影響
-            }
+            } catch (e) {}
         }
 
         function playWinSound() {
@@ -186,7 +184,6 @@
             } catch (e) {}
         }
 
-        // 延遲輔助函數
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function startDraw() {
@@ -194,7 +191,6 @@
 
             const excludeChecked = document.getElementById('excludeDrawn').checked;
 
-            // 收集尚未被排除的可抽座位
             let availableSeats = [];
             for (let i = 1; i <= totalSeats; i++) {
                 if (!excludeChecked || !drawnSeats.includes(i)) {
@@ -211,48 +207,48 @@
             const btn = document.getElementById('drawBtn');
             btn.disabled = true;
             btn.classList.add('opacity-50', 'cursor-not-allowed');
-            document.getElementById('statusMessage').textContent = '🎲 幸運抽籤中，緊張刺激...';
+            document.getElementById('statusMessage').textContent = '🎲 抽籤進行中，緊張刺激的 10 秒倒數...';
 
-            // 決定最終中獎號碼
             const winningSeat = availableSeats[Math.floor(Math.random() * availableSeats.length)];
-
-            // 清除上一輪的非保留狀態
             clearHighlights(excludeChecked);
 
-            // 跑馬燈速度陣列：從慢(250ms) -> 快(50ms) -> 慢(350ms)
-            let speeds = [250, 220, 180, 140, 100, 75, 55, 50, 50, 65, 90, 130, 190, 280, 380];
-            let currentSeat = Math.floor(Math.random() * totalSeats) + 1;
+            // 精心設計的 10 秒漸快再漸慢速度曲線 (共約 45 步)
+            let speeds = [
+                // 緩慢起步 (約 3 秒)
+                450, 420, 390, 360, 330, 300, 270, 240, 210, 180,
+                // 高速衝刺 (約 4 秒)
+                150, 120, 95, 80, 65, 55, 50, 45, 45, 45, 45, 45, 50, 55, 65,
+                // 漸漸減速製造懸疑 (約 3 秒)
+                80, 100, 130, 170, 220, 280, 350, 440, 550, 680
+            ];
 
-            // 確保跑足夠的步數後停在 winningSeat
+            let currentSeat = Math.floor(Math.random() * totalSeats) + 1;
             let totalSteps = speeds.length;
+
             for (let step = 0; step < totalSteps; step++) {
-                // 如果勾選排除，跳過已經被抽掉的座位
                 if (excludeChecked) {
                     while (drawnSeats.includes(currentSeat)) {
                         currentSeat = (currentSeat % totalSeats) + 1;
                     }
                 }
 
-                // 如果是最後一步，強制停在中獎號碼
                 if (step === totalSteps - 1) {
-                    currentSeat = winningSeat;
+                    currentSeat = winningSeat; // 最後一步強制停在中獎位置
                 }
 
-                // 移除全部人的 active
                 removeActiveForAll();
 
-                // 點亮當前座位
                 const el = document.getElementById(`seat-${currentSeat}`);
                 if (!el.classList.contains('seat-winner')) {
                     el.classList.add('seat-active');
-                    playBeep(440, 0.04);
+                    playBeep(440, 0.05);
                 }
 
                 await sleep(speeds[step]);
                 currentSeat = (currentSeat % totalSeats) + 1;
             }
 
-            // 動畫結束，顯示中獎結果
+            // 動畫結束，顯示中獎
             removeActiveForAll();
             const winEl = document.getElementById(`seat-${winningSeat}`);
             winEl.classList.add('seat-winner');
@@ -263,7 +259,6 @@
 
             if (excludeChecked) {
                 drawnSeats.push(winningSeat);
-                // 稍後轉為灰色已抽過狀態
                 setTimeout(() => {
                     winEl.classList.remove('seat-winner');
                     winEl.classList.add('seat-disabled');
@@ -292,7 +287,6 @@
             }
         }
 
-        // 重置所有狀態
         function resetDraw() {
             if (isDrawing) return;
             drawnSeats = [];
@@ -304,7 +298,6 @@
             document.getElementById('statusMessage').textContent = '已重置！準備就緒，請點擊按鈕開始抽籤。';
         }
 
-        // 全螢幕切換
         function toggleFullScreen() {
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen();
