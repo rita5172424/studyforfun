@@ -7,66 +7,66 @@
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-rose-50/40 h-screen overflow-hidden flex flex-col justify-between text-slate-800 select-none">
+<body class="bg-rose-50/40 min-h-screen flex flex-col justify-between text-slate-800 select-none">
 
     <!-- 頂部快速工具列 -->
-    <header class="bg-white/90 border-b border-rose-100 px-6 py-2.5 flex justify-between items-center shadow-xs shrink-0">
-        <a href="./index.html" class="inline-flex items-center gap-2 text-rose-700 font-extrabold hover:text-rose-900 transition active:scale-95 text-base">
+    <header class="bg-white border-b border-rose-100 px-6 py-3 flex justify-between items-center shadow-xs">
+        <a href="./index.html" class="inline-flex items-center gap-2 text-rose-700 font-extrabold hover:text-rose-900 transition text-base">
             <span>🏠 返回百寶箱首頁</span>
         </a>
         <h1 class="text-lg font-black text-slate-700 hidden sm:block">💖 感恩回饋時間</h1>
-        <button onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1 rounded-lg text-xs transition active:scale-95 border border-rose-200">
+        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer border border-rose-200">
             🖥️ 全螢幕
         </button>
     </header>
 
-    <!-- 主要內容區 (一頁式免滑動) -->
-    <main class="max-w-5xl mx-auto w-full px-4 py-3 flex-grow flex flex-col justify-between overflow-hidden">
+    <!-- 主要內容區 -->
+    <main class="max-w-5xl mx-auto w-full px-4 py-4 flex-grow flex flex-col justify-center gap-4">
 
         <!-- 頁面標題 -->
-        <div class="text-center my-1 shrink-0">
+        <div class="text-center">
             <h2 class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">💖 感恩回饋時間</h2>
             <p class="text-slate-600 text-sm font-bold mt-1">專注現在能做的事，發現生活中的微小幸福。</p>
         </div>
 
         <!-- 核心示範句型與靈感按鈕對齊區 -->
-        <div class="bg-white/90 p-5 rounded-3xl shadow-sm border border-rose-100 w-full flex flex-col justify-center">
+        <div class="bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-rose-100 w-full">
             
             <!-- 核心表達句型 -->
-            <div class="bg-rose-50/60 p-4 rounded-2xl border border-rose-100/80 text-xl sm:text-2xl font-black text-slate-800 text-center tracking-wide leading-relaxed shadow-xs mb-4">
+            <div class="bg-rose-50/60 p-4 rounded-2xl border border-rose-100 text-xl sm:text-2xl font-black text-slate-800 text-center tracking-wide leading-relaxed shadow-xs mb-4">
                 我感恩 <span class="text-rose-600 underline decoration-rose-300 underline-offset-4">______(對象)</span>，因為 <span class="text-indigo-600 underline decoration-indigo-300 underline-offset-4">______(行為描述)</span>，讓我 <span class="text-emerald-600 underline decoration-emerald-300 underline-offset-4">______(感受)</span>。
             </div>
 
             <!-- 對齊行為描述與感受的靈感按鈕區 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <!-- 行為描述靈感區 (揉合莫蘭迪藍) -->
+                <!-- 行為描述靈感區 -->
                 <div class="flex flex-col">
                     <span class="text-sm font-extrabold text-slate-600 mb-1.5 flex items-center gap-1">💡 行為描述靈感：</span>
                     <div class="flex gap-2 mb-2">
-                        <button id="btnOther" onclick="getRandomKeywords('otherBehavior')" class="flex-1 bg-indigo-500/80 hover:bg-indigo-600 active:bg-indigo-700 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
+                        <button type="button" onclick="getRandomKeywords('otherBehavior')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs sm:text-sm transition cursor-pointer shadow-xs">
                             👥 他人行為
                         </button>
-                        <button id="btnSelf" onclick="getRandomKeywords('selfBehavior')" class="flex-1 bg-indigo-500/80 hover:bg-indigo-600 active:bg-indigo-700 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
+                        <button type="button" onclick="getRandomKeywords('selfBehavior')" class="flex-1 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 text-white font-bold py-2.5 px-2 rounded-xl text-xs sm:text-sm transition cursor-pointer shadow-xs">
                             🙋‍♂️ 自身行為
                         </button>
                     </div>
                     <!-- 行為關鍵字卡片位置 -->
-                    <div id="behaviorKeywordBox" class="h-[76px] bg-indigo-50/30 p-2 rounded-xl border border-indigo-100 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
+                    <div id="behaviorKeywordBox" class="min-h-[76px] bg-indigo-50/30 p-2.5 rounded-xl border border-indigo-100 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
                         點擊上方按鈕，產生行為提示！
                     </div>
                 </div>
 
-                <!-- 感受形容詞靈感區 (揉合莫蘭迪綠) -->
+                <!-- 感受形容詞靈感區 -->
                 <div class="flex flex-col">
                     <span class="text-sm font-extrabold text-slate-600 mb-1.5 flex items-center gap-1">💡 感受形容詞靈感：</span>
                     <div class="mb-2">
-                        <button id="btnFeeling" onclick="getRandomKeywords('feelings')" class="w-full bg-emerald-600/80 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
+                        <button type="button" onclick="getRandomKeywords('feelings')" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2.5 px-2 rounded-xl text-xs sm:text-sm transition cursor-pointer shadow-xs">
                             💖 感受形容詞
                         </button>
                     </div>
                     <!-- 感受關鍵字卡片位置 -->
-                    <div id="feelingKeywordBox" class="h-[76px] bg-emerald-50/30 p-2 rounded-xl border border-emerald-100 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
+                    <div id="feelingKeywordBox" class="min-h-[76px] bg-emerald-50/30 p-2.5 rounded-xl border border-emerald-100 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
                         點擊上方按鈕，產生感受提示！
                     </div>
                 </div>
@@ -75,12 +75,12 @@
         </div>
 
         <!-- 每日引導思考題區 -->
-        <div class="bg-white/90 p-4 sm:p-5 rounded-3xl shadow-sm border border-rose-100 w-full my-1">
+        <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-rose-100 w-full">
             <div class="flex justify-between items-center mb-2.5">
                 <h3 class="font-extrabold text-slate-800 text-base sm:text-lg flex items-center gap-2">
                     <span>✨ 今日引導思考題</span>
                 </h3>
-                <button onclick="loadRandomQuestions()" class="text-xs sm:text-sm text-rose-600 font-bold hover:underline active:scale-95">🔄 換一組題目</button>
+                <button type="button" onclick="loadRandomQuestions()" class="text-xs sm:text-sm text-rose-600 font-bold hover:underline cursor-pointer">🔄 換一組題目</button>
             </div>
             <div id="questionContainer" class="space-y-2 text-sm sm:text-base font-bold text-slate-700">
                 <!-- 隨機題目填入區 -->
@@ -90,13 +90,12 @@
     </main>
 
     <!-- 頁尾 -->
-    <footer class="bg-white/80 border-t border-rose-100 text-center py-2 text-slate-400 text-xs shrink-0">
+    <footer class="bg-white border-t border-rose-100 text-center py-3 text-slate-400 text-xs">
         國中特教課堂工具箱 | 03_1_gratitude-share.html
     </footer>
 
     <!-- 腳本邏輯 -->
     <script>
-        // 詞庫資料
         const keywordData = {
             otherBehavior: [
                 "幫我撿文具", "借我筆記", "分我吃零食", "幫我開教室門", "聽我抱怨", "載我上學", 
@@ -119,3 +118,99 @@
                 "遵守規定", "將書包整理好", "座位整理乾淨", "好好寫字", "沒有過度解讀他人的意圖", 
                 "包容同儕的失誤"
             ],
+            feelings: [
+                "溫暖", "貼心", "包容", "和善", "安穩", "可靠", "充實", "滿足", "輕鬆", "驚喜", 
+                "平靜", "自在", "愜意", "療癒", "舒暢", "幸運", "順利", "精采", "新奇", "深刻", 
+                "珍貴", "勇敢", "專注", "堅韌", "進步", "溫柔", "知足", "可愛", "開心", "舒適", 
+                "有成就感", "為自己驕傲", "得意", "狂喜"
+            ]
+        };
+
+        const questionPool = [
+            "👥 今天有人讓我覺得被關心或照顧了嗎？是誰？做了什麼？",
+            "👥 今天我和誰度過了很快樂的時光，或跟誰的心更靠近了？",
+            "👥 我身邊有哪些讓我可以稍微依靠的人？他們今天做了什麼？",
+            "👥 誰今天說了一句話或展現了一個舉動，讓我感到很安心？",
+            "👥 今天哪個人做的事，讓我覺得「哇，好棒，我也要努力」？",
+            "🌱 傍晚或回家的路上，有沒有哪個畫面讓我後來又想起了一次？",
+            "🌱 今天吃到了什麼美味的食物，或是喝到了什麼好喝的飲料？",
+            "🌱 今天有沒有一件生活小事，讓我心裡想著「還好有它」？",
+            "🌱 今天的天氣、環境、或空間裡，有什麼細節讓我的感官覺得很舒服？",
+            "🌱 今天進展得很順利、沒有遇到阻礙的事情是什麼？",
+            "⭐ 如果要感謝今天很努力的自己，我會想感謝自己做到了什麼？",
+            "⭐ 今天我有沒有做出一個讓自己感到放心的好決定？",
+            "⭐ 今天我學到了什麼新知識、新技能，或是對什麼事情有了新體悟？",
+            "⭐ 面對疲憊或挑戰，今天我自己展現了什麼樣的優點（如：耐心、專注）？",
+            "⭐ 今天我為自己的身心健康做了哪一件小事（如：好好吃飯、提早休息）？",
+            "🔍 這個人或這件事情，如何豐富或溫暖了我的生活？",
+            "🔍 如果生活裡沒有這個人、這項物品或這個方便的環境，我的日子會變成怎樣？",
+            "🔍 最近有什麼是我一直想做，而今天終於跨出第一步的？",
+            "🔍 過去有哪些被我視為理所當然的事，其實今天仔細想想非常值得感謝？",
+            "💪 即使今天過得很不容易、有很多煩惱，有沒有一件微小的事依然值得我感謝？",
+            "💪 在今天的挫折或失誤中，有沒有包含任何讓我能學到經驗的收穫？",
+            "💪 面對今天不順心的狀況，有沒有哪個人的陪伴或安慰拉了我一把？",
+            "💪 今天過得很累，此時此刻有什麼東西（如：溫暖的床、熱水澡）能讓我好好放鬆？"
+        ];
+
+        function getRandomKeywords(category) {
+            const list = keywordData[category];
+            if (!list) return;
+
+            let shuffled = [...list].sort(() => 0.5 - Math.random());
+            let selected = shuffled.slice(0, 3);
+
+            let html = selected.map(word => `
+                <span class="bg-white border border-slate-200 px-3.5 py-1.5 rounded-xl font-black text-slate-800 shadow-xs hover:bg-rose-50 hover:border-rose-300 hover:text-rose-600 transition cursor-pointer text-xs sm:text-sm" onclick="copyWord('${word}')">
+                    ${word} 📋
+                </span>
+            `).join('');
+
+            if (category === 'otherBehavior' || category === 'selfBehavior') {
+                document.getElementById('behaviorKeywordBox').innerHTML = html;
+            } else if (category === 'feelings') {
+                document.getElementById('feelingKeywordBox').innerHTML = html;
+            }
+        }
+
+        function copyWord(word) {
+            navigator.clipboard.writeText(word).then(() => {
+                alert(`已選擇靈感：${word}`);
+            }).catch(() => {
+                alert(`選擇了：${word}`);
+            });
+        }
+
+        function loadRandomQuestions() {
+            let shuffledQ = [...questionPool].sort(() => 0.5 - Math.random());
+            let selectedQ = shuffledQ.slice(0, 3);
+
+            let html = selectedQ.map((q, idx) => `
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center gap-2">
+                    <span class="bg-rose-100 text-rose-800 text-xs font-black px-2 py-0.5 rounded shrink-0">Q${idx+1}</span>
+                    <span class="leading-snug truncate sm:whitespace-normal">${q}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('questionContainer').innerHTML = html;
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("全螢幕請求失敗:", err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
+        window.onload = function() {
+            loadRandomQuestions();
+            getRandomKeywords('otherBehavior');
+            getRandomKeywords('feelings');
+        };
+    </script>
+</body>
+</html>
