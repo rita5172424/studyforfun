@@ -16,35 +16,35 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen flex flex-col justify-between text-slate-800 select-none">
+<body class="bg-slate-50 h-screen overflow-hidden flex flex-col justify-between text-slate-800 select-none">
 
     <!-- 頂部快速工具列 -->
-    <header class="bg-white border-b border-slate-200 px-6 py-2.5 flex justify-between items-center shadow-xs shrink-0">
+    <header class="bg-white border-b border-slate-200 px-6 py-2 flex justify-between items-center shadow-xs shrink-0">
         <a href="./index.html" class="inline-flex items-center gap-2 text-rose-600 font-extrabold hover:text-rose-800 transition text-base">
             <span>🏠 返回百寶箱首頁</span>
         </a>
         <h1 class="text-lg font-black text-slate-700 hidden sm:block">💬 聊天不句點！輕鬆閒聊魔法卡</h1>
-        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer border border-rose-200">
+        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer border border-rose-200">
             🖥️ 全螢幕
         </button>
     </header>
 
-    <!-- 主要內容區 -->
-    <main class="max-w-6xl mx-auto w-full px-4 py-3 flex-grow flex flex-col justify-between gap-3">
+    <!-- 主要內容區 (一頁式免滑動) -->
+    <main class="max-w-6xl mx-auto w-full px-4 py-2.5 flex-grow flex flex-col justify-between overflow-hidden gap-2">
 
         <!-- 頁面標題 -->
-        <div class="text-center shrink-0">
+        <div class="text-center shrink-0 my-0.5">
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">💬 輕鬆閒聊魔法卡</h2>
             <p class="text-slate-500 text-xs sm:text-sm font-bold mt-0.5">學會聊天四步驟，讓你社交順暢不句點！</p>
         </div>
 
         <!-- 🎲 第一部分：靈感抽籤筒（開啟話題 / 破冰） -->
-        <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col items-center">
+        <div class="bg-white p-3.5 sm:p-4 rounded-3xl shadow-sm border border-slate-200 flex flex-col items-center shrink-0">
             
-            <div class="w-full flex flex-col sm:flex-row justify-between items-center gap-2 mb-3 pb-2 border-b border-slate-100">
+            <div class="w-full flex flex-col sm:flex-row justify-between items-center gap-2 mb-2 pb-1.5 border-b border-slate-100">
                 <div class="flex items-center gap-2">
                     <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第一步</span>
-                    <h3 class="font-black text-slate-800 text-base">🎲 靈感話題抽籤筒：今天聊什麼？</h3>
+                    <h3 class="font-black text-slate-800 text-base sm:text-lg">🎲 靈感話題抽籤筒：今天聊什麼？</h3>
                 </div>
                 <div class="flex flex-wrap gap-1.5">
                     <button type="button" onclick="drawTopic('all')" class="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold px-3 py-1 rounded-xl text-xs transition shadow-2xs active:scale-95 cursor-pointer">
@@ -63,75 +63,75 @@
             </div>
 
             <!-- 抽籤話題展示區 -->
-            <div id="topicCard" class="card-pop bg-emerald-50/60 border-2 border-emerald-200/80 rounded-2xl p-4 w-full text-center flex flex-col items-center justify-center min-h-[80px]">
+            <div id="topicCard" class="card-pop bg-emerald-50/60 border-2 border-emerald-200/80 rounded-2xl p-3 sm:p-3.5 w-full text-center flex flex-col items-center justify-center min-h-[75px]">
                 <span id="topicCategory" class="text-xs font-black text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-1">
                     點擊上方按鈕開始抽題
                 </span>
-                <p id="topicText" class="text-lg sm:text-xl font-black text-slate-800 tracking-wide mt-1">
+                <p id="topicText" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wide mt-0.5">
                     「不知道怎麼開頭時，隨機選一句問問看同學吧！」
                 </p>
             </div>
 
         </div>
 
-        <!-- 第二與第三部分：延續話題與結束話題 (三欄式卡牌) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- 第二與第三部分：延續話題與結束話題 (三大原則放大版) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 flex-grow my-0.5">
             
-            <!-- 🟡 第二招技巧 A：回答用加一法 (黃/橘色系) -->
+            <!-- 🟡 第二招技巧 A：回答用加一法 -->
             <div class="bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第二步 · 技巧①</span>
                         <span class="text-xs font-extrabold text-amber-700">🟡 延續話題</span>
                     </div>
-                    <h3 class="text-base font-black text-amber-900 mb-1.5">回答用「加一法 ➕1」</h3>
-                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
+                    <h3 class="text-lg font-black text-amber-950 mb-2">回答用「加一法 ➕1」</h3>
+                    <p class="text-sm text-slate-700 mb-2 leading-relaxed font-bold">
                         別只回「對」或「沒有」！公式：<br>
-                        <span class="text-amber-700 font-black">【答案】 + 【加講一件事】</span>
+                        <span class="text-amber-800 font-black text-base">【答案】 + 【加講一件事】</span>
                     </p>
                 </div>
-                <div class="bg-white p-2.5 rounded-xl border border-amber-200 text-xs font-extrabold text-slate-700">
+                <div class="bg-white p-3 rounded-xl border border-amber-200 text-sm font-extrabold text-slate-800 leading-snug">
                     💡 範例：「有啊，我媽媽今天幫我準備了炸雞腿！」
                 </div>
             </div>
 
-            <!-- 🟡 第二招技巧 B：萬用接話神句 (黃/橘色系同色) -->
+            <!-- 🟡 第二招技巧 B：萬用接話神句 -->
             <div class="bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第二步 · 技巧②</span>
                         <span class="text-xs font-extrabold text-amber-700">🟡 延續話題</span>
                     </div>
-                    <h3 class="text-base font-black text-amber-900 mb-1.5">萬用接話神句 ⭐</h3>
-                    <p class="text-xs text-slate-600 mb-2 font-bold">不知道接什麼？點選直接複製：</p>
+                    <h3 class="text-lg font-black text-amber-950 mb-2">萬用接話神句 ⭐</h3>
+                    <p class="text-sm text-slate-700 mb-2 font-bold">不知道接什麼？點選直接複製：</p>
                 </div>
-                <div class="grid grid-cols-3 gap-1 text-[11px] font-black">
-                    <button type="button" onclick="copyPhrase('真的假的！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                <div class="grid grid-cols-3 gap-1.5 font-black">
+                    <button type="button" onclick="copyPhrase('真的假的！')" class="bg-white hover:bg-amber-100 p-2 rounded-xl border border-amber-200 text-amber-900 transition active:scale-95 cursor-pointer text-xs sm:text-sm text-center">
                         「真的假的！」
                     </button>
-                    <button type="button" onclick="copyPhrase('我也是耶！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                    <button type="button" onclick="copyPhrase('我也是耶！')" class="bg-white hover:bg-amber-100 p-2 rounded-xl border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer text-xs sm:text-sm text-center">
                         「我也是耶！」
                     </button>
-                    <button type="button" onclick="copyPhrase('然後呢？')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                    <button type="button" onclick="copyPhrase('然後呢？')" class="bg-white hover:bg-amber-100 p-2 rounded-xl border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer text-xs sm:text-sm text-center">
                         「然後呢？」
                     </button>
                 </div>
             </div>
 
-            <!-- 🔵 第三招：禮貌離場 (藍/紫色系) -->
+            <!-- 🔵 第三招：禮貌離場 -->
             <div class="bg-indigo-50/70 p-4 rounded-2xl border-2 border-indigo-200/80 shadow-xs flex flex-col justify-between">
                 <div>
                     <div class="flex items-center justify-between mb-2">
                         <span class="bg-indigo-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第三步</span>
                         <span class="text-xs font-extrabold text-indigo-700">🔵 結束話題</span>
                     </div>
-                    <h3 class="text-base font-black text-indigo-900 mb-1.5">禮貌離場「1+1」 👋</h3>
-                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
+                    <h3 class="text-lg font-black text-indigo-950 mb-2">禮貌離場「1+1」 👋</h3>
+                    <p class="text-sm text-slate-700 mb-2 leading-relaxed font-bold">
                         想離開時，記得：<br>
-                        <span class="text-indigo-700 font-black">【1個理由】 + 【1句親切道別】</span>
+                        <span class="text-indigo-800 font-black text-base">【1個理由】 + 【1句親切道別】</span>
                     </p>
                 </div>
-                <div class="bg-white p-2.5 rounded-xl border border-indigo-200 text-xs font-extrabold text-slate-700">
+                <div class="bg-white p-3 rounded-xl border border-indigo-200 text-sm font-extrabold text-slate-800 leading-snug">
                     💡 範例：「我想去上廁所，等等見囉！」
                 </div>
             </div>
@@ -141,109 +141,8 @@
     </main>
 
     <!-- 頁尾 -->
-    <footer class="bg-white border-t border-slate-200 text-center py-2.5 text-slate-400 text-xs shrink-0">
+    <footer class="bg-white border-t border-slate-200 text-center py-2 text-slate-400 text-xs shrink-0">
         國中特教課堂工具箱 | 03_7_chat-helper.html
     </footer>
 
-    <!-- 腳本邏輯 -->
-    <script>
-        const topicsPool = {
-            school: [
-                "「你下一節是什麼課啊？」",
-                "「今天中午的菜，你最喜歡哪一道？」",
-                "「這次考試你覺得哪一科最難？」",
-                "「今天的天氣好熱喔，你有感覺嗎？」"
-            ],
-            fun: [
-                "「你最近有在玩什麼手機遊戲嗎？」",
-                "「你有在看哪個 YouTuber 或聽哪首歌嗎？」",
-                "「你平常放學回家都在做什麼啊？」",
-                "「這週學校社團課，你們做了什麼？」"
-            ],
-            weekend: [
-                "「（週一問）這個週末你有去哪裡玩嗎？」",
-                "「（週五問）終於星期五了！你這週末有什麼打算？」",
-                "「你週末通常會出門還是待在家？」",
-                "「你知道這附近有什麼好吃的嗎？」"
-            ]
-        };
-
-        const categoryNames = {
-            school: "🏫 學校生活篇",
-            fun: "🎮 興趣娛樂篇",
-            weekend: "☀️ 週末假期篇"
-        };
-
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playPopSound() {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch (e) {}
-        }
-
-        let lastTopic = "";
-
-        function drawTopic(categoryKey) {
-            const card = document.getElementById('topicCard');
-            card.classList.add('card-hidden');
-
-            playPopSound();
-
-            setTimeout(() => {
-                let chosenCategory = categoryKey;
-                
-                if (categoryKey === 'all') {
-                    const keys = Object.keys(topicsPool);
-                    chosenCategory = keys[Math.floor(Math.random() * keys.length)];
-                }
-
-                const list = topicsPool[chosenCategory];
-                let randomTopic = "";
-
-                do {
-                    randomTopic = list[Math.floor(Math.random() * list.length)];
-                } while (randomTopic === lastTopic && list.length > 1);
-
-                lastTopic = randomTopic;
-
-                document.getElementById('topicCategory').textContent = categoryNames[chosenCategory];
-                document.getElementById('topicText').textContent = randomTopic;
-
-                card.classList.remove('card-hidden');
-            }, 200);
-        }
-
-        function copyPhrase(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert(`已複製萬用句：${text}`);
-            }).catch(() => {
-                alert(`使用的句型：${text}`);
-            });
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {});
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        window.onload = function() {
-            drawTopic('school');
-        };
-    </script>
-</body>
-</html>
+    <!-- 腳本
