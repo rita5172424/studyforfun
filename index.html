@@ -48,7 +48,7 @@
             <div>
                 <span class="bg-indigo-500 text-indigo-100 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">Teacher's Hub</span>
                 <h1 class="text-2xl sm:text-3xl font-extrabold mt-2 tracking-tight">國中特教課堂百寶箱</h1>
-                <p class="text-indigo-200 mt-0.5 text-xs sm:text-sm">極速互動教學與行為支持工具中樞</p>
+                <p class="text-indigo-200 mt-0.5 text-xs sm:text-sm">極速互動教學與社會情緒支持工具中樞</p>
             </div>
             <div class="bg-indigo-700/60 border border-indigo-400/30 px-3 py-2 rounded-xl text-xs">
                 <p class="font-medium">💡 操作提示：點擊卡片秒開，支援大屏投影</p>
@@ -56,11 +56,11 @@
         </div>
     </header>
 
-    <!-- 主要內容區：改為一排 4 個工具 (xl:grid-cols-4) -->
+    <!-- 主要內容區：一排 4 個工具 -->
     <main class="max-w-7xl mx-auto w-full p-4 sm:p-6 flex-grow">
         
-        <!-- 類別一：互動遊戲與競賽（琥珀/暖黃系配色） -->
-        <div class="mb-8">
+        <!-- 類別一：互動遊戲與競賽（琥珀/暖黃系） -->
+        <div class="mb-10">
             <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-amber-400">
                 <span class="text-xl">🎮</span>
                 <h2 class="text-lg font-bold text-slate-700">互動遊戲與競賽</h2>
@@ -68,161 +68,189 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- 01_1 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-amber-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_1</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_1</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">分類配對快手</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">趣味配對，掌握核心詞彙。</p>
                     </div>
-                    <a href="./01_1_pairing-game.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./01_1_pairing-game.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
 
-                <!-- 01_2 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-amber-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_2</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_2</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">切切樂反應王</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">點擊對應關鍵字，訓練反應。</p>
                     </div>
-                    <a href="./01_2_slashing-game.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./01_2_slashing-game.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
 
-                <!-- 01_3 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-amber-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_3</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_3</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">終極拔河大對決</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">兩組答題競賽，視覺化勝負。</p>
                     </div>
-                    <a href="./01_3_ultimate-tug.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./01_3_ultimate-tug.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
 
-                <!-- 01_4 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-amber-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_4</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2 py-0.5 rounded">01_4</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">問答 Bingo 連線</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">翻開編號解題，連線獲勝。</p>
                     </div>
-                    <a href="./01_4_qa-bingo.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./01_4_qa-bingo.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-amber-500 hover:bg-amber-600 active:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
             </div>
         </div>
 
-        <!-- 類別二：班級管理、時間與情緒支持（靛藍/專業藍系配色） -->
-        <div class="mb-8">
+        <!-- 類別二：班級管理與時間（靛藍系） -->
+        <div class="mb-10">
             <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-indigo-500">
                 <span class="text-xl">⏱️</span>
-                <h2 class="text-lg font-bold text-slate-700">班級管理、時間與情緒支持</h2>
+                <h2 class="text-lg font-bold text-slate-700">班級管理與時間支持</h2>
                 <span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded-md font-semibold">第二類別</span>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- 02_1 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-indigo-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_1</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_1</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">小教室座位抽籤板</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">8座位跑馬燈隨機抽籤。</p>
                     </div>
-                    <a href="./02_1_lucky-draw.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./02_1_lucky-draw.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
 
-                <!-- 02_2 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-indigo-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_2</span>
-                        </div>
-                        <h3 class="text-base font-bold text-slate-800 mb-1">視覺沙漏與計時器</h3>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_2</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">視覺倒數計時器</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">時間視覺化與放大提示字。</p>
                     </div>
-                    <a href="./02_2_visual-timer.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./02_2_visual-timer.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
 
-                <!-- 02_3 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-indigo-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_3</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_3</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">班級星光加分榜</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">即時點數加減，增強動機。</p>
                     </div>
-                    <a href="./02_3_bonus-system.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
-                </div>
-
-                <!-- 02_4 -->
-                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-indigo-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-indigo-100 text-indigo-800 text-[11px] font-bold px-2 py-0.5 rounded">02_4</span>
-                        </div>
-                        <h3 class="text-base font-bold text-slate-800 mb-1">班級靜心專區</h3>
-                        <p class="text-slate-500 text-xs leading-snug mb-4">引導呼吸，平穩專注情緒。</p>
-                    </div>
-                    <a href="./02_4_calm-down.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./02_3_bonus-system.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
             </div>
         </div>
 
-        <!-- 類別三：教學資源導航（紫系配色） -->
+        <!-- 類別三：社會情緒與人際溝通專區（玫瑰/粉紅溫暖系） -->
+        <div class="mb-10">
+            <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-rose-400">
+                <span class="text-xl">💖</span>
+                <h2 class="text-lg font-bold text-slate-700">社會情緒與人際溝通專區</h2>
+                <span class="text-xs bg-rose-100 text-rose-800 px-2 py-0.5 rounded-md font-semibold">第三類別</span>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- 03_1 感恩回饋區 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_1</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">感恩回饋區</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">分享當下快樂與靈感提示。</p>
+                    </div>
+                    <a href="./03_1_gratitude-share.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_2 靜心專區 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_2</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">班級靜心專區</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">視覺呼吸球，平穩專注情緒。</p>
+                    </div>
+                    <a href="./03_2_calm-down.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_3 小組討論指引欄 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_3</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">小組討論指引欄</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">步驟、原則與討論範例句型。</p>
+                    </div>
+                    <a href="./03_3_discussion-guide.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_4 幸福香水 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_4</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">幸福香水 (讚美句)</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">正向回饋與讚美用詞句型。</p>
+                    </div>
+                    <a href="./03_4_happy-perfume.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_5 情緒覺察 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_5</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">情緒覺察站</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">辨識狀態，表達內心感受。</p>
+                    </div>
+                    <a href="./03_5_emotion-awareness.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_6 辯論題目 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_6</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">辯論題目百寶箱</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">思辨議題與多元觀點引導。</p>
+                    </div>
+                    <a href="./03_6_debate-topics.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_7 閒聊專區 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_7</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">輕鬆閒聊專區</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">隨機話題與萬用互動句型。</p>
+                    </div>
+                    <a href="./03_7_chat-helper.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+
+                <!-- 03_8 指引小卡 -->
+                <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-rose-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-rose-100 text-rose-800 text-[11px] font-bold px-2 py-0.5 rounded">03_8</span></div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">每日指引小卡</h3>
+                        <p class="text-slate-500 text-xs leading-snug mb-4">隨機抽取激勵名言佳句。</p>
+                    </div>
+                    <a href="./03_8_quote-cards.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-rose-500 hover:bg-rose-600 active:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 類別四：教學資源導航（紫系） -->
         <div class="mb-4">
             <div class="flex items-center gap-2 mb-4 pb-2 border-b-2 border-purple-400">
                 <span class="text-xl">🔗</span>
                 <h2 class="text-lg font-bold text-slate-700">教學資源導航</h2>
-                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md font-semibold">第三類別</span>
+                <span class="text-xs bg-purple-100 text-purple-800 px-2 py-0.5 rounded-md font-semibold">第四類別</span>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- 03_1 -->
                 <div class="tool-card bg-white p-5 rounded-2xl shadow-sm border border-purple-200/60 hover:shadow-md hover:-translate-y-1 flex flex-col justify-between">
                     <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2 py-0.5 rounded">03_1</span>
-                        </div>
+                        <div class="flex justify-between items-center mb-2"><span class="bg-purple-100 text-purple-800 text-[11px] font-bold px-2 py-0.5 rounded">04_1</span></div>
                         <h3 class="text-base font-bold text-slate-800 mb-1">常用教學資源連結</h3>
                         <p class="text-slate-500 text-xs leading-snug mb-4">一鍵直達常用教育與題庫網站。</p>
                     </div>
-                    <a href="./03_1_resource-links.html" onclick="showLoading(event, this.href)" 
-                       class="w-full text-center bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">
-                        進入工具 ➔
-                    </a>
+                    <a href="./04_1_resource-links.html" onclick="showLoading(event, this.href)" class="w-full text-center bg-purple-600 hover:bg-purple-700 active:bg-purple-800 text-white font-medium py-2 px-3 rounded-xl text-xs transition shadow-sm active:scale-95 block">進入工具 ➔</a>
                 </div>
             </div>
         </div>
@@ -231,7 +259,7 @@
 
     <!-- 頁尾 -->
     <footer class="bg-white border-t border-slate-200 text-center py-4 text-slate-400 text-xs">
-        <p>&copy; 2026 國中特教互動教學系統 | 專為流暢教學與便利題庫管理而生</p>
+        <p>&copy; 2026 國中特教互動教學系統 | 多個課堂指引工具</p>
     </footer>
 
     <!-- 載入中過場效果 Script -->
