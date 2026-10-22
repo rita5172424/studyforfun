@@ -19,94 +19,92 @@
 <body class="bg-slate-50 h-screen overflow-hidden flex flex-col justify-between text-slate-800 select-none">
 
     <!-- 頂部快速工具列 -->
-    <header class="bg-white border-b border-slate-200 px-6 py-2 flex justify-between items-center shadow-xs shrink-0 relative z-20">
+    <header class="bg-white border-b border-slate-200 px-6 py-2.5 flex justify-between items-center shadow-xs shrink-0 relative z-20">
         <a href="./index.html" class="inline-flex items-center gap-2 text-rose-600 font-extrabold hover:text-rose-800 transition text-base">
             <span>🏠 返回百寶箱首頁</span>
         </a>
         <h1 class="text-lg font-black text-slate-700 hidden sm:block">⚔️ 辯論題目百寶箱</h1>
-        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1 rounded-lg text-xs transition cursor-pointer border border-rose-200">
+        <button type="button" onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1.5 rounded-lg text-xs transition cursor-pointer border border-rose-200">
             🖥️ 全螢幕
         </button>
     </header>
 
     <!-- 主要內容區 (一頁式視圖) -->
-    <main class="max-w-6xl mx-auto w-full px-4 py-2.5 flex-grow flex flex-col justify-between gap-2 relative z-10 overflow-hidden">
+    <main class="max-w-6xl mx-auto w-full px-4 py-3 flex-grow flex flex-col justify-between gap-3 relative z-10 overflow-hidden">
 
         <!-- 頁面標題與控制按鈕區 -->
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 shrink-0 my-0.5">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 shrink-0">
             <div>
                 <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">⚔️ 課堂思辨與辯論題目</h2>
-                <p class="text-slate-500 text-xs sm:text-sm font-bold">正反立場解析，打破既定思維限制。</p>
+                <p class="text-slate-500 text-xs sm:text-sm font-bold mt-0.5">正反立場解析，打破既定思維限制。</p>
             </div>
             
             <!-- 分類選單與抽題按鈕 -->
             <div class="flex flex-wrap gap-1.5 relative z-20">
-                <button type="button" onclick="drawTopic('all')" class="bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-extrabold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95 cursor-pointer">
+                <button type="button" onclick="drawTopic('all')" class="bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-extrabold px-3.5 py-1.5 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95 cursor-pointer">
                     🎲 隨機抽題
                 </button>
-                <button type="button" onclick="drawTopic('school')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-2.5 py-1.5 rounded-xl text-xs transition active:scale-95 cursor-pointer">
+                <button type="button" onclick="drawTopic('school')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition active:scale-95 cursor-pointer">
                     🏫 校園與成長
                 </button>
-                <button type="button" onclick="drawTopic('tech')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-2.5 py-1.5 rounded-xl text-xs transition active:scale-95 cursor-pointer">
+                <button type="button" onclick="drawTopic('tech')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition active:scale-95 cursor-pointer">
                     🌐 科技與未來
                 </button>
-                <button type="button" onclick="drawTopic('society')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-2.5 py-1.5 rounded-xl text-xs transition active:scale-95 cursor-pointer">
+                <button type="button" onclick="drawTopic('society')" class="bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-800 font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm transition active:scale-95 cursor-pointer">
                     ⚖️ 社會與倫理
                 </button>
             </div>
         </div>
 
-        <!-- 核心辯題卡片（左右對決） -->
-        <div id="topicCard" class="pop-card bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between shrink-0">
-            <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-slate-100">
-                <span id="topicCategoryTag" class="bg-indigo-100 text-indigo-800 text-xs font-black px-3 py-0.5 rounded-full">
-                    類別加載中
-                </span>
-                <span id="topicTitle" class="text-base sm:text-lg font-black text-slate-700">
-                    辯題名稱
+        <!-- 核心辯題卡片（左右對決，字體與格子加大，移除類別） -->
+        <div id="topicCard" class="pop-card bg-white p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200 flex flex-col justify-between shrink-0">
+            <!-- 題目名稱標題 -->
+            <div class="mb-3 pb-2 border-b border-slate-100 text-center sm:text-left">
+                <span id="topicTitle" class="text-xl sm:text-2xl font-black text-slate-800 tracking-wide">
+                    📌 辯題名稱
                 </span>
             </div>
 
-            <!-- 正反方左右分一半 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 my-1">
+            <!-- 正反方左右分一半（加大版格子與字體） -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-1">
                 <!-- 🟢 正方 -->
-                <div class="bg-emerald-50/80 p-4 rounded-2xl border-2 border-emerald-200 flex flex-col justify-center">
-                    <div class="flex items-center gap-1.5 mb-1">
-                        <span class="text-base">🟢</span>
-                        <span class="text-xs font-black text-emerald-800 bg-emerald-200/80 px-2 py-0.5 rounded-md">正方立場</span>
+                <div class="bg-emerald-50/90 p-5 sm:p-6 rounded-2xl border-2 border-emerald-300 flex flex-col justify-center min-h-[130px]">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-lg">🟢</span>
+                        <span class="text-xs sm:text-sm font-black text-emerald-800 bg-emerald-200 px-2.5 py-0.5 rounded-md">正方立場</span>
                     </div>
-                    <p id="proText" class="text-base sm:text-lg font-black text-emerald-950 leading-snug">
+                    <p id="proText" class="text-xl sm:text-2xl font-black text-emerald-950 leading-relaxed tracking-wide">
                         正方主張內容填入區
                     </p>
                 </div>
 
                 <!-- 🔴 反方 -->
-                <div class="bg-rose-50/80 p-4 rounded-2xl border-2 border-rose-200 flex flex-col justify-center">
-                    <div class="flex items-center gap-1.5 mb-1">
-                        <span class="text-base">🔴</span>
-                        <span class="text-xs font-black text-rose-800 bg-rose-200/80 px-2 py-0.5 rounded-md">反方立場</span>
+                <div class="bg-rose-50/90 p-5 sm:p-6 rounded-2xl border-2 border-rose-300 flex flex-col justify-center min-h-[130px]">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-lg">🔴</span>
+                        <span class="text-xs sm:text-sm font-black text-rose-800 bg-rose-200 px-2.5 py-0.5 rounded-md">反方立場</span>
                     </div>
-                    <p id="conText" class="text-base sm:text-lg font-black text-rose-950 leading-snug">
+                    <p id="conText" class="text-xl sm:text-2xl font-black text-rose-950 leading-relaxed tracking-wide">
                         反方主張內容填入區
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- 思維擴展引導小提示（一次隨機呈現兩個） -->
-        <div class="bg-amber-50/80 p-3.5 sm:p-4 rounded-3xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between flex-grow min-h-[140px]">
-            <div class="flex justify-between items-center mb-1.5 pb-1 border-b border-amber-200/60">
+        <!-- 思維擴展引導小提示（上下呈現兩則） -->
+        <div class="bg-amber-50/80 p-4 sm:p-5 rounded-3xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between flex-grow">
+            <div class="flex justify-between items-center mb-2 pb-1.5 border-b border-amber-200/60">
                 <h3 class="font-black text-amber-950 text-sm sm:text-base flex items-center gap-1.5">
                     <span>💡 思考卡關了嗎？思考擴展引導（隨機 2 則提示）：</span>
                 </h3>
-                <button type="button" onclick="loadRandomHints()" class="text-xs text-amber-800 font-extrabold hover:underline cursor-pointer active:scale-95">
+                <button type="button" onclick="loadRandomHints()" class="text-xs sm:text-sm text-amber-800 font-extrabold hover:underline cursor-pointer active:scale-95">
                     🔄 換一組提示
                 </button>
             </div>
 
-            <!-- 兩則提示展示區 -->
-            <div id="hintsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs sm:text-sm font-bold text-slate-800">
-                <!-- 隨機提示填入區 -->
+            <!-- 上下呈現展示區 -->
+            <div id="hintsContainer" class="flex flex-col gap-2 text-xs sm:text-sm font-bold text-slate-800 my-auto">
+                <!-- 隨機提示上下填入區 -->
             </div>
         </div>
 
@@ -119,170 +117,4 @@
 
     <!-- 腳本邏輯 -->
     <script>
-        // 45 題題目資料庫
-        const debatePool = {
-            school: [
-                { title: "AI 教學", pro: "中學校園應該全面禁止師生使用 AI 進行教學與寫作。", con: "中學校園不應該全面禁止師生使用 AI 進行教學與寫作。" },
-                { title: "全校排名", pro: "國高中應該全面廢除全校排名制度。", con: "國高中不應該全面廢除全校排名制度。" },
-                { title: "理財必修", pro: "中學應該將「理財與記帳」列為全校必修課程。", con: "中學不應該將「理財與記帳」列為全校必修課程。" },
-                { title: "情感教育", pro: "學校應該將「戀愛學分與情感教育」列為必修課程。", con: "學校不應該將「戀愛學分與情感教育」列為必修課程。" },
-                { title: "升學抉擇", pro: "升學階段中，學生應該優先選擇「有興趣的校系」。", con: "升學階段中，學生應該優先選擇「有前途的校系」。" },
-                { title: "同儕壓力", pro: "面對同儕壓力，青少年應該選擇「堅持自我」。", con: "面對同儕壓力，青少年應該選擇「融入群體」。" },
-                { title: "家庭作業", pro: "中學應該全面取消家庭作業，改由課堂實作替代。", con: "中學不應該全面取消家庭作業，改由課堂實作替代。" },
-                { title: "自主評分", pro: "學校應該開放學生自主評分自己的操行成績。", con: "學校不應該開放學生自主評分自己的操行成績。" },
-                { title: "追星文化", pro: "青少年應該被鼓勵參與追星與粉絲文化。", con: "青少年不應該被鼓勵參與追星與粉絲文化。" },
-                { title: "魔法分類", pro: "魔法學校在台建校應該採取「分類帽」的資優分班制度。", con: "魔法學校在台建校不應該採取「分類帽」的資優分班制度。" },
-                { title: "超能力規範", pro: "當人類覺醒超能力時，學校應該強制學生配戴「能力抑制手環」。", con: "當人類覺醒超能力時，學校不應該強制學生配戴「能力抑制手環」。" },
-                { title: "記憶科技", pro: "若發明「一鍵注入知識」的晶片，學校應該全面廢除傳統課堂考試。", con: "若發明「一鍵注入知識」的晶片，學校不應該全面廢除傳統課堂考試。" },
-                { title: "時空倒流", pro: "若每人有一次時空倒流24小時的機會，大家應該在青少年時期使用掉。", con: "若每人有一次時空倒流24小時的機會，大家不應該在青少年時期使用掉。" },
-                { title: "讀心術諮商", pro: "擁有讀心術的輔導老師，應該在學生不知情下進行心理諮商。", con: "擁有讀心術的輔導老師，不應該在學生不知情下進行心理諮商。" },
-                { title: "AI 導師", pro: "未來學校應該全面由「完美無瑕的 AI 機器人」取代人類導師。", con: "未來學校不應該全面由「完美無瑕的 AI 機器人」取代人類導師。" }
-            ],
-            tech: [
-                { title: "社群按讚", pro: "社群媒體應該全面取消「按讚與計數」的機制。", con: "社群媒體不應該全面取消「按讚與計數」的機制。" },
-                { title: "網路直播", pro: "政府應該立法禁止未成年人進行網路直播。", con: "政府不應該立法禁止未成年人進行網路直播。" },
-                { title: "數位貨幣", pro: "中央銀行應該用數位貨幣完全取代實體紙鈔。", con: "中央銀行不應該用數位貨幣完全取代實體紙鈔。" },
-                { title: "虛擬偶像", pro: "大眾傳媒應該限制虛擬偶像（VTuber）取代真人明星的比例。", con: "大眾傳媒不應該限制虛擬偶像（VTuber）取代真人明星的比例。" },
-                { title: "無人商店", pro: "政府應該限制無人超商的普及以保障勞工就業權。", con: "政府不應該限制無人超商的普及以保障勞工就業權。" },
-                { title: "網路實名制", pro: "網路世界應該全面取消匿名制，改為真實身分實名制。", con: "網路世界不應該全面取消匿名制，改為真實身分實名制。" },
-                { title: "自駕車抉擇", pro: "自駕車面臨車禍抉擇時，系統應該優先保護「車內乘客」。", con: "自駕車面臨車禍抉擇時，系統應該優先保護「路人」。" },
-                { title: "元宇宙社交", pro: "人們應該多在元宇宙發展社交，這比現實社交更安全自由。", con: "人們不應該多在元宇宙發展社交，這會導致現實社交更疏離。" },
-                { title: "計劃性報廢", pro: "法律應該嚴厲制裁科技產品刻意縮短壽命的「計劃性報廢」行為。", con: "法律不應該制裁「計劃性報廢」，此行為是推動經濟與技術循環。" },
-                { title: "永生科技", pro: "當意識上傳技術成熟時，人類應該追求雲端永生。", con: "當意識上傳技術成熟時，人類不應該追求雲端永生。" },
-                { title: "基因編輯", pro: "法律應該允許父母在孩子出生前，進行基因編輯挑選外貌與智商。", con: "法律不應該允許父母在孩子出生前，進行基因編輯挑選外貌與智商。" },
-                { title: "外星文明", pro: "接收到外星訊號時，人類應該主動回覆並暴露地球位置。", con: "接收到外星訊號時，人類不應該主動回覆並暴露地球位置。" },
-                { title: "虛擬烏托邦", pro: "若有絕對快樂、無痛苦的虛擬世界，人類應該選擇全員遷入。", con: "若有絕對快樂、無痛苦的虛擬世界，人類不應該選擇全員遷入。" },
-                { title: "機器人人權", pro: "法律應該賦予擁有自主情感的仿生人完整的公民權。", con: "法律不應該賦予擁有自主情感的仿生人完整的公民權。" },
-                { title: "反烏托邦預知", pro: "政府應該利用「犯罪預知系統」，在人民犯罪前將其逮捕。", con: "政府不應該利用「犯罪預知系統」，在人民犯罪前將其逮捕。" }
-            ],
-            society: [
-                { title: "現金追蹤", pro: "為了降低犯罪率，政府應該全面取消現金並追蹤每一筆交易。", con: "為了降低犯罪率，政府不應該全面取消現金並追蹤每一筆交易。" },
-                { title: "古蹟與發展", pro: "歷史古蹟應該為了城市經濟與交通發展而讓步拆除。", con: "歷史古蹟不應該為了城市經濟與交通發展而讓步拆除。" },
-                { title: "博愛座取消", pro: "公共運輸系統應該全面取消博愛座的專屬標籤。", con: "公共運輸系統不應該全面取消博愛座的專屬標籤。" },
-                { title: "垃圾食物稅", pro: "政府應該對高糖、高熱量的垃圾食物徵收「健康捐（肥胖稅）」。", con: "政府不應該對高糖、高熱量的垃圾食物徵收「健康捐（肥胖稅）」。" },
-                { title: "媒體知情權", pro: "媒體在報導重大刑案時，應該優先保護被害人與家屬隱私。", con: "媒體在報導重大刑案時，應該優先滿足社會大眾的知情權。" },
-                { title: "強制吃素", pro: "為了環境保護，政府應該立法強制全民每週至少吃素一天。", con: "為了環境保護，政府不應該立法強制全民每週至少吃素一天。" },
-                { title: "正當防衛", pro: "我國法律對於防禦性正當防衛的界限應該大幅放寬。", con: "我國法律對於防禦性正當防衛的界限不應該大幅放寬。" },
-                { title: "處世哲學", pro: "在現代社會中，我們應該優先努力做一個「善良的人」。", con: "在現代社會中，我們應該優先努力做一個「有用的人」。" },
-                { title: "古文比例", pro: "國文課本中的古文比例應該大幅縮減，改為現代思辨文學。", con: "國文課本中的古文比例不應該大幅縮減，應維持傳統文學底蘊。" },
-                { title: "英雄倫理", pro: "超級英雄進行非法正義時，國家法律應該對其進行制裁。", con: "超級英雄進行非法正義時，國家法律不應該對其進行制裁。" },
-                { title: "時空悖論", pro: "若改變歷史會導致現代部分人消失，我們應該按下時空機按鈕阻止過去的戰爭。", con: "若改變歷史會導致現代部分人消失，我們不應該按下時空機按鈕阻止過去的戰爭。" },
-                { title: "命運時鐘", pro: "政府應該強制公開每個人額頭上的「生命剩餘倒數時間」。", con: "政府不應該強制公開每個人額頭上的「生命剩餘倒數時間」。" },
-                { title: "神明合約", pro: "我們應該拿全人類一半的創造力，去換取神明承諾的永久和平。", con: "我們不應該拿全人類一半的創造力，去換取神明承諾的永久和平。" },
-                { title: "遺忘藥水", pro: "政府應該開放販售能精準抹去特定痛苦記憶的遺忘藥水。", con: "政府不應該開放販售能精準抹去特定痛苦記憶的遺忘藥水。" },
-                { title: "怪獸與生態", pro: "遠古巨獸在現代復活時，人類應該採取「完全消滅」的手段保護生態。", con: "遠古巨獸在現代復活時，人類不應該採取「完全消滅」的手段保護生態。" }
-            ]
-        };
-
-        const categoryTitles = {
-            school: "🏫 校園生活與成長選擇類",
-            tech: "🌐 科技趨勢與現代生活類",
-            society: "⚖️ 社會倫理與價值思辨類"
-        };
-
-        // 引導小提示資料庫 (4 大維度共 12 則)
-        const hintsPool = [
-            { category: "⏳ 改變「時間軸」", text: "「如果這件事在 10 年、20 年後變成常態，世界會變成怎樣？」（思考：長期副作用、跨世代影響）" },
-            { category: "⏳ 改變「時間軸」", text: "「在過去還沒有這個科技/規定之前，人類是怎麼過日子的？那時候有什麼問題？」（思考：歷史經驗）" },
-            { category: "⏳ 改變「時間軸」", text: "「這項政策實施的第一天、第一個月、第一年，分別會遇到什麼最直接的混亂？」（思考：短中長期變化）" },
-            { category: "👥 改變「利益關係人」", text: "「除了我們一般人，這件事對社會上『最弱勢』或『少數群體』會造成什麼衝擊？」（思考：社會公平）" },
-            { category: "👥 改變「利益關係人」", text: "「如果站在【加害者/反對者/執法者/商家】的立場來看，他們最在乎的利益是什麼？」（思考：換位思考）" },
-            { category: "👥 改變「利益關係人」", text: "「誰會因為這個改變得到最大的好處？誰又會默默成為最大的受害者？」（思考：利益重新分配）" },
-            { category: "🎯 改變「情境與極端」", text: "「如果今天預算無限/科技完美，這個問題就能解決嗎？還是它根本不是錢和科技的問題？」（思考：技術與倫理差異）" },
-            { category: "🎯 改變「情境與極端」", text: "「如果我們不採取這個方法，還有沒有其他更溫和、代價更小的替代方案？」（思考：手段的唯一性）" },
-            { category: "🎯 改變「情境與極端」", text: "「如果把這個狀況推到最極端（例如所有人都在用，或完全無人遵守），會發生什麼事？」（思考：價值邊界）" },
-            { category: "🔍 拆解「概念與字詞」", text: "「我們一直掛在嘴邊的『好/幸福/公平/安全』，在這裡究竟指的是什麼？有沒有人定義不同？」（思考：語意澄清）" },
-            { category: "🔍 拆解「概念與字詞」", text: "「這項爭議的本質，究竟是【安全與自由】的拉扯，還是【利益與道德】的對決？」（思考：哲學對立）" },
-            { category: "🔍 拆解「概念與字詞」", text: "「我們真的能明確區分出『真的』和『假的』、『對的』和『錯的』那條界線在哪裡嗎？」（思考：評判標準）" }
-        ];
-
-        // Web Audio 輕快音效
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playPopSound() {
-            try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(480, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(960, audioCtx.currentTime + 0.1);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.1);
-            } catch (e) {}
-        }
-
-        let lastTopicTitle = "";
-
-        // 抽取辯題
-        function drawTopic(categoryKey) {
-            const card = document.getElementById('topicCard');
-            card.classList.add('pop-hidden');
-
-            playPopSound();
-
-            setTimeout(() => {
-                let chosenCategory = categoryKey;
-                
-                if (categoryKey === 'all') {
-                    const keys = Object.keys(debatePool);
-                    chosenCategory = keys[Math.floor(Math.random() * keys.length)];
-                }
-
-                const list = debatePool[chosenCategory];
-                let item;
-
-                do {
-                    item = list[Math.floor(Math.random() * list.length)];
-                } while (item.title === lastTopicTitle && list.length > 1);
-
-                lastTopicTitle = item.title;
-
-                document.getElementById('topicCategoryTag').textContent = categoryTitles[chosenCategory];
-                document.getElementById('topicTitle').textContent = `📌 ${item.title}`;
-                document.getElementById('proText').textContent = item.pro;
-                document.getElementById('conText').textContent = item.con;
-
-                card.classList.remove('pop-hidden');
-            }, 200);
-
-            // 抽題時同步更新引導提示
-            loadRandomHints();
-        }
-
-        // 隨機載入 2 則思考提示
-        function loadRandomHints() {
-            let shuffled = [...hintsPool].sort(() => 0.5 - Math.random());
-            let selected = shuffled.slice(0, 2);
-
-            let html = selected.map(h => `
-                <div class="bg-white p-2.5 rounded-xl border border-amber-200/80 flex flex-col justify-between">
-                    <span class="text-amber-800 font-black text-xs mb-1">${h.category}</span>
-                    <p class="leading-relaxed text-slate-800">${h.text}</p>
-                </div>
-            `).join('');
-
-            document.getElementById('hintsContainer').innerHTML = html;
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.log("全螢幕失敗:", err);
-                });
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        // 初始化
-        document.addEventListener("DOMContentLoaded", function() {
-            drawTopic('school');
-        });
-    </script>
-</body>
-</html>
+        // 45 題題目
