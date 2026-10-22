@@ -35,83 +35,19 @@
         <!-- 頁面標題 -->
         <div class="text-center shrink-0">
             <h2 class="text-2xl sm:text-3xl font-black text-slate-800 tracking-tight">💬 輕鬆閒聊魔法卡</h2>
-            <p class="text-slate-500 text-xs sm:text-sm font-bold mt-0.5">學會聊天三部曲，讓你社交順暢不句點！</p>
+            <p class="text-slate-500 text-xs sm:text-sm font-bold mt-0.5">學會聊天四步驟，讓你社交順暢不句點！</p>
         </div>
 
-        <!-- 聊天三大招：視覺化色彩分區卡片 -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <!-- 🎲 第一部分：靈感抽籤筒（開啟話題 / 破冰） -->
+        <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col items-center">
             
-            <!-- 🟢 第一招：開啟話題 (綠色系) -->
-            <div class="bg-emerald-50/70 p-4 rounded-2xl border-2 border-emerald-200/80 shadow-xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第一招</span>
-                        <span class="text-xs font-extrabold text-emerald-700">🟢 開啟話題</span>
-                    </div>
-                    <h3 class="text-base font-black text-emerald-900 mb-1.5">回答用「加一法 ➕1」</h3>
-                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
-                        別只回「對」或「沒有」！公式：<br>
-                        <span class="text-emerald-700 font-black">【答案】 + 【加講一件事】</span>
-                    </p>
-                </div>
-                <div class="bg-white p-2.5 rounded-xl border border-emerald-200 text-xs font-extrabold text-slate-700">
-                    💡 範例：「有啊，我媽媽今天幫我準備了炸雞腿！」
-                </div>
-            </div>
-
-            <!-- 🟡 第二招：延續話題 (黃/橘色系) -->
-            <div class="bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第二招</span>
-                        <span class="text-xs font-extrabold text-amber-700">🟡 延續話題</span>
-                    </div>
-                    <h3 class="text-base font-black text-amber-900 mb-1.5">萬用接話神句 ⭐</h3>
-                    <p class="text-xs text-slate-600 mb-2 font-bold">不知道接什麼？點選直接用：</p>
-                </div>
-                <div class="grid grid-cols-3 gap-1.5 text-[11px] font-black">
-                    <button type="button" onclick="copyPhrase('真的假的！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
-                        「真的假的！」
-                    </button>
-                    <button type="button" onclick="copyPhrase('我也是耶！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
-                        「我也是耶！」
-                    </button>
-                    <button type="button" onclick="copyPhrase('然後呢？')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
-                        「然後呢？」
-                    </button>
-                </div>
-            </div>
-
-            <!-- 🔵 第三招：結束話題 (藍/紫色系) -->
-            <div class="bg-indigo-50/70 p-4 rounded-2xl border-2 border-indigo-200/80 shadow-xs flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="bg-indigo-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第三招</span>
-                        <span class="text-xs font-extrabold text-indigo-700">🔵 結束話題</span>
-                    </div>
-                    <h3 class="text-base font-black text-indigo-900 mb-1.5">禮貌離場「1+1」 👋</h3>
-                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
-                        想離開時，記得：<br>
-                        <span class="text-indigo-700 font-black">【1個理由】 + 【1句親切道別】</span>
-                    </p>
-                </div>
-                <div class="bg-white p-2.5 rounded-xl border border-indigo-200 text-xs font-extrabold text-slate-700">
-                    💡 範例：「我想去上廁所，等等見囉！」
-                </div>
-            </div>
-
-        </div>
-
-        <!-- 🎲 靈感抽籤筒：今天聊什麼？ -->
-        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col items-center">
-            
-            <!-- 標題與分類選擇按鈕組 -->
             <div class="w-full flex flex-col sm:flex-row justify-between items-center gap-2 mb-3 pb-2 border-b border-slate-100">
-                <h3 class="font-black text-slate-800 text-base flex items-center gap-1.5">
-                    <span>🎲 靈感抽籤筒：今天聊什麼？</span>
-                </h3>
+                <div class="flex items-center gap-2">
+                    <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第一步</span>
+                    <h3 class="font-black text-slate-800 text-base">🎲 靈感話題抽籤筒：今天聊什麼？</h3>
+                </div>
                 <div class="flex flex-wrap gap-1.5">
-                    <button type="button" onclick="drawTopic('all')" class="bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-extrabold px-3 py-1 rounded-xl text-xs transition shadow-2xs active:scale-95 cursor-pointer">
+                    <button type="button" onclick="drawTopic('all')" class="bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-extrabold px-3 py-1 rounded-xl text-xs transition shadow-2xs active:scale-95 cursor-pointer">
                         🎲 隨機全抽
                     </button>
                     <button type="button" onclick="drawTopic('school')" class="bg-slate-100 hover:bg-emerald-100 text-slate-700 hover:text-emerald-800 font-bold px-2.5 py-1 rounded-xl text-xs transition active:scale-95 cursor-pointer">
@@ -127,13 +63,77 @@
             </div>
 
             <!-- 抽籤話題展示區 -->
-            <div id="topicCard" class="card-pop bg-slate-50 border-2 border-slate-200/80 rounded-2xl p-5 w-full text-center flex flex-col items-center justify-center min-h-[90px]">
-                <span id="topicCategory" class="text-xs font-black text-rose-600 bg-rose-100 px-2.5 py-0.5 rounded-full mb-1">
+            <div id="topicCard" class="card-pop bg-emerald-50/60 border-2 border-emerald-200/80 rounded-2xl p-4 w-full text-center flex flex-col items-center justify-center min-h-[80px]">
+                <span id="topicCategory" class="text-xs font-black text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-1">
                     點擊上方按鈕開始抽題
                 </span>
                 <p id="topicText" class="text-lg sm:text-xl font-black text-slate-800 tracking-wide mt-1">
                     「不知道怎麼開頭時，隨機選一句問問看同學吧！」
                 </p>
+            </div>
+
+        </div>
+
+        <!-- 第二與第三部分：延續話題與結束話題 (三欄式卡牌) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            
+            <!-- 🟡 第二招技巧 A：回答用加一法 (黃/橘色系) -->
+            <div class="bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第二步 · 技巧①</span>
+                        <span class="text-xs font-extrabold text-amber-700">🟡 延續話題</span>
+                    </div>
+                    <h3 class="text-base font-black text-amber-900 mb-1.5">回答用「加一法 ➕1」</h3>
+                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
+                        別只回「對」或「沒有」！公式：<br>
+                        <span class="text-amber-700 font-black">【答案】 + 【加講一件事】</span>
+                    </p>
+                </div>
+                <div class="bg-white p-2.5 rounded-xl border border-amber-200 text-xs font-extrabold text-slate-700">
+                    💡 範例：「有啊，我媽媽今天幫我準備了炸雞腿！」
+                </div>
+            </div>
+
+            <!-- 🟡 第二招技巧 B：萬用接話神句 (黃/橘色系同色) -->
+            <div class="bg-amber-50/70 p-4 rounded-2xl border-2 border-amber-200/80 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-amber-500 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第二步 · 技巧②</span>
+                        <span class="text-xs font-extrabold text-amber-700">🟡 延續話題</span>
+                    </div>
+                    <h3 class="text-base font-black text-amber-900 mb-1.5">萬用接話神句 ⭐</h3>
+                    <p class="text-xs text-slate-600 mb-2 font-bold">不知道接什麼？點選直接複製：</p>
+                </div>
+                <div class="grid grid-cols-3 gap-1 text-[11px] font-black">
+                    <button type="button" onclick="copyPhrase('真的假的！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                        「真的假的！」
+                    </button>
+                    <button type="button" onclick="copyPhrase('我也是耶！')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                        「我也是耶！」
+                    </button>
+                    <button type="button" onclick="copyPhrase('然後呢？')" class="bg-white hover:bg-amber-100 p-1.5 rounded-lg border border-amber-200 text-amber-800 transition active:scale-95 cursor-pointer">
+                        「然後呢？」
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🔵 第三招：禮貌離場 (藍/紫色系) -->
+            <div class="bg-indigo-50/70 p-4 rounded-2xl border-2 border-indigo-200/80 shadow-xs flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-indigo-600 text-white text-xs font-black px-2.5 py-0.5 rounded-full">第三步</span>
+                        <span class="text-xs font-extrabold text-indigo-700">🔵 結束話題</span>
+                    </div>
+                    <h3 class="text-base font-black text-indigo-900 mb-1.5">禮貌離場「1+1」 👋</h3>
+                    <p class="text-xs text-slate-600 mb-2 leading-relaxed font-bold">
+                        想離開時，記得：<br>
+                        <span class="text-indigo-700 font-black">【1個理由】 + 【1句親切道別】</span>
+                    </p>
+                </div>
+                <div class="bg-white p-2.5 rounded-xl border border-indigo-200 text-xs font-extrabold text-slate-700">
+                    💡 範例：「我想去上廁所，等等見囉！」
+                </div>
             </div>
 
         </div>
@@ -147,7 +147,6 @@
 
     <!-- 腳本邏輯 -->
     <script>
-        // 話題題庫（分類）
         const topicsPool = {
             school: [
                 "「你下一節是什麼課啊？」",
@@ -175,7 +174,6 @@
             weekend: "☀️ 週末假期篇"
         };
 
-        // Web Audio 抽取音效
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playPopSound() {
             try {
@@ -195,7 +193,6 @@
 
         let lastTopic = "";
 
-        // 抽取話題
         function drawTopic(categoryKey) {
             const card = document.getElementById('topicCard');
             card.classList.add('card-hidden');
@@ -205,7 +202,6 @@
             setTimeout(() => {
                 let chosenCategory = categoryKey;
                 
-                // 全隨機模式
                 if (categoryKey === 'all') {
                     const keys = Object.keys(topicsPool);
                     chosenCategory = keys[Math.floor(Math.random() * keys.length)];
@@ -214,7 +210,6 @@
                 const list = topicsPool[chosenCategory];
                 let randomTopic = "";
 
-                // 避免連續重複抽到同一題
                 do {
                     randomTopic = list[Math.floor(Math.random() * list.length)];
                 } while (randomTopic === lastTopic && list.length > 1);
@@ -228,7 +223,6 @@
             }, 200);
         }
 
-        // 複製萬用句型
         function copyPhrase(text) {
             navigator.clipboard.writeText(text).then(() => {
                 alert(`已複製萬用句：${text}`);
@@ -247,7 +241,6 @@
             }
         }
 
-        // 頁面載入時自動預先抽取一個學校生活話題
         window.onload = function() {
             drawTopic('school');
         };
