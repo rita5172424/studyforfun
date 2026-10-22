@@ -7,96 +7,95 @@
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-rose-50/50 min-h-screen flex flex-col justify-between text-slate-800">
+<body class="bg-rose-50/50 h-screen overflow-hidden flex flex-col justify-between text-slate-800 select-none">
 
-    <!-- 頂部快速工具列 -->
-    <header class="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center shadow-sm">
-        <a href="./index.html" class="inline-flex items-center gap-2 text-rose-600 font-bold hover:text-rose-800 transition active:scale-95 text-sm">
+    <!-- 頂部快速工具列 (緊湊型) -->
+    <header class="bg-white border-b border-slate-200 px-6 py-2.5 flex justify-between items-center shadow-xs shrink-0">
+        <a href="./index.html" class="inline-flex items-center gap-2 text-rose-600 font-extrabold hover:text-rose-800 transition active:scale-95 text-base">
             <span>🏠 返回百寶箱首頁</span>
         </a>
-        <h1 class="text-base font-bold text-slate-700 hidden sm:block">💖 感恩回饋時間</h1>
-        <button onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-medium px-3 py-1.5 rounded-lg text-xs transition active:scale-95 border border-rose-200">
+        <h1 class="text-lg font-black text-slate-700 hidden sm:block">💖 感恩回饋時間</h1>
+        <button onclick="toggleFullScreen()" class="bg-rose-50 hover:bg-rose-100 active:bg-rose-200 text-rose-700 font-bold px-3 py-1 rounded-lg text-xs transition active:scale-95 border border-rose-200">
             🖥️ 全螢幕
         </button>
     </header>
 
-    <!-- 主要內容區 -->
-    <main class="max-w-4xl mx-auto w-full p-4 sm:p-6 flex-grow flex flex-col items-center">
+    <!-- 主要內容區 (彈性縮放，免滑動) -->
+    <main class="max-w-5xl mx-auto w-full px-4 py-3 flex-grow flex flex-col justify-between overflow-hidden">
 
         <!-- 頁面標題 -->
-        <div class="text-center mb-6 max-w-xl">
-            <span class="bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Gratitude Time</span>
-            <h2 class="text-3xl sm:text-4xl font-black text-slate-800 mt-2 mb-1">感恩回饋時間</h2>
-            <p class="text-slate-600 text-xs sm:text-sm">專注現在能做的事，分享當下的快樂與微小幸福。</p>
+        <div class="text-center my-1 shrink-0">
+            <h2 class="text-3xl sm:text-4xl font-black text-slate-800 tracking-tight">💖 感恩回饋時間</h2>
+            <p class="text-slate-600 text-sm font-bold mt-1">專注現在能做的事，發現生活中的微小幸福。</p>
         </div>
 
         <!-- 核心示範句型與靈感按鈕對齊區 -->
-        <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-md border border-rose-200 w-full max-w-2xl mb-8">
-            <h3 class="text-xs font-bold text-rose-600 uppercase tracking-wider mb-2">💬 核心表達句型</h3>
-            <div class="bg-rose-50/70 p-4 sm:p-5 rounded-2xl border border-rose-100 text-base sm:text-lg font-bold text-slate-800 text-center tracking-wide mb-6">
+        <div class="bg-white p-5 rounded-3xl shadow-md border border-rose-200 w-full flex flex-col justify-center">
+            
+            <!-- 核心表達句型（字體大幅放大） -->
+            <div class="bg-rose-50/80 p-4 rounded-2xl border border-rose-100 text-xl sm:text-2xl font-black text-slate-800 text-center tracking-wide leading-relaxed shadow-xs mb-4">
                 我感恩 <span class="text-rose-600 underline decoration-rose-300 underline-offset-4">______(對象)</span>，因為 <span class="text-indigo-600 underline decoration-indigo-300 underline-offset-4">______(行為描述)</span>，讓我 <span class="text-emerald-600 underline decoration-emerald-300 underline-offset-4">______(感受)</span>。
             </div>
 
             <!-- 對齊行為描述與感受的靈感按鈕區 -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <!-- 行為描述靈感區 -->
+                <!-- 行為描述靈感區 (他人與自身統一靛藍色) -->
                 <div class="flex flex-col">
-                    <span class="text-xs font-bold text-slate-500 mb-2">💡 行為描述靈感點這裡：</span>
-                    <div class="flex gap-2 mb-3">
-                        <button onclick="getRandomKeywords('otherBehavior', 3)" class="flex-1 bg-indigo-50 hover:bg-indigo-100 active:bg-indigo-200 text-indigo-700 font-bold py-2 px-2 rounded-xl text-xs transition border border-indigo-200 active:scale-95">
+                    <span class="text-sm font-extrabold text-slate-600 mb-1.5 flex items-center gap-1">💡 行為描述靈感：</span>
+                    <div class="flex gap-2 mb-2">
+                        <button onclick="getRandomKeywords('otherBehavior', 3)" class="flex-1 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
                             👥 他人行為
                         </button>
-                        <button onclick="getRandomKeywords('selfBehavior', 3)" class="flex-1 bg-amber-500/10 hover:bg-amber-500/20 active:bg-amber-500/30 text-amber-800 font-bold py-2 px-2 rounded-xl text-xs transition border border-amber-200 active:scale-95">
+                        <button onclick="getRandomKeywords('selfBehavior', 3)" class="flex-1 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
                             🙋‍♂️ 自身行為
                         </button>
                     </div>
-                    <!-- 行為關鍵字出現位置 -->
-                    <div id="behaviorKeywordBox" class="min-h-[85px] bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-wrap gap-1.5 items-center justify-center text-xs text-slate-600">
-                        點擊上方按鈕，隨機產生行為提示！
+                    <!-- 行為關鍵字卡片 -->
+                    <div id="behaviorKeywordBox" class="h-[76px] bg-slate-50 p-2 rounded-xl border border-slate-200 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
+                        點擊上方按鈕，產生行為提示！
                     </div>
                 </div>
 
                 <!-- 感受形容詞靈感區 -->
                 <div class="flex flex-col">
-                    <span class="text-xs font-bold text-slate-500 mb-2">💡 感受形容詞靈感點這裡：</span>
-                    <div class="mb-3">
-                        <button onclick="getRandomKeywords('feelings', 3)" class="w-full bg-emerald-50 hover:bg-emerald-100 active:bg-emerald-200 text-emerald-700 font-bold py-2 px-2 rounded-xl text-xs transition border border-emerald-200 active:scale-95">
+                    <span class="text-sm font-extrabold text-slate-600 mb-1.5 flex items-center gap-1">💡 感受形容詞靈感：</span>
+                    <div class="mb-2">
+                        <button onclick="getRandomKeywords('feelings', 3)" class="w-full bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-bold py-2 px-2 rounded-xl text-xs sm:text-sm transition shadow-xs active:scale-95">
                             💖 感受形容詞
                         </button>
                     </div>
-                    <!-- 感受關鍵字出現位置 -->
-                    <div id="feelingKeywordBox" class="min-h-[85px] bg-slate-50 p-3 rounded-xl border border-slate-200 flex flex-wrap gap-1.5 items-center justify-center text-xs text-slate-600">
-                        點擊上方按鈕，隨機產生感受提示！
+                    <!-- 感受關鍵字卡片 -->
+                    <div id="feelingKeywordBox" class="h-[76px] bg-slate-50 p-2 rounded-xl border border-slate-200 flex flex-wrap gap-2 items-center justify-center text-sm font-bold text-slate-700">
+                        點擊上方按鈕，產生感受提示！
                     </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- 每次重整隨機出現 3 個引導問句區 -->
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 w-full max-w-2xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-slate-700 text-sm flex items-center gap-2">
-                    <span>✨ 今日引導思考題（每次重整自動換題）</span>
+        <!-- 每次重整隨機出現 3 個引導問句區 (字體放大) -->
+        <div class="bg-white p-4 sm:p-5 rounded-3xl shadow-sm border border-slate-200 w-full my-1">
+            <div class="flex justify-between items-center mb-2.5">
+                <h3 class="font-extrabold text-slate-800 text-base sm:text-lg flex items-center gap-2">
+                    <span>✨ 今日引導思考題</span>
                 </h3>
-                <button onclick="loadRandomQuestions()" class="text-xs text-rose-600 font-bold hover:underline">🔄 換一組題目</button>
+                <button onclick="loadRandomQuestions()" class="text-xs sm:text-sm text-rose-600 font-bold hover:underline active:scale-95">🔄 換一組題目</button>
             </div>
-            <div id="questionContainer" class="space-y-3 text-xs sm:text-sm text-slate-700">
-                <!-- 隨機題目會自動動態填入這裡 -->
+            <div id="questionContainer" class="space-y-2 text-sm sm:text-base font-bold text-slate-700">
+                <!-- 隨機題目填入區 -->
             </div>
         </div>
 
     </main>
 
-    <!-- 頁尾 -->
-    <footer class="bg-white border-t border-slate-200 text-center py-4 text-slate-400 text-xs">
+    <!-- 頁尾 (緊湊型) -->
+    <footer class="bg-white border-t border-slate-200 text-center py-2 text-slate-400 text-xs shrink-0">
         國中特教課堂工具箱 | 03_1_gratitude-share.html
     </footer>
 
     <!-- 互動邏輯腳本 -->
     <script>
-        // 關鍵字資料庫
         const keywordData = {
             otherBehavior: [
                 "幫我撿文具", "借我筆記", "分我吃零食", "幫我開教室門", "聽我抱怨", "載我上學", 
@@ -127,92 +126,31 @@
             ]
         };
 
-        // 引導問句資料庫 (依 5 個面向分類)
         const questionPool = [
-            // 人際與陪伴面向
             "👥 今天有人讓我覺得被關心或照顧了嗎？是誰？做了什麼？",
             "👥 今天我和誰度過了很快樂的時光，或跟誰的心更靠近了？",
             "👥 我身邊有哪些讓我可以稍微依靠的人？他們今天做了什麼？",
             "👥 誰今天說了一句話或展現了一個舉動，讓我感到很安心？",
             "👥 今天哪個人做的事，讓我覺得「哇，好棒，我也要努力」？",
-            
-            // 微小與幸運面向
             "🌱 傍晚或回家的路上，有沒有哪個畫面讓我後來又想起了一次？",
             "🌱 今天吃到了什麼美味的食物，或是喝到了什麼好喝的飲料？",
             "🌱 今天有沒有一件生活小事，讓我心裡想著「還好有它」？",
             "🌱 今天的天氣、環境、或空間裡，有什麼細節讓我的感官覺得很舒服？",
             "🌱 今天進展得很順利、沒有遇到阻礙的事情是什麼？",
-
-            // 自我肯定與成長面向
             "⭐ 如果要感謝今天很努力的自己，我會想感謝自己做到了什麼？",
             "⭐ 今天我有沒有做出一個讓自己感到放心的好決定？",
             "⭐ 今天我學到了什麼新知識、新技能，或是對什麼事情有了新體悟？",
             "⭐ 面對疲憊或挑戰，今天我自己展現了什麼樣的優點（如：耐心、專注）？",
             "⭐ 今天我為自己的身心健康做了哪一件小事（如：好好吃飯、提早休息）？",
-
-            // 深度反思面向
             "🔍 這個人或這件事情，如何豐富或溫暖了我的生活？",
             "🔍 如果生活裡沒有這個人、這項物品或這個方便的環境，我的日子會變成怎樣？",
             "🔍 最近有什麼是我一直想做，而今天終於跨出第一步的？",
             "🔍 過去有哪些被我視為理所當然的事，其實今天仔細想想非常值得感謝？",
-
-            // 低潮與逆境面向
             "💪 即使今天過得很不容易、有很多煩惱，有沒有一件微小的事依然值得我感謝？",
             "💪 在今天的挫折或失誤中，有沒有包含任何讓我能學到經驗的收穫？",
             "💪 面對今天不順心的狀況，有沒有哪個人的陪伴或安慰拉了我一把？",
-            "💪 今天過得很累，此時此刻有什麼東西（如：溫暖的床、熱水澡）能讓我好好放鬆？"
+            "💪 今天過得很累，此時此刻有什麼東西（如：溫暖的床、熱水澡）能讓我好好放遜？"
         ];
 
-        // 隨機抽取指定數量的關鍵字
         function getRandomKeywords(category, count) {
-            const list = keywordData[category];
-            let shuffled = [...list].sort(() => 0.5 - Math.random());
-            let selected = shuffled.slice(0, count);
-
-            let html = selected.map(word => `
-                <span class="bg-white border border-slate-300 px-2.5 py-1 rounded-lg font-bold text-slate-700 shadow-xs hover:bg-rose-50 hover:border-rose-300 hover:text-rose-600 transition cursor-pointer" onclick="navigator.clipboard.writeText('${word}'); alert('已複製：${word}');">
-                    ${word} 📋
-                </span>
-            `).join('');
-
-            if (category === 'otherBehavior' || category === 'selfBehavior') {
-                document.getElementById('behaviorKeywordBox').innerHTML = html;
-            } else {
-                document.getElementById('feelingKeywordBox').innerHTML = html;
-            }
-        }
-
-        // 每次載入或點擊時隨機出現 3 個引導問句
-        function loadRandomQuestions() {
-            let shuffledQ = [...questionPool].sort(() => 0.5 - Math.random());
-            let selectedQ = shuffledQ.slice(0, 3);
-
-            let html = selectedQ.map((q, idx) => `
-                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-start gap-2">
-                    <span class="bg-rose-100 text-rose-700 text-xs font-bold px-2 py-0.5 rounded shrink-0">Q${idx+1}</span>
-                    <span class="leading-relaxed">${q}</span>
-                </div>
-            `).join('');
-
-            document.getElementById('questionContainer').innerHTML = html;
-        }
-
-        function toggleFullScreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen();
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        // 頁面載入時自動初始化隨機題目與預設關鍵字
-        window.onload = function() {
-            loadRandomQuestions();
-            getRandomKeywords('otherBehavior', 3);
-            getRandomKeywords('feelings', 3);
-        };
-    </script>
-</body>
-</html>
+            const list = keywordData
