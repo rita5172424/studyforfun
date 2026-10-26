@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>詞語連連看｜中文找詞遊戲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFCF6;
+    --ink: #3E3A39;
+    --coral: #F2A497;
+    --yellow: #F6D27A;
+    --blue: #A8D3E6;
+    --green: #B9DAA5;
+    --line: 3px solid var(--ink);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Huninn", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.6;
+  }
+  main {
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 20px 16px 48px;
+  }
+
+  /* 頂部列 */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; margin-bottom: 12px;
+  }
+  .btn {
+    font: inherit; color: var(--ink);
+    background: var(--paper);
+    border: var(--line); border-radius: 999px;
+    padding: 6px 18px; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: transform .12s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible, textarea:focus-visible { outline: 3px dashed var(--ink); outline-offset: 3px; }
+  .btn.coral  { background: var(--coral); }
+  .btn.yellow { background: var(--yellow); }
+  .btn.blue   { background: var(--blue); }
+  .btn.green  { background: var(--green); }
+  .btn[aria-pressed="true"] { background: var(--yellow); }
+
+  .timer {
+    border: var(--line); border-radius: 999px;
+    background: var(--blue);
+    padding: 6px 18px; min-width: 110px; text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+
+  h1 {
+    text-align: center; margin: 8px 0 16px;
+    font-size: clamp(26px, 6vw, 36px); font-weight: 400; letter-spacing: .12em;
+  }
+
+  /* 輸入區 */
+  .panel {
+    border: var(--line); border-radius: 28px;
+    background: var(--paper);
+    padding: 16px 18px; margin-bottom: 18px;
+  }
+  .panel label { display: block; margin-bottom: 6px; }
+  .hint { font-size: 14px; margin: 0 0 8px; }
+  textarea {
+    width: 100%; min-height: 96px; resize: vertical;
+    font: inherit; color: var(--ink);
+    background: #fff;
+    border: var(--line); border-radius: 18px;
+    padding: 10px 14px;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .msg { min-height: 1.6em; margin: 10px 0 0; font-size: 14px; }
+  .msg.err { color: #B4473A; }
+
+  /* 目標詞語 */
+  .words { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; justify-content: center; }
+  .words li {
+    border: var(--line); border-radius: 999px; padding: 2px 16px;
+    background: var(--paper);
+  }
+  .words li.found { text-decoration: line-through; }
+
+  /* 棋盤 */
+  .board-wrap { container-type: inline-size; width: 100%; }
+  #board {
+    display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+    border: var(--line); border-radius: 28px;
+    padding: 12px; background: var(--paper);
+    touch-action: none; user-select: none; -webkit-user-select: none;
+  }
+  .cell {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    border: var(--line); border-radius: 18px;
+    background: #fff;
+    font-size: 8.4cqw; line-height: 1;
+    cursor: pointer;
+  }
+  #board.bold .cell { font-weight: 700; -webkit-text-stroke: 1px var(--ink); }
+  .cell.sel { background: var(--blue); }
+  .cell.f0 { background: var(--coral); }
+  .cell.f1 { background: var(--yellow); }
+  .cell.f2 { background: var(--green); }
+  .cell.f3 { background: var(--blue); }
+
+  .done {
+    margin-top: 18px; text-align: center;
+    border: var(--line); border-radius: 24px; background: var(--yellow);
+    padding: 10px 16px;
+  }
+  .done[hidden] { display: none; }
+
+  /* 列印／匯出 PDF：只留標題與 7x7 格子，單張 A4 */
+  @page { size: A4 portrait; margin: 15mm; }
+  @media print {
+    html, body { background: #fff; height: auto; }
+    .no-print { display: none !important; }
+    main { max-width: none; padding: 0; margin: 0; }
+    h1 { font-size: 30pt; margin: 0 0 10mm; }
+    .board-wrap { width: 170mm; margin: 0 auto; }
+    #board { break-inside: avoid; page-break-inside: avoid; gap: 2.5mm; padding: 5mm; }
+    .cell, .cell.sel, .cell.f0, .cell.f1, .cell.f2, .cell.f3 { background: #fff !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="topbar no-print">
+    <a class="btn yellow" href="index.html">回首頁</a>
+    <div class="timer" id="timer" aria-live="off">00:00</div>
+  </div>
+
+  <h1 id="title">詞語連連看</h1>
+
+  <section class="panel no-print">
+    <label for="input">請輸入詞語（每行一組）</label>
+    <p class="hint">格式：正確詞彙／混淆詞彙1、混淆詞彙2<br>例如：流行／流星、留荇</p>
+    <textarea id="input" spellcheck="false" placeholder="流行／流星、留荇&#10;快樂／快落、決樂&#10;朋友／明友、用友">流行／流星、留荇
+快樂／快落、決樂
+朋友／明友、用友</textarea>
+    <div class="actions">
+      <button class="btn coral" id="startBtn" type="button">開始</button>
+      <button class="btn blue" id="boldBtn" type="button" aria-pressed="false">字體加粗</button>
+      <button class="btn green" id="pdfBtn" type="button">匯出 PDF</button>
+    </div>
+    <p class="msg" id="msg" role="status"></p>
+  </section>
+
+  <ul class="words no-print" id="wordList" aria-label="要找的詞語"></ul>
+
+  <div class="board-wrap">
+    <div id="board" aria-label="7 x 7 詞語格子"></div>
+  </div>
+
+  <div class="done no-print" id="done" hidden></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var N = 7;
+  var CJK = /^[\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]+$/;
+  var EXTRA = '天地人山水火木金土日月星雲風雨花草鳥魚馬牛羊大小上下左右中心愛學校書家樂笑好';
+  var DIRS = [];
+  for (var dr = -1; dr <= 1; dr++) for (var dc = -1; dc <= 1; dc++) if (dr || dc) DIRS.push([dr, dc]);
+
+  var board = document.getElementById('board');
+  var input = document.getElementById('input');
+  var msg = document.getElementById('msg');
+  var wordList = document.getElementById('wordList');
+  var timerEl = document.getElementById('timer');
+  var doneEl = document.getElementById('done');
+
+  var grid = [];          // 7x7 字元
+  var cells = [];         // DOM 格子
+  var targets = [];       // 正確詞彙
+  var foundSet = {};
+  var foundCount = 0;
+  var colorIdx = 0;
+  var timerId = null, seconds = 0, active = false;
+
+  /* ---------- 工具 ---------- */
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function say(text, isErr) { msg.textContent = text; msg.className = 'msg' + (isErr ? ' err' : ''); }
+  function fmt(s) {
+    var m = Math.floor(s / 60), r = s % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (r < 10 ? '0' : '') + r;
+  }
+
+  /* ---------- 建立空格子 ---------- */
+  function buildBoard() {
+    board.textContent = '';
+    cells = [];
+    for (var r = 0; r < N; r++) {
+      for (var c = 0; c < N; c++) {
+        var d = document.createElement('div');
+        d.className = 'cell';
+        d.dataset.r = r; d.dataset.c = c;
+        board.appendChild(d);
+        cells.push(d);
+      }
+    }
+  }
+
+  /* ---------- 解析輸入（僅當作資料，不執行） ---------- */
+  function parseInput(text) {
+    var lines = text.split(/\r?\n/);
+    var correct = [], decoys = [], errors = [];
+    lines.forEach(function (raw, i) {
+      var line = raw.trim();
+      if (!line) return;
+      var m = line.split(/[／\/]/);
+      var good = (m[0] || '').trim();
+      var bad = (m[1] || '').split(/[、,，]/).map(function (s) { return s.trim(); }).filter(Boolean);
+      if (!CJK.test(good) || good.length < 2 || good.length > 7) {
+        errors.push('第 ' + (i + 1) + ' 行：正確詞彙需為 2～7 個中文字');
+        return;
+      }
+      var badOk = [];
+      bad.forEach(function (b) {
+        if (CJK.test(b) && b.length >= 2 && b.length <= 7 && b !== good) badOk.push(b);
+      });
+      if (correct.indexOf(good) === -1) correct.push(good);
+      badOk.forEach(function (b) { if (decoys.indexOf(b) === -1 && correct.indexOf(b) === -1) decoys.push(b); });
+    });
+    return { correct: correct, decoys: decoys, errors: errors };
+  }
+
+  /* ---------- 放置詞語（隨機自避路徑，相鄰含斜向） ---------- */
+  function emptyGrid() {
+    var g = [];
+    for (var r = 0; r < N; r++) { g.push(new Array(N).fill('')); }
+    return g;
+  }
+  function placeWord(g, word) {
+    var starts = [];
+    for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) if (!g[r][c]) starts.push([r, c]);
+    shuffle(starts);
+    for (var s = 0; s < starts.length; s++) {
+      var path = [];
+      if (walk(g, word, 0, starts[s][0], starts[s][1], path)) {
+        path.forEach(function (p, idx) { g[p[0]][p[1]] = word.charAt(idx); });
+        return true;
+      }
+    }
+    return false;
+  }
+  function walk(g, word, k, r, c, path) {
+    if (r < 0 || c < 0 || r >= N || c >= N) return false;
+    if (g[r][c]) return false;
+    for (var i = 0; i < path.length; i++) if (path[i][0] === r && path[i][1] === c) return false;
+    path.push([r, c]);
+    if (k === word.length - 1) return true;
+    var ds = shuffle(DIRS.slice());
+    for (var d = 0; d < ds.length; d++) {
+      if (walk(g, word, k + 1, r + ds[d][0], c + ds[d][1], path)) return true;
+    }
+    path.pop();
+    return false;
+  }
+
+  /* ---------- 計算某詞在格子中有幾種連法 ---------- */
+  function countPaths(g, word) {
+    var total = 0, seen = {};
+    function dfs(k, r, c) {
+      if (r < 0 || c < 0 || r >= N || c >= N) return;
+      if (g[r][c] !== word.charAt(k) || seen[r * N + c]) return;
+      if (k === word.length - 1) { total++; return; }
+      seen[r * N + c] = true;
+      DIRS.forEach(function (d) { dfs(k + 1, r + d[0], c + d[1]); });
+      seen[r * N + c] = false;
+    }
+    for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) dfs(0, r, c);
+    return total;
+  }
+
+  /* ---------- 產生完整盤面 ---------- */
+  function generate(correct, decoys) {
+    var best = null;
+    for (var attempt = 0; attempt < 300; attempt++) {
+      var g = emptyGrid();
+      var ok = true;
+      var order = shuffle(correct.slice());
+      for (var i = 0; i < order.length; i++) {
+        if (!placeWord(g, order[i])) { ok = false; break; }
+      }
+      if (!ok) continue;
+      var skipped = 0;
+      shuffle(decoys.slice()).forEach(function (w) { if (!placeWord(g, w)) skipped++; });
+
+      // 以混淆字為主填滿剩餘格子
+      var pool = (correct.join('') + decoys.join('')).split('');
+      EXTRA.split('').forEach(function (ch) { pool.push(ch); });
+      for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) {
+        if (!g[r][c]) {
+          var useDecoyChar = Math.random() < 0.75 && (correct.join('') + decoys.join('')).length;
+          var src = useDecoyChar ? (correct.join('') + decoys.join('')) : EXTRA;
+          g[r][c] = src.charAt(rnd(src.length));
+        }
+      }
+      var unique = correct.every(function (w) { return countPaths(g, w) === 1; });
+      best = { grid: g, skipped: skipped };
+      if (unique) return best;
+    }
+    return best;
+  }
+
+  /* ---------- 開始 ---------- */
+  function start() {
+    var data = parseInput(input.value);
+    if (data.errors.length) { say(data.errors.join('；'), true); return; }
+    if (!data.correct.length) { say('請至少輸入一組正確詞彙。', true); return; }
+    var total = data.correct.reduce(function (a, w) { return a + w.length; }, 0);
+    if (total > N * N) { say('正確詞彙共 ' + total + ' 字，超過 49 格，請減少。', true); return; }
+
+    var result = generate(data.correct, data.decoys);
+    if (!result) { say('這組詞語放不進 7×7 格子，請減少詞語或字數後再試一次。', true); return; }
+
+    grid = result.grid;
+    targets = data.correct;
+    foundSet = {}; foundCount = 0; colorIdx = 0;
+    buildBoard();
+    for (var r = 0; r < N; r++) for (var c = 0; c < N; c++) cells[r * N + c].textContent = grid[r][c];
+
+    wordList.textContent = '';
+    targets.forEach(function (w) {
+      var li = document.createElement('li');
+      li.textContent = w; li.dataset.word = w;
+      wordList.appendChild(li);
+    });
+    doneEl.hidden = true;
+
+    say(result.skipped ? '有 ' + result.skipped + ' 個混淆詞彙放不下，已略過。拖曳相鄰格子來連出詞語！' : '拖曳相鄰格子（上下左右、斜向都可以）來連出詞語！', false);
+    startTimer();
+  }
+
+  /* ---------- 計時 ---------- */
+  function startTimer() {
+    stopTimer();
+    seconds = 0; active = true;
+    timerEl.textContent = fmt(0);
+    timerId = setInterval(function () { seconds++; timerEl.textContent = fmt(seconds); }, 1000);
+  }
+  function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+
+  /* ---------- 選取（拖曳） ---------- */
+  var sel = [];       // [{r,c}]
+  var dragging = false;
+
+  function cellAt(x, y) {
+    var el = document.elementFromPoint(x, y);
+    if (el && el.classList && el.classList.contains('cell') && board.contains(el)) return el;
+    return null;
+  }
+  function adjacent(a, b) {
+    return Math.max(Math.abs(a.r - b.r), Math.abs(a.c - b.c)) === 1;
+  }
+  function refreshSel() {
+    cells.forEach(function (el) { el.classList.remove('sel'); });
+    sel.forEach(function (p) { cells[p.r * N + p.c].classList.add('sel'); });
+  }
+  function addCell(el) {
+    var p = { r: +el.dataset.r, c: +el.dataset.c };
+    var last = sel[sel.length - 1];
+    if (!last) { sel.push(p); refreshSel(); return; }
+    if (last.r === p.r && last.c === p.c) return;
+    if (sel.length > 1) {
+      var prev = sel[sel.length - 2];
+      if (prev.r === p.r && prev.c === p.c) { sel.pop(); refreshSel(); return; }
+    }
+    if (!adjacent(last, p)) return;
+    for (var i = 0; i < sel.length; i++) if (sel[i].r === p.r && sel[i].c === p.c) return;
+    sel.push(p); refreshSel();
+  }
+  function finishSel() {
+    if (!sel.length) return;
+    var text = sel.map(function (p) { return grid[p.r][p.c]; }).join('');
+    var rev = text.split('').reverse().join('');
+    var hit = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (!foundSet[targets[i]] && (targets[i] === text || targets[i] === rev)) { hit = targets[i]; break; }
+    }
+    if (hit) {
+      foundSet[hit] = true; foundCount++;
+      var cls = 'f' + (colorIdx++ % 4);
+      sel.forEach(function (p) {
+        var el = cells[p.r * N + p.c];
+        if (!/\bf[0-3]\b/.test(el.className)) el.classList.add(cls);
+      });
+      var li = wordList.querySelector('li[data-word="' + CSS.escape(hit) + '"]');
+      if (li) li.classList.add('found');
+      say('找到「' + hit + '」！', false);
+      if (foundCount === targets.length) {
+        stopTimer(); active = false;
+        doneEl.textContent = '全部找到了！用時 ' + fmt(seconds);
+        doneEl.hidden = false;
+      }
+    }
+    sel = []; refreshSel();
+  }
+
+  board.addEventListener('pointerdown', function (e) {
+    if (!active) return;
+    var el = cellAt(e.clientX, e.clientY);
+    if (!el) return;
+    e.preventDefault();
+    dragging = true; sel = [];
+    addCell(el);
+  });
+  board.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    var el = cellAt(e.clientX, e.clientY);
+    if (el) addCell(el);
+  });
+  window.addEventListener('pointerup', function () {
+    if (!dragging) return;
+    dragging = false; finishSel();
+  });
+  window.addEventListener('pointercancel', function () {
+    dragging = false; sel = []; refreshSel();
+  });
+
+  /* ---------- 按鈕 ---------- */
+  document.getElementById('startBtn').addEventListener('click', start);
+
+  var boldBtn = document.getElementById('boldBtn');
+  boldBtn.addEventListener('click', function () {
+    var on = board.classList.toggle('bold');
+    boldBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+
+  document.getElementById('pdfBtn').addEventListener('click', function () {
+    say('在列印視窗選擇「另存為 PDF」，紙張 A4、邊界預設即可。', false);
+    window.print();
+  });
+
+  /* 初始：顯示空白 7x7 格子 */
+  buildBoard();
+})();
+</script>
+</body>
+</html>
