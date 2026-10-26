@@ -123,6 +123,12 @@
     width: 100%; min-height: 220px; resize: vertical; font: inherit; font-size: 15px; color: var(--ink);
     background: #fff; border: var(--line); border-radius: 18px; padding: 10px 14px;
   }
+  .preset-row { display: flex; align-items: center; gap: 10px; margin: 6px 0 8px; flex-wrap: wrap; }
+  .preset-row select {
+    font: inherit; color: var(--ink); background: #fff; border: var(--line); border-radius: 999px;
+    padding: 4px 14px; max-width: 100%;
+  }
+  .sc .note { font-size: 13px; }
   .dlg-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
   .err { color: #B4473A; font-size: 14px; min-height: 1.5em; margin: 8px 0 0; white-space: pre-line; }
 
@@ -206,13 +212,12 @@
 
 <dialog id="bankDlg">
   <h2>輸入題庫</h2>
-  <p>每行一題，格式：題目／(A)選項1(B)選項2(C)選項3／正確選項<br>輸入內容只會當作題目資料使用。</p>
-  <textarea id="bankInput" spellcheck="false">「細細一線與整座天空拔河」使用了什麼修辭？／(A)映襯(B)排比(C)擬人／(C)
-「床前明月光」的下一句是什麼？／(A)疑是地上霜(B)低頭思故鄉(C)舉頭望明月／(A)
-「畫蛇添足」比喻什麼？／(A)多此一舉(B)技藝高超(C)膽小怕事／(A)
-下列哪一個詞語是「謙虛」的反義詞？／(A)誠懇(B)驕傲(C)勤勞／(B)
-「春眠不覺曉」的作者是誰？／(A)李白(B)杜甫(C)孟浩然／(C)
-「一目十行」形容什麼？／(A)看書速度很快(B)眼睛不好(C)喜歡畫畫／(A)</textarea>
+  <div class="preset-row">
+    <label for="presetSel">歷史題庫（預設題庫）</label>
+    <select id="presetSel"></select>
+  </div>
+  <p>每行一題，格式：題目／[選項1][選項2][[正確選項]]<br>正確答案用雙層括號 [[ ]]，全形或半形皆可，空格不影響；選項 2～6 個，出題時選項順序會自動隨機。<br>輸入內容只會當作題目資料使用。</p>
+  <textarea id="bankInput" spellcheck="false"></textarea>
   <p class="err" id="bankErr" role="alert"></p>
   <div class="dlg-actions">
     <button class="btn" id="bankCancel" type="button">取消</button>
@@ -243,6 +248,51 @@
 <script>
 (function () {
   'use strict';
+
+  /* =====================================================================
+   * 【預設題庫區｜擴充指引】
+   * 想新增預設題庫時，請只改這一區：
+   *  1. 複製下面任一個 { id: ..., name: ..., text: `...` } 區塊，
+   *     貼在最後一個區塊後面，並在前一個區塊結尾補上逗號 ,
+   *  2. id：英文或數字，不可與其他題庫重複。
+   *  3. name：顯示在「歷史題庫」下拉選單中的名稱。
+   *  4. text：用反引號 ` ` 包住，每行一題，格式如下：
+   *       題目／[選項1][選項2][[正確選項]]
+   *     - 正確答案用雙層括號 [[ ]]，其餘用單層 [ ]（全形［］也可以）
+   *     - 括號之間有空格不影響；選項 2～6 個；每題只能有 1 個正確答案
+   *     - text 內不要出現反引號 ` 或 ${
+   *  5. 出題時選項順序會自動隨機，不需要自己打亂。
+   *  6. 陣列第一個題庫會是開啟頁面時預設載入的題庫。
+   * ===================================================================== */
+  var PRESET_BANKS = [
+    {
+      id: 'class-rules',
+      name: '課堂參與原則',
+      text: `進教室上課的第一個步驟，學生應該先做什麼？／[找到位置坐下發呆][先去聊天][[加分與繳交聯絡簿]]
+在這間教室裡，我們看待彼此的主要關係是什麼？／[競爭對手][陌生人][[合作夥伴]]
+課堂上如果看到同學答不出問題，適當的做法是什麼？／[嘲笑他][立刻幫他搶答][[輕聲引導與給予鼓勵]]
+本課堂最核心鼓勵的兩種學習態度與氛圍是什麼？／[競爭與速度][安靜與服從][[友善與思考]]
+上課期間，哪一種展現是我們所鼓勵的「積極參與課堂」？／[看旁邊同學在做什麼][低頭做自己的事情][[主動思考、舉手發表與專心聆聽]]
+下課離開前，要先做什麼？／[去上廁所][找同學聊天][[排隊向老師報分數]]
+當小組進行討論或合作任務時，應該如何互動？／[只顧著做自己的事][把工作全部推給組長][[互相傾聽、交流想法並共同完成]]
+當自己的意見與其他同學不同時，怎樣才是「友善」的表達方式？／[直接罵對方講得很爛][強迫大家一定要聽自己的][[尊重聆聽，並溫和提出自己的看法]]
+課堂上遇到不懂的問題或思考遇到瓶頸時，該怎麼辦？／[放棄不思考][假裝自己全部都會][[勇於提問並嘗試從不同角度思考]]
+關於課堂上的「回答錯誤」，我們應該如何看待？／[非常丟臉，不容出現][應該要懲罰回答錯的人][[這在思考與學習過程中是很正常的練習]]`
+    },
+    {
+      id: 'chinese-mix',
+      name: '國語綜合範例',
+      text: `「細細一線與整座天空拔河」使用了什麼修辭？／[映襯][排比][[擬人]]
+「床前明月光」的下一句是什麼？／[[疑是地上霜]][低頭思故鄉][舉頭望明月]
+「畫蛇添足」比喻什麼？／[[多此一舉]][技藝高超][膽小怕事]
+下列哪一個詞語是「謙虛」的反義詞？／[誠懇][[驕傲]][勤勞]
+「春眠不覺曉」的作者是誰？／[李白][杜甫][[孟浩然]]
+「一目十行」形容什麼？／[[看書速度很快]][眼睛不好][喜歡畫畫]`
+    }
+    // ↑ 在這裡新增下一個題庫（記得上一個 } 後面要有逗號）
+  ];
+
+  var PENALTY_MISSED_Q = 7, PENALTY_POINTS = 0.5; // 單回合有失誤的題數 ≥ 7 題，額外扣 0.5 分
 
   var INK = '#3E3A39', SKIN = '#FFE3CF';
   var TEAMS = [
@@ -393,33 +443,41 @@
       var line = lines[i].trim();
       if (!line) continue;
       if (items.length >= 100) { errors.push('題目最多 100 題，其餘已忽略'); break; }
-      var sep = line.indexOf('／') > -1 ? '／' : '/';
-      var parts = line.split(sep).map(function (s) { return s.trim(); });
-      if (parts.length < 3) { errors.push('第 ' + (i + 1) + ' 行：需要「題目／選項／正確選項」三段'); continue; }
-      var ans = parts[parts.length - 1], optStr = parts[parts.length - 2], q = parts.slice(0, -2).join(sep).trim();
-      var re = /[（(]\s*([A-Za-z])\s*[）)]/g, m, marks = [];
-      while ((m = re.exec(optStr))) marks.push({ letter: m[1].toUpperCase(), start: m.index, end: re.lastIndex });
+      var cut = /[／\/]\s*(?=[\[［])/.exec(line);
+      if (!cut) { errors.push('第 ' + (i + 1) + ' 行：格式需為「題目／[選項1][選項2][[正確選項]]」'); continue; }
+      var q = line.slice(0, cut.index).trim();
+      var optStr = line.slice(cut.index + cut[0].length)
+        .replace(/([\[［])\s+(?=[\[［])/g, '$1')
+        .replace(/([\]］])\s+(?=[\]］])/g, '$1');
       if (!q || q.length > 200) { errors.push('第 ' + (i + 1) + ' 行：題目不可空白，且不超過 200 字'); continue; }
-      if (marks.length < 2 || marks.length > 6) { errors.push('第 ' + (i + 1) + ' 行：選項需為 2～6 個，例如 (A)選項(B)選項'); continue; }
-      var opts = [], bad = false, seen = {};
-      for (var k = 0; k < marks.length; k++) {
-        var t = optStr.slice(marks[k].end, k + 1 < marks.length ? marks[k + 1].start : undefined).trim();
-        if (!t || t.length > 80 || seen[marks[k].letter]) { bad = true; break; }
-        seen[marks[k].letter] = true;
-        opts.push({ letter: marks[k].letter, text: t });
+      var re = /(?:\[|［){2}([\s\S]*?)(?:\]|］){2}|(?:\[|［)([\s\S]*?)(?:\]|］)/g, m, opts = [], correct = 0, bad = false;
+      while ((m = re.exec(optStr))) {
+        var isCorrect = m[1] !== undefined;
+        var t = (isCorrect ? m[1] : m[2]).trim();
+        if (!t || t.length > 100) { bad = true; break; }
+        if (isCorrect) correct++;
+        opts.push({ text: t, correct: isCorrect });
       }
-      if (bad) { errors.push('第 ' + (i + 1) + ' 行：選項內容空白、過長或代號重複'); continue; }
-      var am = /^[（(]?\s*([A-Za-z])\s*[）)]?$/.exec(ans);
-      if (!am || !seen[am[1].toUpperCase()]) { errors.push('第 ' + (i + 1) + ' 行：正確選項需為上述選項代號，例如 (C)'); continue; }
-      items.push({ q: q, opts: opts, answer: am[1].toUpperCase() });
+      if (bad) { errors.push('第 ' + (i + 1) + ' 行：選項內容空白或超過 100 字'); continue; }
+      if (opts.length < 2 || opts.length > 6) { errors.push('第 ' + (i + 1) + ' 行：選項需為 2～6 個'); continue; }
+      if (correct !== 1) { errors.push('第 ' + (i + 1) + ' 行：需要剛好 1 個正確答案，用 [[ ]] 標示'); continue; }
+      items.push({ q: q, opts: opts });
     }
     return { items: items, errors: errors };
   }
 
   /* ---------- 遊戲流程 ---------- */
+  // 每次換題時，隨機決定選項的顯示順序（兩隊各自獨立）
+  function prepareQ(T) {
+    var o = [], n = bank[T.list[T.pos]].opts.length;
+    for (var k = 0; k < n; k++) o.push(k);
+    T.curOrder = shuffle(o);
+  }
   function newTeamState(n) {
     var idx = []; for (var i = 0; i < n; i++) idx.push(i);
-    return { state: 'ask', list: shuffle(idx), pos: 0, errors: 0, qStart: Date.now(), lockUntil: 0, results: [] };
+    var T = { state: 'ask', list: shuffle(idx), pos: 0, errors: 0, qStart: Date.now(), lockUntil: 0, results: [], curOrder: [] };
+    prepareQ(T);
+    return T;
   }
   function startGame(items) {
     clearTimeout(ropeId); clearInterval(tickId);
@@ -445,13 +503,14 @@
       u.phase.textContent = label + '　' + (T.pos + 1) + ' / ' + T.list.length;
       u.q.textContent = q.q;
       u.opts.textContent = '';
-      q.opts.forEach(function (o) {
+      T.curOrder.forEach(function (oi, k) {
+        var o = q.opts[oi];
         var b = document.createElement('button');
         b.type = 'button'; b.className = 'opt';
-        var l = document.createElement('span'); l.className = 'l'; l.textContent = o.letter;
+        var l = document.createElement('span'); l.className = 'l'; l.textContent = String.fromCharCode(65 + k);
         var t = document.createElement('span'); t.className = 't'; t.textContent = o.text;
         b.appendChild(l); b.appendChild(t);
-        b.addEventListener('click', function () { answer(i, o.letter); });
+        b.addEventListener('click', function () { answer(i, oi); });
         u.opts.appendChild(b);
       });
       u.ask.scrollTop = 0;
@@ -471,15 +530,16 @@
     u.opts.querySelectorAll('.opt').forEach(function (b) { b.disabled = locked; });
   }
 
-  function answer(i, letter) {
+  function answer(i, optIdx) {
     if (!game || game.over) return;
     var T = game.teams[i];
     if (T.state !== 'ask' || Date.now() < T.lockUntil) return;
     var q = bank[T.list[T.pos]];
-    if (letter === q.answer) {
+    if (q.opts[optIdx].correct) {
       sfx.ok();
       T.results.push({ qi: T.list[T.pos], errors: T.errors, review: game.phase === 'review' });
       T.pos++; T.errors = 0; T.qStart = Date.now();
+      if (T.pos < T.list.length) prepareQ(T);
       flash(i, 'ok');
       if (T.pos >= T.list.length) { T.state = 'wait'; renderTeam(i); sfx.wait(); checkBoth(); }
       else renderTeam(i);
@@ -540,7 +600,9 @@
         shuffle(rest).slice(0, want - pick.length).forEach(function (k) { pick.push(k); });
       }
       var prev = T.results;
-      game.teams[i] = { state: 'ask', list: shuffle(pick), pos: 0, errors: 0, qStart: Date.now(), lockUntil: 0, results: prev };
+      var nt = { state: 'ask', list: shuffle(pick), pos: 0, errors: 0, qStart: Date.now(), lockUntil: 0, results: prev, curOrder: [] };
+      prepareQ(nt);
+      game.teams[i] = nt;
       renderTeam(i);
     });
     showToast('複習時間！');
@@ -554,8 +616,18 @@
     setTimeout(function () { t.remove(); }, 1600);
   }
 
+  // 計分：無失誤 1 分、失誤 1 次後答對 0.5 分、失誤 2 次以上 0 分；
+  // 每個回合（第一輪／複習）中「有失誤的題數」達 PENALTY_MISSED_Q 題以上，該回合額外扣 PENALTY_POINTS 分；總分最低為 0。
   function score(T) {
-    return T.results.reduce(function (a, r) { return a + (r.errors === 0 ? 1 : r.errors === 1 ? 0.5 : 0); }, 0);
+    var pts = 0, penalty = 0;
+    [false, true].forEach(function (rv) {
+      var rs = T.results.filter(function (r) { return r.review === rv; });
+      var sub = rs.reduce(function (a, r) { return a + (r.errors === 0 ? 1 : r.errors === 1 ? 0.5 : 0); }, 0);
+      var missed = rs.filter(function (r) { return r.errors > 0; }).length;
+      if (missed >= PENALTY_MISSED_Q) { sub -= PENALTY_POINTS; penalty += PENALTY_POINTS; }
+      pts += sub;
+    });
+    return { pts: Math.max(0, pts), penalty: penalty };
   }
 
   function endGame() {
@@ -563,14 +635,15 @@
     clearInterval(tickId); clearTimeout(ropeId);
     var secs = Math.floor((Date.now() - game.t0) / 1000);
     timerEl.textContent = fmt(secs);
-    var sc = [score(game.teams[0]), score(game.teams[1])];
+    var sd = [score(game.teams[0]), score(game.teams[1])];
+    var sc = [sd[0].pts, sd[1].pts];
     var winner = sc[0] === sc[1] ? -1 : (sc[0] > sc[1] ? 0 : 1);
     // 繩子被獲勝隊拉過去
     if (winner === 0) setRope(-85, 1.2); else if (winner === 1) setRope(85, 1.2); else setRope(0, 1);
-    setTimeout(function () { showResult(sc, winner, secs); }, 1500);
+    setTimeout(function () { showResult(sc, winner, secs, sd); }, 1500);
   }
 
-  function showResult(sc, winner, secs) {
+  function showResult(sc, winner, secs, sd) {
     $('#resTitle').textContent = winner === -1 ? '平手！勢均力敵' : TEAMS[winner].name + '獲勝！';
     var box = $('#resScores'); box.textContent = '';
     [0, 1].forEach(function (i) {
@@ -581,6 +654,11 @@
       var nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = TEAMS[i].name;
       var pt = document.createElement('div'); pt.className = 'pt'; pt.textContent = numText(sc[i]) + ' 分';
       d.appendChild(fig); d.appendChild(nm); d.appendChild(pt);
+      if (sd[i].penalty > 0) {
+        var nt = document.createElement('div'); nt.className = 'note';
+        nt.textContent = '失誤達 ' + PENALTY_MISSED_Q + ' 題以上，已扣 ' + numText(sd[i].penalty) + ' 分';
+        d.appendChild(nt);
+      }
       box.appendChild(d);
     });
     $('#resMeta').textContent = '總用時 ' + fmt(secs) + '（含複習題）';
@@ -604,6 +682,20 @@
     $('#bankCancel').hidden = !game;
     if (!dlg.open) dlg.showModal();
   }
+  var presetSel = $('#presetSel');
+  (function fillPresets() {
+    var o0 = document.createElement('option'); o0.value = ''; o0.textContent = '自訂輸入'; presetSel.appendChild(o0);
+    PRESET_BANKS.forEach(function (p) {
+      var o = document.createElement('option'); o.value = p.id; o.textContent = p.name; presetSel.appendChild(o);
+    });
+  })();
+  function loadPreset(id) {
+    var p = PRESET_BANKS.filter(function (x) { return x.id === id; })[0];
+    if (p) { bankInput.value = p.text.trim(); presetSel.value = id; }
+    bankErr.textContent = '';
+  }
+  presetSel.addEventListener('change', function () { loadPreset(presetSel.value); });
+  bankInput.addEventListener('input', function () { presetSel.value = ''; });
   $('#bankBtn').addEventListener('click', openBank);
   $('#bankCancel').addEventListener('click', function () { dlg.close(); });
   $('#bankStart').addEventListener('click', function () {
@@ -640,6 +732,7 @@
 
   /* ---------- 初始化 ---------- */
   buildStage();
+  if (PRESET_BANKS.length) loadPreset(PRESET_BANKS[0].id);
   openBank();
 })();
 </script>
