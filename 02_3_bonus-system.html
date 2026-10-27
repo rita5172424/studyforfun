@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>班級星光加分榜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #d1d1f0;
+    --card: #FFFCF6;
+    --ink: #3E3A39;
+    --coral: #F2A497;
+    --yellow: #F6D27A;
+    --blue: #A8D3E6;
+    --green: #B9DAA5;
+    --line: 3px solid var(--ink);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Huninn", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.45;
+  }
+  @media (min-height: 621px) and (min-width: 761px) { body { overflow: hidden; } }
+
+  .app { height: 100dvh; display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; }
+  @media (max-height: 620px), (max-width: 760px) { .app { height: auto; min-height: 100dvh; } }
+
+  .btn {
+    font: inherit; color: var(--ink); background: var(--card);
+    border: var(--line); border-radius: 999px; padding: 3px 14px;
+    cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap;
+    transition: transform .12s; font-size: 15px;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px); }
+  .btn:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px dashed var(--ink); outline-offset: 3px; }
+  .btn.coral { background: var(--coral); } .btn.yellow { background: var(--yellow); }
+  .btn.blue { background: var(--blue); } .btn.green { background: var(--green); }
+  .btn.s { padding: 1px 10px; font-size: 14px; }
+  .btn[aria-pressed="true"].tog { background: var(--yellow); }
+
+  /* 頂部 */
+  .bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .title { font-size: clamp(18px, 2.4vw, 26px); letter-spacing: .1em; margin-right: auto; }
+  .title small { font-size: 14px; letter-spacing: 0; margin-left: 6px; }
+  .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .sep { width: 3px; height: 22px; background: var(--ink); border-radius: 3px; opacity: .35; }
+  .skillchip { font: inherit; font-size: 14px; color: var(--ink); background: var(--green); border: var(--line); border-radius: 999px; padding: 1px 12px; cursor: pointer; }
+
+  .card { background: var(--card); border: var(--line); border-radius: 24px; padding: 6px 14px; }
+
+  /* 計時列 */
+  .timerbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--blue); padding: 4px 14px; }
+  .tdigits { font-size: clamp(26px, 5.4vh, 48px); line-height: 1; font-variant-numeric: tabular-nums; min-width: 3.2em; }
+  .tmsg { flex: 1; min-width: 160px; font-size: clamp(16px, 2.4vh, 24px); overflow-wrap: anywhere; line-height: 1.25; }
+  .timerbar.warn, .tbox.warn { background: var(--yellow); }
+  .timerbar.danger, .tbox.danger { background: var(--coral); }
+  .timerbar.done, .tbox.done { background: var(--coral); animation: flash .6s ease-in-out 6; }
+  @keyframes flash { 50% { background: var(--yellow); } }
+  .big.warn { background: var(--yellow); } .big.danger, .big.done { background: var(--coral); }
+
+  /* 教室聲音 */
+  .soundrow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 6px 16px; }
+  .mascot svg { width: 84px; height: auto; display: block; }
+  .snow { font-size: clamp(26px, 4.6vh, 42px); line-height: 1.2; white-space: nowrap; }
+  .stip { font-size: clamp(18px, 2.8vh, 26px); line-height: 1.3; }
+  .levels { display: flex; gap: 8px; flex-wrap: wrap; }
+  .lv { font: inherit; color: var(--ink); border: var(--line); border-radius: 22px; background: var(--card); padding: 3px 18px; cursor: pointer; font-size: clamp(18px, 2.8vh, 24px); }
+  .lv[aria-pressed="true"] { background: var(--c); transform: translateY(-2px); }
+  .legend { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 12px; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 2px; }
+  .legend svg { width: 16px; height: 16px; }
+
+  /* 學生卡片 */
+  .grid { flex: 1; min-height: 0; display: grid; gap: 10px; grid-auto-rows: auto; align-content: start; padding-top: 12px; }
+  @media (max-height: 620px), (max-width: 760px) { .grid { flex: none; grid-auto-rows: minmax(150px, auto); grid-template-columns: repeat(2, 1fr) !important; } }
+  .stu {
+    position: relative; font: inherit; color: var(--ink); text-align: left; cursor: pointer; min-height: clamp(116px, 17vh, 160px);
+    background: var(--card); border: var(--line); border-radius: 26px; padding: 6px 12px 8px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .stu:hover { transform: translateY(-3px); }
+  .stu.bump { animation: bump .6s ease-out; }
+  @keyframes bump { 30% { transform: scale(1.05); background: var(--yellow); } }
+  .stu .head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .stu .name { font-size: clamp(20px, 3.4vh, 34px); line-height: 1.2; overflow-wrap: anywhere; }
+  .crown { position: absolute; top: -17px; left: 16px; width: 38px; height: 28px; }
+  .starbox { --s: clamp(52px, 9vh, 78px); position: relative; flex: none; width: var(--s); aspect-ratio: 1; }
+  .starbox svg { width: 100%; height: 100%; display: block; }
+  /* 數字放在白色圓底上，不論星星顏色多深都看得清楚 */
+  .starbox .num {
+    position: absolute; left: 50%; top: 54%; transform: translate(-50%, -50%);
+    min-width: calc(var(--s) * .56); height: calc(var(--s) * .56); padding: 0 4px; border-radius: 999px;
+    background: var(--card); border: 2.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: calc(var(--s) * .34); line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .starbox.sm { --s: 52px; }
+  .mini { display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start; flex: 1; min-height: 0; overflow: hidden; padding: 2px 4px 0 0; }
+  .mb { position: relative; width: clamp(28px, 5.4vh, 42px); aspect-ratio: 1; }
+  .mb svg { width: 100%; height: 100%; display: block; }
+  .mb em { position: absolute; right: -5px; bottom: -4px; font-style: normal; font-size: 11px; background: var(--card); border: 2px solid var(--ink); border-radius: 999px; padding: 0 4px; line-height: 1.25; }
+
+  /* 底部勳章列 */
+  .bottom { display: flex; align-items: flex-end; gap: 12px; padding: 4px 12px 6px; }
+  .bwrap { flex: 1; min-width: 0; }
+  .hint { font-size: 13px; }
+  .bgrid { display: flex; gap: 14px; overflow-x: auto; padding: 2px 2px 2px; }
+  .bgroup { display: flex; flex-direction: column; flex: none; }
+  .bgroup .cap { font-size: 12px; border-bottom: 2px dashed rgba(62, 58, 57, .4); margin-bottom: 2px; }
+  .brow { display: flex; gap: 6px; }
+  .bb {
+    font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 18px;
+    padding: 2px 6px 1px; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+    flex: none; min-width: 74px; font-size: 13px; line-height: 1.2;
+  }
+  .bb svg { width: clamp(34px, 6vh, 50px); height: clamp(34px, 6vh, 50px); }
+  .bb[aria-pressed="true"] { background: var(--yellow); transform: translateY(-3px); }
+  .bactions { display: flex; flex-direction: column; gap: 6px; flex: none; }
+
+  /* 彈跳視窗 */
+  dialog {
+    border: var(--line); border-radius: 28px; background: var(--card); color: var(--ink);
+    width: min(720px, 94vw); max-height: 94dvh; padding: 18px 22px; font-family: inherit; overflow: auto;
+  }
+  dialog::backdrop { background: rgba(62, 58, 57, .4); }
+  dialog h2 { margin: 0 0 6px; font-weight: 400; font-size: 26px; letter-spacing: .1em; }
+  dialog h3 { margin: 10px 0 4px; font-weight: 400; font-size: 18px; }
+  dialog p { margin: 4px 0 8px; font-size: 14px; }
+  input[type=number], textarea, select, input[type=text] {
+    font: inherit; color: var(--ink); background: #fff; border: var(--line); border-radius: 18px; padding: 3px 12px;
+  }
+  input[type=number] { width: 6em; }
+  input[type=text] { width: 100%; }
+  textarea { width: 100%; min-height: 70px; resize: vertical; }
+  input[type=checkbox] { width: 20px; height: 20px; accent-color: #F2A497; vertical-align: middle; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+  .acts { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
+  .awgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
+  .awgrid .bb { min-width: 0; padding: 8px 6px 6px; }
+  .awgrid .bb svg { width: 64px; height: 64px; }
+  .chip { border: var(--line); border-radius: 999px; padding: 0 12px; background: var(--paper); font-size: 14px; display: inline-block; margin: 2px; }
+  .list { display: grid; gap: 8px; }
+  .item { display: flex; gap: 12px; align-items: center; border: var(--line); border-radius: 20px; padding: 6px 12px; background: var(--card); }
+  .item .ic { flex: none; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; }
+  .item .ic svg { width: 56px; height: 56px; }
+  .item b { font-weight: 400; font-size: 22px; display: block; }
+  .item span.d { font-size: 17px; }
+  .list.two { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 760px) { .list.two { grid-template-columns: 1fr; } }
+  .pitem { border: var(--line); border-radius: 26px; padding: 14px 22px; background: var(--c); }
+  .pitem b { display: block; font-weight: 400; font-size: clamp(28px, 4vw, 42px); line-height: 1.3; }
+  .pitem .d { font-size: clamp(20px, 2.8vw, 30px); line-height: 1.5; }
+  #ruleDlg .row .btn { font-size: 20px; padding: 4px 22px; }
+  #roleDlg, #ruleDlg, #skillDlg { width: min(1100px, 96vw); }
+  .rolecard { border: var(--line); border-radius: 24px; padding: 10px 18px; background: var(--c); }
+  .rolecard b { font-weight: 400; font-size: clamp(28px, 3.4vw, 38px); }
+  .rolecard .d { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.4; }
+  .rolegrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+  .who { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; min-height: 40px; }
+  .who .chip { background: var(--card); margin: 0; font-size: clamp(24px, 3vw, 34px); padding: 0 16px; }
+  .who .none { font-size: 20px; opacity: .6; }
+  .list.sk { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); align-items: start; }
+  .skillcard { border: var(--line); border-radius: 24px; background: var(--card); overflow: hidden; }
+  .skillcard.on { background: var(--green); }
+  .skillcard.open { grid-column: 1 / -1; }
+  .skillhead { width: 100%; font: inherit; color: var(--ink); background: none; border: 0; text-align: left; cursor: pointer; padding: 8px 18px; font-size: clamp(22px, 2.8vw, 30px); display: flex; align-items: center; gap: 12px; }
+  .skillhead .tag { margin-left: auto; font-size: 16px; border: var(--line); border-radius: 999px; padding: 0 12px; background: var(--yellow); }
+  .skillbody { padding: 0 20px 12px 24px; }
+  .skillbody ol { margin: 2px 0 8px; padding-left: 28px; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.6; }
+  .skillbody .ex { font-size: clamp(18px, 2.2vw, 24px); background: var(--paper); border-radius: 16px; padding: 4px 14px; display: inline-block; }
+
+  .drawbox { text-align: center; border: var(--line); border-radius: 28px; background: var(--yellow); padding: 18px 10px; margin: 8px 0; }
+  .drawbox .dn { font-size: clamp(34px, 8vw, 68px); line-height: 1.2; overflow-wrap: anywhere; }
+  .drawbox .dr { font-size: 18px; min-height: 1.5em; }
+  .drawbox.pop { animation: pop .5s ease-out; }
+  @keyframes pop { 40% { transform: scale(1.06); background: var(--coral); } }
+
+  /* 全頁面板（小組討論、今日總結） */
+  .sheet { position: fixed; inset: 0; z-index: 45; background: var(--paper); display: flex; flex-direction: column; padding: 10px 14px; gap: 8px; overflow: auto; }
+  .sheethead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .sheethead h2 { margin: 0; font-weight: 400; font-size: clamp(22px, 3vw, 30px); letter-spacing: .1em; }
+  .sheetbody { display: grid; gap: 10px; grid-template-columns: minmax(270px, 330px) 1fr; align-items: start; }
+  @media (max-width: 900px) { .sheetbody { grid-template-columns: 1fr; } }
+  .sheet h3 { margin: 0 0 6px; font-weight: 400; font-size: 22px; }
+  .sheet .card { padding: 10px 16px; }
+  .tbox { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border: var(--line); border-radius: 22px; background: var(--blue); padding: 6px 14px; margin-top: 8px; }
+  .tbox .gd { font-size: clamp(48px, 10vh, 96px); line-height: 1; font-variant-numeric: tabular-nums; min-width: 3.2em; }
+  #gText { font-size: 20px; }
+  .gtable { display: grid; grid-template-columns: 1fr auto auto; gap: 6px 6px; align-items: center; }
+  .gtable > div { font-size: 17px; overflow-wrap: anywhere; }
+  .gtable select { font-size: 14px; padding: 2px 6px; border-radius: 14px; max-width: 92px; }
+  .gcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; }
+  .gcard { border: var(--line); border-radius: 24px; padding: 10px 16px; background: var(--card); }
+  .gcard h4 { margin: 0 0 6px; font-weight: 400; font-size: 26px; }
+  .gcard .chip { font-size: 22px; }
+  .gm { display: flex; align-items: center; gap: 10px; margin: 6px 0; flex-wrap: wrap; }
+  .gm .nm { font-size: clamp(24px, 3vw, 32px); }
+  .rp { border: var(--line); border-radius: 999px; padding: 0 14px; font-size: clamp(18px, 2.2vw, 24px); background: var(--c, var(--paper)); }
+  .gm .dd { font-size: clamp(16px, 1.9vw, 20px); flex-basis: 100%; opacity: .9; }
+  .stems { display: grid; gap: 8px; }
+  .stem { font: inherit; color: var(--ink); text-align: left; border: var(--line); border-radius: 22px; background: var(--card); padding: 8px 16px; cursor: pointer; font-size: clamp(18px, 2.6vw, 28px); line-height: 1.5; }
+  .stem.on { background: var(--yellow); }
+  .chips2 { display: flex; flex-wrap: wrap; gap: 8px; }
+  .schip { font: inherit; color: var(--ink); background: var(--card); border: var(--line); border-radius: 22px; padding: 2px 12px 2px 14px; display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 18px; }
+  .schip.static { cursor: default; }
+  .magic { font: inherit; color: var(--ink); background: var(--yellow); border: var(--line); border-radius: 999px; padding: 6px 20px; cursor: pointer; font-size: 18px; animation: glow 1.4s ease-in-out infinite; }
+  @keyframes glow { 50% { transform: scale(1.06); background: var(--coral); } }
+  #wheelBox { display: flex; justify-content: center; }
+  #wheelBox svg { width: min(300px, 70vw); height: auto; overflow: visible; }
+  #wheelG { transition: transform 4.2s cubic-bezier(.12, .7, .15, 1); }
+  .wres { text-align: center; font-size: 28px; min-height: 1.5em; }
+
+  /* 提醒與提示 */
+  .remind {
+    position: fixed; left: 50%; top: 64px; transform: translateX(-50%); z-index: 40;
+    width: min(560px, 94vw); background: var(--yellow); border: var(--line); border-radius: 28px;
+    padding: 8px 16px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; animation: slidedown .4s ease-out;
+  }
+  .remind svg { width: 64px; height: 64px; flex: none; }
+  .remind .rt { flex: 1; min-width: 180px; font-size: 18px; }
+  .toast {
+    position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 70;
+    border: var(--line); border-radius: 999px; background: var(--green); padding: 4px 22px; font-size: 18px;
+    animation: slidedown .3s ease-out; pointer-events: none; max-width: 94vw; text-align: center;
+  }
+  @keyframes slidedown { from { transform: translate(-50%, -30px); opacity: 0; } }
+  .big { position: fixed; inset: 0; z-index: 60; background: var(--paper); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 20px; text-align: center; cursor: pointer; }
+  .big .bd { font-size: clamp(80px, 24vw, 280px); line-height: 1; font-variant-numeric: tabular-nums; }
+  .big .bm { font-size: clamp(26px, 5vw, 60px); overflow-wrap: anywhere; max-width: 92vw; }
+  .big small { font-size: 16px; }
+  @media (prefers-reduced-motion: reduce) { .stu.bump, .timerbar.done, .tbox.done, .remind, .toast, .drawbox.pop, .magic { animation: none; } #wheelG { transition-duration: .01s; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <a class="btn yellow s" href="index.html">回首頁</a>
+    <button class="btn blue s" id="classBtn" type="button" aria-haspopup="dialog">班級</button>
+    <button class="skillchip" id="skillChip" type="button" hidden></button>
+    <div class="title">班級星光加分榜<small id="dateLbl"></small></div>
+    <div class="tools">
+      <button class="btn s" id="timerBtn" type="button">計時器</button>
+      <button class="btn s" id="groupBtn" type="button">小組討論</button>
+      <button class="btn s" id="drawBtn" type="button">抽籤</button>
+      <button class="btn s coral" id="sumBtn" type="button">今日總結</button>
+      <span class="sep"></span>
+      <button class="btn s" id="roleBtn" type="button">職務</button>
+      <button class="btn s" id="ruleBtn" type="button">教室規則</button>
+      <button class="btn s" id="skillBtn" type="button">社會技巧小卡</button>
+      <span class="sep"></span>
+      <button class="btn s" id="remindBtn" type="button">隨機提醒</button>
+      <button class="btn s" id="moreBtn" type="button">更多</button>
+      <button class="btn s tog" id="soundBtn" type="button" aria-pressed="true">音效：開</button>
+      <button class="btn s" id="fsBtn" type="button">全螢幕</button>
+    </div>
+  </header>
+
+  <section class="card timerbar" id="timerBar" hidden>
+    <div class="tdigits" id="tDigits">00:00</div>
+    <div class="tmsg" id="tMsg"></div>
+    <div class="tools">
+      <button class="btn s js-tsound" type="button">提示音：開</button>
+      <button class="btn s" id="tPause" type="button">暫停</button>
+      <button class="btn s" id="tPlus" type="button">+1 分</button>
+      <button class="btn s yellow" id="tBig" type="button">放大顯示</button>
+      <button class="btn s coral" id="tStop" type="button">結束</button>
+    </div>
+  </section>
+
+  <section class="card soundrow" aria-label="教室聲音狀態">
+    <div class="mascot" id="mascot"></div>
+    <div>
+      <div class="snow" id="soundNow"></div>
+      <div class="stip" id="soundTip"></div>
+    </div>
+    <div class="levels" id="levels"></div>
+    <div class="legend" id="legend" aria-label="星星顏色對照"></div>
+  </section>
+
+  <main class="grid" id="grid"></main>
+
+  <section class="card bottom" aria-label="勳章">
+    <div class="bwrap">
+      <div class="hint" id="armHint"></div>
+      <div class="bgrid" id="badgeBar"></div>
+    </div>
+    <div class="bactions">
+      <button class="btn s blue" id="classAward" type="button">全班加分</button>
+      <button class="btn s yellow" id="undoBtn" type="button">復原上一步</button>
+    </div>
+  </section>
+</div>
+
+<!-- 班級選擇 -->
+<dialog id="classDlg">
+  <h2>選擇班級</h2>
+  <div class="awgrid" id="classList"></div>
+  <div class="acts"><button class="btn" id="classClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 職務 -->
+<dialog id="roleDlg">
+  <h2>今日職務</h2>
+  <div class="rolegrid" id="roleBody"></div>
+  <div class="acts"><button class="btn" id="roleClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 教室規則 -->
+<dialog id="ruleDlg">
+  <h2>教室規則</h2>
+  <div class="row">
+    <button class="btn tog" id="ruleTab1" type="button" aria-pressed="true">課堂大原則</button>
+    <button class="btn tog" id="ruleTab2" type="button" aria-pressed="false">勳章行為</button>
+  </div>
+  <div class="list" id="ruleBody"></div>
+  <div class="acts"><button class="btn" id="ruleClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 社會技巧 -->
+<dialog id="skillDlg">
+  <h2>社會技巧小卡</h2>
+  <p>點小標題展開步驟與示範；按「設為今日重點」，該技巧會顯示在頁面上方，方便隨時提醒。</p>
+  <div class="list sk" id="skillBody"></div>
+  <div class="acts"><button class="btn" id="skillClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 加分 -->
+<dialog id="awardDlg">
+  <h2 id="awTitle"></h2>
+  <p>選擇這次的好表現，會頒發對應勳章並加 1 顆星。</p>
+  <div class="awgrid" id="awGrid"></div>
+  <div class="acts"><button class="btn" id="awClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 計時器設定 -->
+<dialog id="timerDlg">
+  <h2>計時器</h2>
+  <div class="row">
+    <button class="btn tog" id="mDown" type="button" aria-pressed="true">倒數計時</button>
+    <button class="btn tog" id="mUp" type="button" aria-pressed="false">正計時（從 0 開始）</button>
+    <button class="btn js-tsound" type="button">提示音：開</button>
+  </div>
+  <div class="row" id="minRow">
+    <label for="tMin">時間（分鐘）</label>
+    <input type="number" id="tMin" min="1" max="180" step="1" value="5">
+    <span id="presets"></span>
+  </div>
+  <p>倒數最後 10 秒會變色並響起提示音；5 秒內每秒 1 聲，3 秒內每秒 2 聲。</p>
+  <label for="tText">此刻要大家注意的事項</label>
+  <textarea id="tText" maxlength="120" placeholder="例如：請把講義第 3 題寫完，寫完的同學安靜檢查"></textarea>
+  <div class="row" id="quickMsgs"></div>
+  <p>輸入內容只會當作提醒文字顯示。</p>
+  <div class="acts">
+    <button class="btn" id="tCancel" type="button">取消</button>
+    <button class="btn coral" id="tStart" type="button">開始計時</button>
+  </div>
+</dialog>
+
+<!-- 抽籤 -->
+<dialog id="drawDlg">
+  <h2>抽籤</h2>
+  <div class="drawbox" id="drawBox"><div class="dn" id="drawName">？</div><div class="dr" id="drawRole"></div></div>
+  <div class="row"><label><input type="checkbox" id="noRepeat" checked> 不重複抽取</label><span id="poolLeft"></span></div>
+  <div id="drawHist"></div>
+  <div class="acts">
+    <button class="btn" id="drawReset" type="button">重置籤筒</button>
+    <button class="btn blue" id="drawAward" type="button" disabled>幫他加分</button>
+    <button class="btn coral" id="drawGo" type="button">抽！</button>
+    <button class="btn" id="drawClose" type="button">關閉</button>
+  </div>
+</dialog>
+
+<!-- 隨機提醒設定 -->
+<dialog id="remindDlg">
+  <h2>隨機提醒加分</h2>
+  <p>開啟後，會在設定的時間範圍內隨機跳出提醒，提示你鼓勵某一項好表現，避免忘記加分。</p>
+  <div class="row"><label><input type="checkbox" id="rOn"> 開啟隨機提醒</label></div>
+  <div class="row">每隔 <input type="number" id="rMin" min="1" max="60" value="3"> ～ <input type="number" id="rMax" min="1" max="60" value="6"> 分鐘隨機提醒一次</div>
+  <div class="acts">
+    <button class="btn" id="rTest" type="button">測試提醒</button>
+    <button class="btn" id="rCancel" type="button">取消</button>
+    <button class="btn coral" id="rSave" type="button">儲存</button>
+  </div>
+</dialog>
+
+<!-- 更多 -->
+<dialog id="moreDlg">
+  <h2>資料管理</h2>
+  <p>星星與勳章依「日期＋班級」分開記錄，每天自動從 0 開始；以前的紀錄保留在這台電腦的瀏覽器裡。</p>
+  <div class="row">
+    <button class="btn" id="resetToday" type="button">清除本班今日紀錄</button>
+    <button class="btn" id="resetAll" type="button">清除全部紀錄</button>
+  </div>
+  <div class="acts"><button class="btn" id="moreClose" type="button">關閉</button></div>
+</dialog>
+
+<!-- 加分輪盤 -->
+<dialog id="wheelDlg">
+  <h2>加分輪盤</h2>
+  <div id="wheelBox"></div>
+  <div class="wres" id="wheelRes"></div>
+  <div class="chips2" id="wheelChips"></div>
+  <div class="acts">
+    <button class="btn coral" id="wheelGo" type="button">轉！</button>
+    <button class="btn" id="wheelClose" type="button">關閉</button>
+  </div>
+</dialog>
+
+<!-- 小組討論 -->
+<div class="sheet" id="gsheet" hidden>
+  <div class="sheethead"><h2>小組討論</h2><button class="btn coral" id="gClose" type="button">回到加分榜</button></div>
+  <div class="sheetbody">
+    <section class="card">
+      <h3>1. 分組與角色任務</h3>
+      <div class="row">
+        <label for="gCount">組數</label>
+        <select id="gCount"><option value="1">1 組</option><option value="2" selected>2 組</option><option value="3">3 組</option><option value="4">4 組</option></select>
+        <button class="btn s coral" id="gRandom" type="button">隨機分組並分配角色</button>
+        <button class="btn s" id="gRoles" type="button">只重新分配角色</button>
+        <button class="btn s" id="gClear" type="button">清除</button>
+      </div>
+      <p>每組不一定要湊齊所有角色；也可以在下面手動調整每位學生的組別與角色。</p>
+      <div class="gtable" id="gTable"></div>
+    </section>
+    <section class="card">
+      <h3>2. 各組任務</h3>
+      <div class="gcards" id="gCards"></div>
+      <h3 style="margin-top:12px">3. 討論計時</h3>
+      <div class="row">
+        <label for="gMin">分鐘</label><input type="number" id="gMin" min="1" max="180" value="10">
+        <button class="btn s" data-m="5" type="button">5</button><button class="btn s" data-m="10" type="button">10</button><button class="btn s" data-m="15" type="button">15</button>
+      </div>
+      <input type="text" id="gText" maxlength="80" value="請依角色分工，完成小組任務">
+      <div class="tbox" id="gTimerBox">
+        <div class="gd" id="gDigits">00:00</div>
+        <div class="tools">
+          <button class="btn s coral" id="gStart" type="button">開始討論計時</button>
+          <button class="btn s" id="gPause" type="button">暫停</button>
+          <button class="btn s" id="gPlus" type="button">+1 分</button>
+          <button class="btn s yellow" id="gBig" type="button">放大</button>
+          <button class="btn s" id="gStop" type="button">結束</button>
+          <button class="btn s js-tsound" type="button">提示音：開</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- 今日總結 -->
+<div class="sheet" id="sumSheet" hidden>
+  <div class="sheethead"><h2>今日總結</h2><button class="btn coral" id="sumClose" type="button">回到加分榜</button></div>
+  <div class="sheetbody">
+    <section class="card">
+      <h3>用這些句型回顧今天（點一句可放大標示）</h3>
+      <div class="stems" id="stems"></div>
+    </section>
+    <section class="card">
+      <h3>有回答的同學，點名字加分</h3>
+      <div class="row"><label for="sumBadge">使用勳章</label><select id="sumBadge"></select></div>
+      <div class="chips2" id="sumChips"></div>
+      <p id="sumBonus" style="margin-top:10px"></p>
+      <div id="wheelEntry"></div>
+    </section>
+  </div>
+</div>
+
+<div class="remind" id="remind" hidden>
+  <div id="remBadge"></div>
+  <div class="rt" id="remText"></div>
+  <button class="btn coral s" id="remGo" type="button">好，來加分</button>
+  <button class="btn s" id="remLater" type="button">稍後</button>
+</div>
+
+<div class="big" id="bigTimer" hidden>
+  <div class="bd" id="bigDigits">00:00</div>
+  <div class="bm" id="bigMsg"></div>
+  <small>點一下畫面即可關閉</small>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var INK = '#3E3A39', CARD = '#FFFCF6';
+  var CORAL = '#F2A497', YELLOW = '#F6D27A', BLUE = '#A8D3E6', GREEN = '#B9DAA5';
+
+  /* =====================================================================
+   * 【班級與學生資料區｜修改指引】
+   * 1. 每個班級一個 { id: '班級名稱', students: [ { name: '姓名', role: '職務' }, ... ] }，
+   *    班級順序就是「班級」選單中的順序。
+   * 2. name：學生姓名（目前先用寶可夢名稱代替，之後直接改成真實姓名即可）。
+   * 3. role：這位學生今天擔任的「職務」，名稱必須與下方 ROLE_INFO 完全一樣。
+   *    - 一位學生一個職務：role: '白板'
+   *    - 一位學生擔任多個職務：用頓號連接，例如 role: '白板、資訊'
+   *    - 沒有職務：寫 role: ''（或整個 role 省略）
+   *    - 一個職務可以有 0～2 位學生：兩位學生都寫同一個職務名稱即可；沒人擔任就都不寫。
+   * 4. 職務不會常態顯示，按頁面上方「職務」按鈕才會跳出各職務與負責同學。
+   * 5. 星星與勳章是以「日期＋班級＋姓名」記在這台電腦的瀏覽器裡，每天自動從 0 開始；
+   *    某位學生改名後，會用新名字從 0 開始累積。
+   * ===================================================================== */
+  var CLASSES = [
+    { id: '國7G', students: [
+      { name: '皮卡丘', role: '教室日誌' }, { name: '可達鴨', role: '衛生' }, { name: '傑尼龜', role: '白板' },
+      { name: '小火龍', role: '資訊' }, { name: '妙蛙種子', role: '支援' }, { name: '伊布', role: '小天使' } ] },
+    { id: '國7H', students: [
+      { name: '胖丁', role: '教室日誌' }, { name: '喵喵', role: '衛生' }, { name: '卡比獸', role: '白板' },
+      { name: '耿鬼', role: '資訊' }, { name: '呆呆獸', role: '支援' }, { name: '鯉魚王', role: '小天使' }, { name: '六尾', role: '衛生' } ] },
+    { id: '國7I', students: [
+      { name: '波波', role: '教室日誌' }, { name: '菊草葉', role: '衛生' }, { name: '火球鼠', role: '白板、資訊' },
+      { name: '小鋸鱷', role: '支援' }, { name: '皮皮', role: '小天使' } ] },
+    { id: '國7J', students: [
+      { name: '小拳石', role: '教室日誌' }, { name: '超音蝠', role: '衛生' }, { name: '走路草', role: '衛生' }, { name: '小磁怪', role: '白板' },
+      { name: '嘟嘟', role: '資訊' }, { name: '向尾喵', role: '資訊' }, { name: '迷你龍', role: '支援' }, { name: '皮丘', role: '小天使' } ] },
+    { id: '國9A', students: [
+      { name: '噴火龍', role: '教室日誌' }, { name: '水箭龜', role: '衛生、白板' }, { name: '妙蛙花', role: '資訊' }, { name: '快龍', role: '支援、小天使' } ] },
+    { id: '國9B', students: [
+      { name: '暴鯉龍', role: '教室日誌' }, { name: '路卡利歐', role: '衛生' }, { name: '烈咬陸鯊', role: '白板' },
+      { name: '風速狗', role: '資訊' }, { name: '快泳蛙', role: '支援' }, { name: '沙奈朵', role: '' } ] },
+    { id: '國9C', students: [
+      { name: '洛奇亞', role: '教室日誌' }, { name: '鳳王', role: '衛生' }, { name: '蓋歐卡', role: '白板、資訊' },
+      { name: '固拉多', role: '支援' }, { name: '烈空坐', role: '小天使' } ] },
+    { id: '社會技巧', students: [
+      { name: '皮可西', role: '教室日誌' }, { name: '胖可丁', role: '衛生' }, { name: '吉利蛋', role: '白板' },
+      { name: '穿山鼠', role: '資訊' }, { name: '尼多蘭', role: '支援' }, { name: '袋獸', role: '小天使' } ] }
+  ];
+
+  /* ---------- 職務說明（名稱要與上面學生資料的 role 一致；顯示順序依此排列） ---------- */
+  var ROLE_INFO = [
+    { name: '教室日誌', duty: '把今日課堂內容寫在小白板和教室日誌', color: BLUE },
+    { name: '衛生',     duty: '檢查有沒有垃圾或講義未帶走', color: GREEN },
+    { name: '白板',     duty: '寫日期、擦白板', color: YELLOW },
+    { name: '資訊',     duty: '開燈、開電腦和觸碰螢幕', color: BLUE },
+    { name: '支援',     duty: '彈性支援老師，叫沒來的同學', color: CORAL },
+    { name: '小天使',   duty: '看到同學有好表現時給予鼓勵', color: YELLOW }
+  ];
+
+  /* ---------- 小組討論的角色（每組不一定要湊齊；人數少時依順序優先分配） ---------- */
+  var GROUP_ROLES = [
+    { name: '組長',   duty: '帶領小組完成任務', color: CORAL },
+    { name: '發言人', duty: '代表小組發表想法', color: BLUE },
+    { name: '紀錄',   duty: '代表小組書寫想法', color: YELLOW },
+    { name: '小天使', duty: '給予同儕回應與正向回饋', color: GREEN }
+  ];
+
+  /* =====================================================================
+   * 【加分勳章區｜修改指引】
+   * id：英文代號（不可重複，且要對應下方 ICONS 的圖案）；name：顯示名稱；
+   * group：底部勳章列的分類標題（相同 group 會排在一起，依這裡的順序由左到右）；
+   * shape：外框（circle / heart / scallop / shield / hexagon / star / ribbon）；color：底色。
+   * 想新增勳章：在這裡加一筆，並在 ICONS 加上同 id 的圖案（沒有圖案時會顯示星星）。
+   * ===================================================================== */
+  var BEHAVIORS = [
+    { id: 'supplies',  name: '帶齊上課用具',  group: '上課準備', shape: 'hexagon', color: YELLOW },
+    { id: 'posture',   name: '坐姿端正',      group: '上課準備', shape: 'circle',  color: BLUE },
+    { id: 'listen',    name: '專心聆聽',      group: '課堂學習', shape: 'scallop', color: BLUE },
+    { id: 'join',      name: '參與課堂',      group: '課堂學習', shape: 'scallop', color: YELLOW },
+    { id: 'hand',      name: '舉手發言',      group: '課堂學習', shape: 'star',    color: YELLOW },
+    { id: 'worksheet', name: '認真寫講義',    group: '課堂學習', shape: 'ribbon',  color: GREEN },
+    { id: 'task',      name: '完成課堂任務',  group: '課堂學習', shape: 'shield',  color: CORAL },
+    { id: 'friend',    name: '友愛師長同儕',  group: '人際相處', shape: 'heart',   color: CORAL }
+  ];
+
+  /* =====================================================================
+   * 【教室規則區｜修改指引】
+   * 每一筆：title 標題、text 說明、badge（可省略）。
+   * - 沒有 badge 的是「課堂大原則」，會優先顯示在第一個分頁，字體較大。
+   * - 有 badge（填勳章 id）的是「勳章行為」，顯示在第二個分頁，並附上對應勳章。
+   * 順序就是各分頁中的顯示順序；加分的判斷由老師決定。
+   * ===================================================================== */
+  var RULES = [
+    { title: '鼓勵思考與友善', text: '多想一想，再用溫和的話把想法說出來。' },
+    { title: '犯錯、答錯沒關係', text: '從錯誤中學習，就是在進步。' },
+    { title: '加分由老師判斷', text: '老師會留意每個人的好表現，不需要搶著表現。' },
+    { title: '每個人的目標不同', text: '不用和別人比較，盡自己所能做到最好就很棒。' },
+    { badge: 'supplies',  title: '帶齊上課用具', text: '課本、筆記和文具放在桌上，準備好再開始上課。' },
+    { badge: 'posture',   title: '坐姿端正', text: '身體坐穩、背靠椅背，讓自己和旁邊的人都舒服。' },
+    { badge: 'listen',    title: '專心聆聽', text: '別人說話時，看著對方、安靜聽完。' },
+    { badge: 'join',      title: '參與課堂', text: '跟著課堂一起想、一起做，盡自己的力量。' },
+    { badge: 'hand',      title: '舉手發言', text: '想說話先舉手，輪流發表，一次一個人說。' },
+    { badge: 'worksheet', title: '認真寫講義', text: '用心完成講義，不會的先試試看。' },
+    { badge: 'task',      title: '完成課堂任務', text: '把老師交代的任務一步一步做完。' },
+    { badge: 'friend',    title: '友愛師長同儕', text: '用友善、有禮貌的話和行動，尊重老師與同學。' }
+  ];
+
+  /* =====================================================================
+   * 【班級社會技巧區｜修改指引】
+   * 每一筆：id（不可重複）、name、steps（步驟，陣列）、example（示範句）。
+   * 在「社會技巧」視窗按「設為今日重點」，該技巧會顯示在頁面上方。
+   * ===================================================================== */
+  var SOCIAL_SKILLS = [
+    { id: 'listen',  name: '專心傾聽', steps: ['眼睛看著說話的人', '身體朝向對方', '等對方說完再回應'], example: '我聽到你說……，對嗎？' },
+    { id: 'ask',     name: '禮貌請求協助', steps: ['先舉手或輕聲叫對方的名字', '說清楚需要什麼幫忙', '被幫忙後說謝謝'], example: '請問可以幫我看一下這題嗎？謝謝你！' },
+    { id: 'differ',  name: '友善表達不同意見', steps: ['先說你聽到了對方的想法', '再說自己的想法與原因', '用溫和的語氣'], example: '我聽到你的想法了，我覺得……，因為……' },
+    { id: 'turn',    name: '輪流與等待', steps: ['舉手等被叫到', '別人說話時不打斷', '還沒輪到時，先在心裡想'], example: '我先等你說完，再換我說。' },
+    { id: 'praise',  name: '給同學鼓勵', steps: ['看見同學做得好的地方', '具體說出來', '用友善的表情和語氣'], example: '你剛剛的想法很特別，謝謝你分享！' },
+    { id: 'mistake', name: '面對錯誤', steps: ['深呼吸，告訴自己錯了沒關係', '看看哪裡可以修正', '謝謝提醒的人，再試一次'], example: '我再想想看，謝謝你提醒我。' },
+    { id: 'invite',  name: '邀請同學加入', steps: ['看看有沒有人落單', '微笑邀請', '一起完成任務'], example: '要不要和我們一組？' }
+  ];
+
+  /* ---------- 今日總結句型（可自行增修，＿＿ 代表要填寫的地方） ---------- */
+  var SUMMARY_STEMS = [
+    '我今天進步的地方是＿＿＿＿＿＿。',
+    '我今天學到了＿＿＿＿＿＿。',
+    '今天課堂內容讓我印象深刻的地方是＿＿＿＿＿＿。',
+    '今天＿＿＿的＿＿＿好表現讓我印象深刻。'
+  ];
+
+  /* ---------- 教室聲音狀態（由安靜到吵雜，可自行增修） ---------- */
+  var SOUND_LEVELS = [
+    { name: '專心書寫', tip: '沒有聲音，只聽見筆在紙上的沙沙聲', color: BLUE },
+    { name: '安靜傾聽', tip: '耳朵打開，嘴巴關起來', color: GREEN },
+    { name: '舉手發言', tip: '一次一個人說話，其他人專心聽', color: YELLOW },
+    { name: '相互討論', tip: '小組內小聲說話，只有同組聽得到', color: CORAL },
+    { name: '熱烈活動', tip: '可以大聲交流，聽到老師訊號就立刻安靜', color: CORAL }
+  ];
+
+  /* ---------- 星星顏色深淺（依當日星星數；min 為該區間起點，顏色越深代表越多） ---------- */
+  var STAR_TIERS = [
+    { min: 0,  color: '#ECE8DA' },
+    { min: 1,  color: '#FBEBB9' },
+    { min: 5,  color: '#F6D27A' },
+    { min: 10, color: '#EDB44C' },
+    { min: 15, color: '#E2912B' },
+    { min: 20, color: '#CC6F1D' }
+  ];
+
+  /* ---------- 計時器、總結規則 ---------- */
+  var QUICK_MESSAGES = ['請坐好，準備上課', '請安靜完成講義', '請小組討論並記錄', '請整理桌面、收拾物品', '寫完請安靜檢查'];
+  var TIMER_PRESETS = [1, 3, 5, 10, 15, 20];
+  var BONUS_TYPES = 5;        // 當日集滿幾種勳章
+  var BONUS_POINTS = 3;       // 集滿後總結時額外加幾顆星
+  var WHEEL_MIN_STARS = 15;   // 全班每位學生都達到幾顆星，才會出現隱藏的「加分輪盤」
+  var WHEEL_LOW_PROB = 0.7;   // 輪盤抽到 1～5 分的機率（其餘為 6～10 分）
+  var STAR_UNIT_LABEL = '顆星';
+
+  /* ============================== 工具 ============================== */
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function fmt(sec) { var m = Math.floor(sec / 60), s = sec % 60; return pad(m) + ':' + pad(s); }
+  function today() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function behavior(id) { return BEHAVIORS.filter(function (b) { return b.id === id; })[0]; }
+  function toast(text) {
+    var t = el('div', 'toast', text); document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 2400);
+  }
+  function rolesOf(s) { return String(s.role || '').split(/[、,，\/]/).map(function (x) { return x.trim(); }).filter(Boolean); }
+  function tierColor(n) { var c = STAR_TIERS[0].color; STAR_TIERS.forEach(function (t) { if (n >= t.min) c = t.color; }); return c; }
+
+  /* ============================== 狀態與儲存 ============================== */
+  var KEY = 'starBoard.v2';
+  var state = { days: {}, wheel: {}, groups: {}, skill: {}, sound: 1, cls: CLASSES[0].id, timerSound: true, remind: { on: false, min: 3, max: 6 } };
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (saved && typeof saved === 'object') {
+      ['days', 'wheel', 'groups', 'skill'].forEach(function (k) { if (saved[k] && typeof saved[k] === 'object') state[k] = saved[k]; });
+      if (typeof saved.sound === 'number' && SOUND_LEVELS[saved.sound]) state.sound = saved.sound;
+      if (CLASSES.some(function (c) { return c.id === saved.cls; })) state.cls = saved.cls;
+      if (typeof saved.timerSound === 'boolean') state.timerSound = saved.timerSound;
+      if (saved.remind) state.remind = { on: !!saved.remind.on, min: +saved.remind.min || 3, max: +saved.remind.max || 6 };
+    }
+  } catch (e) {}
+  function save() {
+    var keys = Object.keys(state.days).sort();
+    while (keys.length > 120) delete state.days[keys.shift()];
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  function curClass() { return CLASSES.filter(function (c) { return c.id === state.cls; })[0] || CLASSES[0]; }
+  function recAt(date, clsId, name) {
+    var d = state.days[date] = state.days[date] || {};
+    var c = d[clsId] = d[clsId] || {};
+    var r = c[name] = c[name] || { total: 0, badges: {}, b5: false };
+    if (!r.badges) r.badges = {};
+    return r;
+  }
+  function rec(clsId, name) { return recAt(today(), clsId, name); }
+
+  /* ============================== 音效 ============================== */
+  var actx = null, soundOn = true;
+  function ensureAudio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } }
+  function tone(f, at, d, type, v) {
+    if (!soundOn || !actx) return;
+    var o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + at;
+    o.type = type || 'triangle'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(v || 0.18, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0 + d + 0.05);
+  }
+  var sfx = {
+    award: function () { tone(784, 0, 0.12); tone(988, 0.1, 0.14); tone(1319, 0.2, 0.25); },
+    remind: function () { tone(880, 0, 0.2, 'sine'); tone(1175, 0.22, 0.3, 'sine'); },
+    end: function () { for (var i = 0; i < 3; i++) { tone(988, i * 0.45, 0.2, 'sine'); tone(1319, i * 0.45 + 0.2, 0.2, 'sine'); } },
+    tick: function () { tone(700, 0, 0.05, 'square', 0.06); },
+    pick: function () { [523, 659, 784, 1047].forEach(function (f, i) { tone(f, i * 0.1, 0.2); }); },
+    undo: function () { tone(440, 0, 0.12, 'sine'); },
+    wheel: function () { [523, 659, 784, 1047, 1319].forEach(function (f, i) { tone(f, i * 0.12, 0.3, 'triangle', 0.2); }); }
+  };
+  // 計時提示音：清脆的短音，可在計時器中單獨開關
+  function beep(at) { if (!state.timerSound) return; tone(1760, at || 0, 0.09, 'sine', 0.24); tone(2637, at || 0, 0.06, 'sine', 0.09); }
+  var soundBtn = $('#soundBtn');
+  soundBtn.addEventListener('click', function () {
+    soundOn = !soundOn; soundBtn.textContent = '音效：' + (soundOn ? '開' : '關');
+    soundBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    if (soundOn) { ensureAudio(); sfx.award(); }
+  });
+  function syncTSound() { $$('.js-tsound').forEach(function (b) { b.textContent = '提示音：' + (state.timerSound ? '開' : '關'); }); }
+  $$('.js-tsound').forEach(function (b) {
+    b.addEventListener('click', function () {
+      state.timerSound = !state.timerSound; save(); syncTSound();
+      if (state.timerSound) { ensureAudio(); beep(0); }
+    });
+  });
+
+  /* ============================== SVG ============================== */
+  var SW = ' stroke="' + INK + '" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"';
+  function starPoints(cx, cy, R, r) {
+    var p = [];
+    for (var i = 0; i < 10; i++) {
+      var a = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 ? r : R;
+      p.push((cx + rad * Math.cos(a)).toFixed(1) + ',' + (cy + rad * Math.sin(a)).toFixed(1));
+    }
+    return p.join(' ');
+  }
+  var SHAPES = {
+    circle: { s: 1, dy: 0, draw: function (c) { return '<circle cx="50" cy="50" r="42" fill="' + c + '"' + SW + '/><circle cx="50" cy="50" r="34" fill="none" stroke="#FFFCF6" stroke-width="2.5" stroke-dasharray="3 5"/>'; } },
+    heart: { s: 0.82, dy: 2, draw: function (c) { return '<path d="M50 90C18 68 6 46 12 30C18 12 42 12 50 32C58 12 82 12 88 30C94 46 82 68 50 90Z" fill="' + c + '"' + SW + '/>'; } },
+    scallop: { s: 0.95, dy: 0, draw: function (c) {
+      var pet = '', cov = '';
+      for (var i = 0; i < 8; i++) {
+        var a = i * Math.PI / 4, x = 50 + 29 * Math.cos(a), y = 50 + 29 * Math.sin(a);
+        pet += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="15" fill="' + c + '"' + SW + '/>';
+        cov += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="12.500" fill="' + c + '"/>';
+      }
+      return pet + '<circle cx="50" cy="50" r="31" fill="' + c + '"/>' + cov;
+    } },
+    shield: { s: 0.9, dy: -2, draw: function (c) { return '<path d="M50 6L88 18V48C88 72 70 88 50 95C30 88 12 72 12 48V18Z" fill="' + c + '"' + SW + '/>'; } },
+    hexagon: { s: 0.95, dy: 0, draw: function (c) { return '<polygon points="50,6 90,28 90,72 50,94 10,72 10,28" fill="' + c + '"' + SW + '/>'; } },
+    star: { s: 0.62, dy: 3, draw: function (c) { return '<polygon points="' + starPoints(50, 53, 46, 26) + '" fill="' + c + '"' + SW + '/>'; } },
+    ribbon: { s: 0.82, dy: -6, draw: function (c) {
+      return '<path d="M28 66L16 96L36 88L46 98L54 68Z" fill="' + c + '"' + SW + '/><path d="M72 66L84 96L64 88L54 98L46 68Z" fill="' + c + '"' + SW + '/>' +
+        '<circle cx="50" cy="44" r="38" fill="' + c + '"' + SW + '/><circle cx="50" cy="44" r="30" fill="none" stroke="#FFFCF6" stroke-width="2.500" stroke-dasharray="3 5"/>';
+    } }
+  };
+  var ICONS = {
+    supplies: '<rect x="29" y="44" width="42" height="24" rx="7" fill="' + CARD + '"/><path d="M29 54H71"/><path d="M40 44V32M50 44V28M60 44V33" stroke-width="4.500"/>',
+    posture: '<circle cx="46" cy="32" r="6" fill="' + CARD + '"/><path d="M46 40V60H60V72"/><path d="M38 44V64"/>',
+    listen: '<path d="M54 30C42 30 38 40 40 50C42 60 48 62 48 70C48 78 60 78 62 66"/><path d="M52 42C47 42 47 52 52 54"/><path d="M68 40Q74 50 68 60" stroke-width="3"/>',
+    join: '<path d="M50 38Q38 31 27 36V64Q38 59 50 66Q62 59 73 64V36Q62 31 50 38ZM50 38V66" fill="' + CARD + '"/>',
+    hand: '<circle cx="44" cy="50" r="6" fill="' + CARD + '"/><path d="M44 57V76M44 64L58 44M44 64L33 72"/><circle cx="59" cy="41" r="4" fill="' + CARD + '"/>',
+    worksheet: '<rect x="33" y="28" width="26" height="40" rx="3" fill="' + CARD + '"/><path d="M38 38H54M38 46H54M38 54H48"/><path d="M58 70L70 42" stroke-width="6"/>',
+    task: '<path d="M32 52L45 65L70 36" stroke-width="7"/>',
+    // 友愛師長同儕：兩張微笑的臉（嘴角向上）＋愛心
+    friend: '<circle cx="35" cy="56" r="12" fill="' + CARD + '"/><circle cx="65" cy="56" r="12" fill="' + CARD + '"/>' +
+      '<circle cx="31" cy="53" r="1.800" fill="' + INK + '"/><circle cx="39" cy="53" r="1.800" fill="' + INK + '"/><circle cx="61" cy="53" r="1.800" fill="' + INK + '"/><circle cx="69" cy="53" r="1.800" fill="' + INK + '"/>' +
+      '<path d="M30 58Q35 64 40 58" stroke-width="3"/><path d="M60 58Q65 64 70 58" stroke-width="3"/>' +
+      '<path d="M50 36C46 30 40 34 44 39L50 44L56 39C60 34 54 30 50 36Z" fill="' + CORAL + '"/>'
+  };
+  function badgeSVG(b, size) {
+    var sh = SHAPES[b.shape] || SHAPES.circle;
+    var icon = ICONS[b.id] || '<polygon points="' + starPoints(50, 50, 20, 9) + '" fill="' + YELLOW + '"/>';
+    return '<svg viewBox="0 0 100 100" width="' + size + '" height="' + size + '" aria-hidden="true">' + sh.draw(b.color) +
+      '<g transform="translate(50 ' + (50 + sh.dy) + ') scale(' + sh.s + ') translate(-50 -50)" fill="none" stroke="' + INK + '" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">' + icon + '</g></svg>';
+  }
+  function starSVG(color) {
+    return '<svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="' + starPoints(50, 54, 46, 22) + '" fill="' + color + '"' + SW + '/></svg>';
+  }
+  function starNode(n, small) {
+    var b = el('div', 'starbox' + (small ? ' sm' : ''));
+    b.innerHTML = starSVG(tierColor(n));
+    b.appendChild(el('span', 'num', String(n)));
+    return b;
+  }
+  var CROWN = '<svg class="crown" viewBox="0 0 60 44" aria-hidden="true"><path d="M6 38L4 10L18 22L30 4L42 22L56 10L54 38Z" fill="' + YELLOW + '" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/><circle cx="30" cy="28" r="3.500" fill="' + CORAL + '" stroke="' + INK + '" stroke-width="2"/></svg>';
+  function mascotSVG(level) {
+    var c = SOUND_LEVELS[level].color, ry = [1.5, 3, 8, 11, 16][level] || 3, waves = '';
+    for (var i = 0; i < level; i++) {
+      var o = 6 + i * 7;
+      waves += '<path d="M' + (102 + o) + ' ' + (38 - i * 3) + 'Q' + (110 + o) + ' 50 ' + (102 + o) + ' ' + (62 + i * 3) + '" fill="none" stroke="' + INK + '" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M' + (18 - o) + ' ' + (38 - i * 3) + 'Q' + (10 - o) + ' 50 ' + (18 - o) + ' ' + (62 + i * 3) + '" fill="none" stroke="' + INK + '" stroke-width="3" stroke-linecap="round"/>';
+    }
+    var eyes = level === 0
+      ? '<path d="M38 44Q44 49 50 44M70 44Q76 49 82 44" fill="none" stroke="' + INK + '" stroke-width="3" stroke-linecap="round"/>'
+      : '<circle cx="44" cy="44" r="4" fill="' + INK + '"/><circle cx="76" cy="44" r="4" fill="' + INK + '"/>';
+    return '<svg viewBox="-30 0 180 100" aria-hidden="true">' + waves +
+      '<circle cx="60" cy="52" r="40" fill="' + c + '" stroke="' + INK + '" stroke-width="3.5"/>' + eyes +
+      '<circle cx="34" cy="58" r="5" fill="' + CORAL + '"/><circle cx="86" cy="58" r="5" fill="' + CORAL + '"/>' +
+      '<ellipse cx="60" cy="68" rx="9" ry="' + ry + '" fill="' + (level === 0 ? 'none' : INK) + '" stroke="' + INK + '" stroke-width="3"/></svg>';
+  }
+
+  /* ============================== 主畫面 ============================== */
+  var armed = null, undoStack = [];
+
+  function renderHeader() {
+    var cls = curClass(), d = new Date();
+    $('#classBtn').textContent = '班級：' + cls.id + ' ▼';
+    $('#dateLbl').textContent = (d.getMonth() + 1) + '/' + d.getDate();
+    var sid = state.skill[cls.id], sk = SOCIAL_SKILLS.filter(function (s) { return s.id === sid; })[0];
+    var chip = $('#skillChip');
+    chip.hidden = !sk; if (sk) chip.textContent = '今日社會技巧：' + sk.name;
+  }
+  function renderSound() {
+    var lv = SOUND_LEVELS[state.sound];
+    $('#mascot').innerHTML = mascotSVG(state.sound);
+    $('#soundNow').textContent = '教室狀態：' + lv.name;
+    $('#soundTip').textContent = lv.tip;
+    var box = $('#levels'); box.textContent = '';
+    SOUND_LEVELS.forEach(function (l, i) {
+      var b = el('button', 'lv', l.name); b.type = 'button'; b.style.setProperty('--c', l.color);
+      b.setAttribute('aria-pressed', i === state.sound ? 'true' : 'false');
+      b.addEventListener('click', function () { state.sound = i; save(); renderSound(); });
+      box.appendChild(b);
+    });
+  }
+  function renderLegend() {
+    var box = $('#legend'); box.textContent = '';
+    box.appendChild(document.createTextNode('星星顏色：'));
+    STAR_TIERS.forEach(function (t, i) {
+      var nx = STAR_TIERS[i + 1], label = !nx ? t.min + '+' : (nx.min - 1 === t.min ? String(t.min) : t.min + '–' + (nx.min - 1));
+      var s = el('span'); s.innerHTML = starSVG(t.color); s.appendChild(document.createTextNode(label)); box.appendChild(s);
+    });
+  }
+  function renderBadgeBar() {
+    var box = $('#badgeBar'); box.textContent = '';
+    var groups = [];
+    BEHAVIORS.forEach(function (b) {
+      var g = groups.filter(function (x) { return x.name === b.group; })[0];
+      if (!g) { g = { name: b.group, items: [] }; groups.push(g); }
+      g.items.push(b);
+    });
+    groups.forEach(function (g) {
+      var wrap = el('div', 'bgroup'); wrap.appendChild(el('div', 'cap', g.name));
+      var row = el('div', 'brow');
+      g.items.forEach(function (b) {
+        var btn = el('button', 'bb'); btn.type = 'button';
+        btn.innerHTML = badgeSVG(b, 50); btn.appendChild(el('span', null, b.name));
+        btn.setAttribute('aria-pressed', armed === b.id ? 'true' : 'false');
+        btn.addEventListener('click', function () { armed = armed === b.id ? null : b.id; renderBadgeBar(); });
+        row.appendChild(btn);
+      });
+      wrap.appendChild(row); box.appendChild(wrap);
+    });
+    $('#armHint').textContent = armed
+      ? '已選取「' + behavior(armed).name + '」：點學生卡片就會加分（再點同一枚勳章可取消）'
+      : '先點一枚勳章，再點學生卡片即可加分；沒選勳章時，點學生會開啟勳章選單。';
+  }
+  function renderGrid() {
+    var cls = curClass(), box = $('#grid'); box.textContent = '';
+    var n = cls.students.length, cols = Math.min(4, n);
+    box.style.gridTemplateColumns = 'repeat(' + cols + ',1fr)';
+    var totals = cls.students.map(function (s) { return rec(cls.id, s.name).total; });
+    var max = Math.max.apply(null, totals);
+    cls.students.forEach(function (s, i) {
+      var r = rec(cls.id, s.name);
+      var card = el('button', 'stu'); card.type = 'button'; card.dataset.name = s.name;
+      if (max > 0 && r.total === max) card.insertAdjacentHTML('beforeend', CROWN);
+      var head = el('div', 'head');
+      head.appendChild(el('div', 'name', s.name)); head.appendChild(starNode(r.total));
+      card.appendChild(head);
+      var mini = el('div', 'mini');
+      BEHAVIORS.forEach(function (b) {
+        var c = r.badges[b.id];
+        if (c > 0) { var m = el('div', 'mb'); m.innerHTML = badgeSVG(b, 40); m.title = b.name; m.appendChild(el('em', null, String(c))); mini.appendChild(m); }
+      });
+      card.appendChild(mini);
+      card.addEventListener('click', function () { onStudent(s.name); });
+      box.appendChild(card);
+    });
+  }
+  function renderAll() { renderHeader(); renderSound(); renderLegend(); renderBadgeBar(); renderGrid(); }
+
+  /* ============================== 加分 ============================== */
+  function applyOps(clsId, ops) {
+    ops.forEach(function (o) {
+      var r = rec(clsId, o.name); r.total += o.d;
+      if (o.bid) r.badges[o.bid] = (r.badges[o.bid] || 0) + 1;
+      if (o.flag) r[o.flag] = true;
+    });
+  }
+  function pushUndo(clsId, ops, wheelKey) {
+    undoStack.push({ cls: clsId, date: today(), ops: ops, wheelKey: wheelKey || null });
+    if (undoStack.length > 40) undoStack.shift();
+  }
+  function bump(names) {
+    $$('.stu').forEach(function (c) { if (names.indexOf(c.dataset.name) > -1) c.classList.add('bump'); });
+  }
+  function award(names, bid) {
+    var b = behavior(bid), clsId = curClass().id;
+    if (!b) return;
+    var ops = names.map(function (n) { return { name: n, d: 1, bid: bid }; });
+    applyOps(clsId, ops); pushUndo(clsId, ops); save(); ensureAudio(); sfx.award();
+    renderGrid(); bump(names);
+    toast((names.length > 1 ? '全班' : names[0]) + ' 獲得「' + b.name + '」勳章 ＋1 ' + STAR_UNIT_LABEL);
+    if (!$('#sumSheet').hidden) renderSummaryDynamic();
+  }
+  function onStudent(name) { ensureAudio(); if (armed) award([name], armed); else openAward([name], name + ' 加分'); }
+  var awardTargets = [];
+  function openAward(names, title) {
+    awardTargets = names; $('#awTitle').textContent = title;
+    var g = $('#awGrid'); g.textContent = '';
+    BEHAVIORS.forEach(function (b) {
+      var btn = el('button', 'bb'); btn.type = 'button';
+      btn.innerHTML = badgeSVG(b, 64); btn.appendChild(el('span', null, b.name));
+      btn.addEventListener('click', function () { $('#awardDlg').close(); award(awardTargets, b.id); });
+      g.appendChild(btn);
+    });
+    if (!$('#awardDlg').open) $('#awardDlg').showModal();
+  }
+  $('#awClose').addEventListener('click', function () { $('#awardDlg').close(); });
+  $('#classAward').addEventListener('click', function () {
+    ensureAudio();
+    var names = curClass().students.map(function (s) { return s.name; });
+    if (armed) award(names, armed); else openAward(names, '全班加分');
+  });
+  $('#undoBtn').addEventListener('click', function () {
+    var u = undoStack.pop();
+    if (!u) { toast('沒有可復原的動作'); return; }
+    u.ops.forEach(function (o) {
+      var r = recAt(u.date, u.cls, o.name);
+      r.total = Math.max(0, r.total - o.d);
+      if (o.bid) r.badges[o.bid] = Math.max(0, (r.badges[o.bid] || 0) - 1);
+      if (o.flag) r[o.flag] = false;
+    });
+    if (u.wheelKey) delete state.wheel[u.wheelKey];
+    save(); ensureAudio(); sfx.undo(); renderGrid();
+    if (!$('#sumSheet').hidden) renderSummaryDynamic();
+    toast('已復原一次加分');
+  });
+
+  /* ============================== 班級、職務、規則、社會技巧 ============================== */
+  $('#classBtn').addEventListener('click', function () {
+    var box = $('#classList'); box.textContent = '';
+    CLASSES.forEach(function (c) {
+      var b = el('button', 'btn', c.id); b.type = 'button'; b.style.fontSize = '20px';
+      if (c.id === state.cls) b.classList.add('coral');
+      b.addEventListener('click', function () { state.cls = c.id; save(); drawPool = null; undoStack = []; renderAll(); $('#classDlg').close(); });
+      box.appendChild(b);
+    });
+    $('#classDlg').showModal();
+  });
+  $('#classClose').addEventListener('click', function () { $('#classDlg').close(); });
+
+  $('#roleBtn').addEventListener('click', function () {
+    var cls = curClass(), box = $('#roleBody'); box.textContent = '';
+    ROLE_INFO.forEach(function (r) {
+      var card = el('div', 'rolecard'); card.style.setProperty('--c', r.color);
+      card.appendChild(el('b', null, r.name)); card.appendChild(el('div', 'd', r.duty));
+      var who = el('div', 'who');
+      var names = cls.students.filter(function (s) { return rolesOf(s).indexOf(r.name) > -1; });
+      if (!names.length) who.appendChild(el('span', 'none', '今天沒有人擔任'));
+      names.forEach(function (s) { who.appendChild(el('span', 'chip', s.name)); });
+      card.appendChild(who); box.appendChild(card);
+    });
+    var free = cls.students.filter(function (s) { return !rolesOf(s).length; });
+    if (free.length) {
+      var c2 = el('div', 'rolecard'); c2.style.setProperty('--c', CARD); c2.appendChild(el('b', null, '今天沒有職務'));
+      var w2 = el('div', 'who'); free.forEach(function (s) { w2.appendChild(el('span', 'chip', s.name)); }); c2.appendChild(w2); box.appendChild(c2);
+    }
+    $('#roleDlg').showModal();
+  });
+  $('#roleClose').addEventListener('click', function () { $('#roleDlg').close(); });
+
+  var ruleTab = 1;
+  function renderRules() {
+    var box = $('#ruleBody'); box.textContent = '';
+    box.className = ruleTab === 1 ? 'list' : 'list two';
+    $('#ruleTab1').setAttribute('aria-pressed', ruleTab === 1 ? 'true' : 'false');
+    $('#ruleTab2').setAttribute('aria-pressed', ruleTab === 2 ? 'true' : 'false');
+    var cols = [BLUE, YELLOW, GREEN, CORAL];
+    if (ruleTab === 1) {
+      RULES.filter(function (r) { return !r.badge; }).forEach(function (r, i) {
+        var c = el('div', 'pitem'); c.style.setProperty('--c', cols[i % 4]);
+        c.appendChild(el('b', null, r.title)); c.appendChild(el('span', 'd', r.text)); box.appendChild(c);
+      });
+    } else {
+      RULES.filter(function (r) { return r.badge; }).forEach(function (r) {
+        var it = el('div', 'item'), ic = el('div', 'ic'), b = behavior(r.badge);
+        if (b) ic.innerHTML = badgeSVG(b, 56);
+        var tx = el('div'); tx.appendChild(el('b', null, r.title)); tx.appendChild(el('span', 'd', r.text));
+        it.appendChild(ic); it.appendChild(tx); box.appendChild(it);
+      });
+    }
+  }
+  $('#ruleBtn').addEventListener('click', function () { ruleTab = 1; renderRules(); $('#ruleDlg').showModal(); });
+  $('#ruleTab1').addEventListener('click', function () { ruleTab = 1; renderRules(); });
+  $('#ruleTab2').addEventListener('click', function () { ruleTab = 2; renderRules(); });
+  $('#ruleClose').addEventListener('click', function () { $('#ruleDlg').close(); });
+
+  var openSkill = null;
+  function renderSkills() {
+    var box = $('#skillBody'); box.textContent = '';
+    var cur = state.skill[curClass().id];
+    SOCIAL_SKILLS.forEach(function (s) {
+      var isOpen = openSkill === s.id;
+      var wrap = el('div', 'skillcard' + (s.id === cur ? ' on' : '') + (isOpen ? ' open' : ''));
+      var head = el('button', 'skillhead'); head.type = 'button'; head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      head.appendChild(el('span', null, (isOpen ? '▾ ' : '▸ ') + s.name));
+      if (s.id === cur) head.appendChild(el('span', 'tag', '今日重點'));
+      head.addEventListener('click', function () { openSkill = isOpen ? null : s.id; renderSkills(); });
+      wrap.appendChild(head);
+      if (isOpen) {
+        var body = el('div', 'skillbody'), ol = el('ol');
+        s.steps.forEach(function (t) { ol.appendChild(el('li', null, t)); });
+        body.appendChild(ol); body.appendChild(el('div', 'ex', '示範：' + s.example));
+        var row = el('div', 'row');
+        var b = el('button', 'btn' + (s.id === cur ? ' coral' : ' green'), s.id === cur ? '取消今日重點' : '設為今日重點'); b.type = 'button';
+        b.addEventListener('click', function () {
+          if (s.id === cur) delete state.skill[curClass().id]; else state.skill[curClass().id] = s.id;
+          save(); renderHeader(); renderSkills();
+        });
+        row.appendChild(b); body.appendChild(row); wrap.appendChild(body);
+      }
+      box.appendChild(wrap);
+    });
+  }
+  $('#skillBtn').addEventListener('click', function () { renderSkills(); $('#skillDlg').showModal(); });
+  $('#skillChip').addEventListener('click', function () { renderSkills(); $('#skillDlg').showModal(); });
+  $('#skillClose').addEventListener('click', function () { $('#skillDlg').close(); });
+
+  $('#moreBtn').addEventListener('click', function () { $('#moreDlg').showModal(); });
+  $('#moreClose').addEventListener('click', function () { $('#moreDlg').close(); });
+  $('#resetToday').addEventListener('click', function () {
+    if (!confirm('確定要清除「' + curClass().id + '」今天的星星與勳章紀錄嗎？')) return;
+    var d = state.days[today()]; if (d) delete d[curClass().id];
+    delete state.wheel[today() + '|' + curClass().id];
+    undoStack = []; save(); renderGrid(); $('#moreDlg').close();
+  });
+  $('#resetAll').addEventListener('click', function () {
+    if (!confirm('確定要清除「全部班級、所有日期」的紀錄嗎？此動作無法復原。')) return;
+    state.days = {}; state.wheel = {}; undoStack = []; save(); renderGrid(); $('#moreDlg').close();
+  });
+
+  /* ============================== 計時器（含最後 10 秒提示） ============================== */
+  var T = null, tickId = null, tmode = 'down';
+  function setMode(m) {
+    tmode = m;
+    $('#mDown').setAttribute('aria-pressed', m === 'down' ? 'true' : 'false');
+    $('#mUp').setAttribute('aria-pressed', m === 'up' ? 'true' : 'false');
+    $('#minRow').hidden = m === 'up';
+  }
+  $('#mDown').addEventListener('click', function () { setMode('down'); });
+  $('#mUp').addEventListener('click', function () { setMode('up'); });
+  (function () {
+    var p = $('#presets');
+    TIMER_PRESETS.forEach(function (m) {
+      var b = el('button', 'btn s', m + ' 分'); b.type = 'button';
+      b.addEventListener('click', function () { $('#tMin').value = m; }); p.appendChild(b);
+    });
+    var q = $('#quickMsgs');
+    QUICK_MESSAGES.forEach(function (m) {
+      var b = el('button', 'btn s', m); b.type = 'button';
+      b.addEventListener('click', function () { $('#tText').value = m; }); q.appendChild(b);
+    });
+  })();
+  function startTimer(mode, mins, msg) {
+    ensureAudio();
+    T = { mode: mode, running: true, msg: msg, done: false, remain: mins * 60000, elapsed: 0, lastS: null };
+    if (mode === 'down') T.endAt = Date.now() + mins * 60000; else T.startAt = Date.now();
+    $('#timerBar').hidden = false; $('#tPause').textContent = '暫停'; $('#gPause').textContent = '暫停';
+    renderTimerMsg(); clearInterval(tickId); tickId = setInterval(tickTimer, 100); tickTimer();
+  }
+  $('#timerBtn').addEventListener('click', function () { setMode(tmode); syncTSound(); $('#timerDlg').showModal(); });
+  $('#tCancel').addEventListener('click', function () { $('#timerDlg').close(); });
+  $('#tStart').addEventListener('click', function () {
+    var mins = Math.max(1, Math.min(180, Math.round(+$('#tMin').value || 5)));
+    $('#timerDlg').close();
+    startTimer(tmode, mins, $('#tText').value.trim().slice(0, 120));
+  });
+  function renderTimerMsg() {
+    var box = $('#tMsg'); box.textContent = '';
+    if (T && T.msg) { box.appendChild(el('small', null, '請注意　')); box.appendChild(document.createTextNode(T.msg)); }
+    $('#bigMsg').textContent = T && T.msg ? T.msg : '';
+  }
+  function timerMs() {
+    if (!T) return 0;
+    if (T.mode === 'down') return T.running ? Math.max(0, T.endAt - Date.now()) : T.remain;
+    return T.running ? Date.now() - T.startAt + T.elapsed : T.elapsed;
+  }
+  function tickTimer() {
+    if (!T) return;
+    var ms = timerMs(), down = T.mode === 'down';
+    var s = down ? Math.ceil(ms / 1000) : Math.floor(ms / 1000);
+    var txt = fmt(s);
+    ['#tDigits', '#bigDigits', '#gDigits'].forEach(function (id) { $(id).textContent = txt; });
+    var danger = down && !T.done && ms > 0 && ms <= 5000, warn = down && !T.done && ms > 5000 && ms <= 10000;
+    ['#timerBar', '#gTimerBox', '#bigTimer'].forEach(function (id) {
+      var e = $(id); e.classList.toggle('warn', warn); e.classList.toggle('danger', danger);
+    });
+    // 提示音：10 秒一聲清脆提示；5、4 秒每秒 1 聲；3、2、1 秒每秒 2 聲
+    if (down && T.running && !T.done && s !== T.lastS) {
+      T.lastS = s;
+      if (s === 10) beep(0);
+      else if (s <= 5 && s > 3) beep(0);
+      else if (s <= 3 && s >= 1) { beep(0); beep(0.5); }
+    }
+    if (down && T.running && ms <= 0) {
+      T.running = false; T.remain = 0; T.done = true;
+      ['#timerBar', '#gTimerBox', '#bigTimer'].forEach(function (id) { var e = $(id); e.classList.remove('warn', 'danger'); e.classList.add('done'); });
+      ensureAudio(); if (state.timerSound) sfx.end(); toast('時間到！');
+    }
+  }
+  function timerPause(btns) {
+    if (!T || T.done) return;
+    if (T.running) {
+      if (T.mode === 'down') T.remain = Math.max(0, T.endAt - Date.now()); else T.elapsed += Date.now() - T.startAt;
+      T.running = false; btns.forEach(function (b) { $(b).textContent = '繼續'; });
+    } else {
+      if (T.mode === 'down') T.endAt = Date.now() + T.remain; else T.startAt = Date.now();
+      T.running = true; btns.forEach(function (b) { $(b).textContent = '暫停'; });
+    }
+  }
+  function timerPlus() {
+    if (!T || T.mode !== 'down') return;
+    T.lastS = null;
+    if (T.done) {
+      T.done = false; T.running = true; T.endAt = Date.now() + 60000;
+      ['#timerBar', '#gTimerBox', '#bigTimer'].forEach(function (id) { $(id).classList.remove('done'); });
+    } else if (T.running) T.endAt += 60000; else T.remain += 60000;
+  }
+  function timerStop() {
+    T = null; clearInterval(tickId); $('#timerBar').hidden = true; $('#bigTimer').hidden = true;
+    ['#timerBar', '#gTimerBox', '#bigTimer'].forEach(function (id) { $(id).classList.remove('warn', 'danger', 'done'); });
+    $('#tDigits').textContent = '00:00'; $('#gDigits').textContent = '00:00'; $('#bigDigits').textContent = '00:00';
+  }
+  $('#tPause').addEventListener('click', function () { timerPause(['#tPause', '#gPause']); });
+  $('#gPause').addEventListener('click', function () { timerPause(['#tPause', '#gPause']); });
+  $('#tPlus').addEventListener('click', timerPlus); $('#gPlus').addEventListener('click', timerPlus);
+  $('#tStop').addEventListener('click', timerStop); $('#gStop').addEventListener('click', timerStop);
+  function showBig() { if (T) { $('#bigTimer').hidden = false; tickTimer(); } }
+  $('#tBig').addEventListener('click', showBig); $('#gBig').addEventListener('click', showBig);
+  $('#bigTimer').addEventListener('click', function () { this.hidden = true; });
+
+  /* ============================== 抽籤 ============================== */
+  var drawPool = null, drawn = null, drawing = false;
+  function poolInit() { drawPool = curClass().students.map(function (s) { return s.name; }); }
+  function renderDrawMeta() {
+    if (!drawPool) poolInit();
+    $('#poolLeft').textContent = '籤筒剩 ' + drawPool.length + ' 位';
+    var h = $('#drawHist'); h.textContent = '';
+    var done = curClass().students.length - drawPool.length;
+    if (done > 0 && $('#noRepeat').checked) h.appendChild(el('span', 'chip', '已抽過 ' + done + ' 位'));
+  }
+  $('#drawBtn').addEventListener('click', function () {
+    if (!drawPool) poolInit();
+    $('#drawName').textContent = '？'; $('#drawRole').textContent = curClass().id + ' 抽籤';
+    $('#drawAward').disabled = true; drawn = null; renderDrawMeta();
+    $('#drawDlg').showModal();
+  });
+  $('#drawClose').addEventListener('click', function () { $('#drawDlg').close(); });
+  $('#drawReset').addEventListener('click', function () { poolInit(); renderDrawMeta(); $('#drawName').textContent = '？'; $('#drawRole').textContent = '籤筒已重置'; });
+  $('#noRepeat').addEventListener('change', renderDrawMeta);
+  $('#drawGo').addEventListener('click', function () {
+    if (drawing) return;
+    ensureAudio();
+    var all = curClass().students.map(function (s) { return s.name; });
+    var pool = $('#noRepeat').checked ? drawPool : all;
+    if (!pool.length) { $('#drawRole').textContent = '全部都抽過了，請按「重置籤筒」'; return; }
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    drawing = true; $('#drawGo').disabled = true; $('#drawAward').disabled = true;
+    var steps = 0, total = 18, delay = 60;
+    (function spin() {
+      if (steps < total) {
+        $('#drawName').textContent = all[Math.floor(Math.random() * all.length)]; $('#drawRole').textContent = ''; sfx.tick();
+        steps++; delay += 9; setTimeout(spin, delay);
+      } else {
+        drawing = false; $('#drawGo').disabled = false; drawn = pick; $('#drawName').textContent = pick;
+        $('#drawRole').textContent = '';
+        if ($('#noRepeat').checked) drawPool = drawPool.filter(function (n) { return n !== pick; });
+        var bx = $('#drawBox'); bx.classList.remove('pop'); void bx.offsetWidth; bx.classList.add('pop');
+        $('#drawAward').disabled = false; sfx.pick(); renderDrawMeta();
+      }
+    })();
+  });
+  $('#drawAward').addEventListener('click', function () { if (!drawn) return; $('#drawDlg').close(); openAward([drawn], drawn + ' 加分'); });
+
+  /* ============================== 隨機提醒 ============================== */
+  var remindTimer = null, lastRemind = null, remindBid = null;
+  function showRemind(testing) {
+    var pool = BEHAVIORS.filter(function (b) { return b.id !== lastRemind; });
+    var b = pool[Math.floor(Math.random() * pool.length)];
+    lastRemind = b.id; remindBid = b.id;
+    $('#remBadge').innerHTML = badgeSVG(b, 64);
+    $('#remText').textContent = (testing ? '（測試）' : '') + '老師，看看有沒有同學做到「' + b.name + '」？送他們一顆星吧！';
+    $('#remind').hidden = false; ensureAudio(); sfx.remind();
+  }
+  function scheduleRemind() {
+    clearTimeout(remindTimer);
+    if (!state.remind.on) return;
+    var mn = Math.max(1, state.remind.min), mx = Math.max(mn, state.remind.max);
+    remindTimer = setTimeout(function () { showRemind(false); scheduleRemind(); }, (mn + Math.random() * (mx - mn)) * 60000);
+  }
+  $('#remGo').addEventListener('click', function () { armed = remindBid; $('#remind').hidden = true; renderBadgeBar(); toast('已選取勳章，點學生卡片就能加分'); });
+  $('#remLater').addEventListener('click', function () { $('#remind').hidden = true; });
+  $('#remindBtn').addEventListener('click', function () {
+    $('#rOn').checked = state.remind.on; $('#rMin').value = state.remind.min; $('#rMax').value = state.remind.max;
+    $('#remindDlg').showModal();
+  });
+  $('#rCancel').addEventListener('click', function () { $('#remindDlg').close(); });
+  $('#rTest').addEventListener('click', function () { $('#remindDlg').close(); showRemind(true); });
+  $('#rSave').addEventListener('click', function () {
+    var mn = Math.max(1, Math.min(60, Math.round(+$('#rMin').value || 3)));
+    var mx = Math.max(mn, Math.min(60, Math.round(+$('#rMax').value || 6)));
+    state.remind = { on: $('#rOn').checked, min: mn, max: mx };
+    save(); scheduleRemind(); $('#remindDlg').close();
+    $('#remindBtn').textContent = state.remind.on ? '隨機提醒：開' : '隨機提醒';
+    toast(state.remind.on ? '已開啟，每 ' + mn + '～' + mx + ' 分鐘隨機提醒' : '已關閉隨機提醒');
+  });
+
+  /* ============================== 小組討論 ============================== */
+  function getG() {
+    var id = curClass().id, G = state.groups[id];
+    if (!G || typeof G !== 'object') G = state.groups[id] = { count: 2, map: {} };
+    if (!G.map) G.map = {};
+    return G;
+  }
+  function gRole(name) { return GROUP_ROLES.filter(function (r) { return r.name === name; })[0]; }
+  function randomGroups(regroup) {
+    var cls = curClass(), G = getG(), names = shuffle(cls.students.map(function (s) { return s.name; }));
+    if (regroup) names.forEach(function (n, i) { G.map[n] = { g: (i % G.count) + 1, r: '' }; });
+    var byG = {};
+    names.forEach(function (n) { var m = G.map[n]; if (m && m.g) (byG[m.g] = byG[m.g] || []).push(n); });
+    Object.keys(byG).forEach(function (g) {
+      var mem = shuffle(byG[g]), roles = GROUP_ROLES.slice(0, Math.min(mem.length, GROUP_ROLES.length));
+      mem.forEach(function (n, i) { G.map[n].r = roles[i] ? roles[i].name : ''; });
+    });
+    save(); renderGroup();
+  }
+  function renderGroup() {
+    var cls = curClass(), G = getG();
+    $('#gCount').value = String(G.count);
+    var tb = $('#gTable'); tb.textContent = '';
+    cls.students.forEach(function (s) {
+      var m = G.map[s.name] || { g: 0, r: '' };
+      tb.appendChild(el('div', null, s.name));
+      var sg = el('select'); sg.setAttribute('aria-label', s.name + ' 的組別');
+      var o0 = el('option', null, '未分組'); o0.value = '0'; sg.appendChild(o0);
+      for (var g = 1; g <= G.count; g++) { var o = el('option', null, '第 ' + g + ' 組'); o.value = String(g); sg.appendChild(o); }
+      sg.value = String(m.g <= G.count ? m.g : 0);
+      var sr = el('select'); sr.setAttribute('aria-label', s.name + ' 的角色');
+      var r0 = el('option', null, '未指定'); r0.value = ''; sr.appendChild(r0);
+      GROUP_ROLES.forEach(function (r) { var o = el('option', null, r.name); o.value = r.name; sr.appendChild(o); });
+      sr.value = m.r || '';
+      function upd() { G.map[s.name] = { g: +sg.value, r: sr.value }; save(); renderGroupCards(); }
+      sg.addEventListener('change', upd); sr.addEventListener('change', upd);
+      tb.appendChild(sg); tb.appendChild(sr);
+    });
+    renderGroupCards();
+  }
+  function renderGroupCards() {
+    var cls = curClass(), G = getG(), box = $('#gCards'); box.textContent = '';
+    for (var g = 1; g <= G.count; g++) {
+      var card = el('div', 'gcard'); card.appendChild(el('h4', null, '第 ' + g + ' 組'));
+      var mem = cls.students.filter(function (s) { return G.map[s.name] && G.map[s.name].g === g; });
+      if (!mem.length) card.appendChild(el('div', 'dd', '還沒有組員'));
+      mem.forEach(function (s) {
+        var rn = G.map[s.name].r, info = gRole(rn), row = el('div', 'gm');
+        row.appendChild(el('span', 'nm', s.name));
+        if (info) { var rp = el('span', 'rp', info.name); rp.style.setProperty('--c', info.color); row.appendChild(rp); row.appendChild(el('span', 'dd', info.duty)); }
+        card.appendChild(row);
+      });
+      box.appendChild(card);
+    }
+    var free = cls.students.filter(function (s) { var m = G.map[s.name]; return !m || !m.g || m.g > G.count; });
+    if (free.length) {
+      var f = el('div', 'gcard'); f.appendChild(el('h4', null, '未分組'));
+      free.forEach(function (s) { f.appendChild(el('span', 'chip', s.name)); }); box.appendChild(f);
+    }
+  }
+  $('#groupBtn').addEventListener('click', function () { renderGroup(); syncTSound(); $('#gsheet').hidden = false; });
+  $('#gClose').addEventListener('click', function () { $('#gsheet').hidden = true; });
+  $('#gCount').addEventListener('change', function () { var G = getG(); G.count = +this.value; save(); randomGroups(true); });
+  $('#gRandom').addEventListener('click', function () { randomGroups(true); });
+  $('#gRoles').addEventListener('click', function () { randomGroups(false); });
+  $('#gClear').addEventListener('click', function () { getG().map = {}; save(); renderGroup(); });
+  $$('#gsheet [data-m]').forEach(function (b) { b.addEventListener('click', function () { $('#gMin').value = b.dataset.m; }); });
+  $('#gStart').addEventListener('click', function () {
+    var mins = Math.max(1, Math.min(180, Math.round(+$('#gMin').value || 10)));
+    startTimer('down', mins, $('#gText').value.trim().slice(0, 80));
+  });
+
+  /* ============================== 今日總結與加分輪盤 ============================== */
+  var stemOn = -1;
+  function applyBonus5() {
+    var cls = curClass(), got = [];
+    cls.students.forEach(function (s) {
+      var r = rec(cls.id, s.name);
+      var kinds = Object.keys(r.badges).filter(function (k) { return r.badges[k] > 0; }).length;
+      if (kinds >= BONUS_TYPES && !r.b5) got.push(s.name);
+    });
+    if (got.length) {
+      var ops = got.map(function (n) { return { name: n, d: BONUS_POINTS, flag: 'b5' }; });
+      applyOps(cls.id, ops); pushUndo(cls.id, ops); save(); renderGrid(); bump(got); ensureAudio(); sfx.award();
+      toast(got.join('、') + ' 集滿 ' + BONUS_TYPES + ' 種勳章，加 ' + BONUS_POINTS + ' ' + STAR_UNIT_LABEL);
+    }
+  }
+  function chipsInto(box, clickable, onClick) {
+    box.textContent = '';
+    var cls = curClass();
+    cls.students.forEach(function (s) {
+      var r = rec(cls.id, s.name);
+      var c = el(clickable ? 'button' : 'div', 'schip' + (clickable ? '' : ' static'));
+      if (clickable) c.type = 'button';
+      c.appendChild(el('span', null, s.name)); c.appendChild(starNode(r.total, true));
+      if (clickable) c.addEventListener('click', function () { onClick(s.name); });
+      box.appendChild(c);
+    });
+  }
+  function allReachedWheel() {
+    var cls = curClass();
+    return cls.students.length > 0 && cls.students.every(function (s) { return rec(cls.id, s.name).total >= WHEEL_MIN_STARS; });
+  }
+  function renderSummaryDynamic() {
+    var cls = curClass();
+    chipsInto($('#sumChips'), true, function (name) {
+      var bid = $('#sumBadge').value; ensureAudio();
+      award([name], bid);
+    });
+    var got = cls.students.filter(function (s) { return rec(cls.id, s.name).b5; }).map(function (s) { return s.name; });
+    $('#sumBonus').textContent = got.length
+      ? '集滿 ' + BONUS_TYPES + ' 種以上勳章，已加 ' + BONUS_POINTS + ' ' + STAR_UNIT_LABEL + '：' + got.join('、')
+      : '今日勳章集滿 ' + BONUS_TYPES + ' 種以上的同學，總結時會自動加 ' + BONUS_POINTS + ' ' + STAR_UNIT_LABEL + '。';
+    var we = $('#wheelEntry'); we.textContent = '';
+    if (allReachedWheel()) {
+      var key = today() + '|' + cls.id, spun = state.wheel[key];
+      var b = el('button', 'magic', spun ? '加分輪盤（今天已轉出 +' + spun + '）' : '隱藏機關開啟！點我轉加分輪盤');
+      b.type = 'button'; b.addEventListener('click', openWheel); we.appendChild(b);
+    }
+  }
+  $('#sumBtn').addEventListener('click', function () {
+    var box = $('#stems'); box.textContent = '';
+    SUMMARY_STEMS.forEach(function (t, i) {
+      var b = el('button', 'stem' + (i === stemOn ? ' on' : ''), t); b.type = 'button';
+      b.addEventListener('click', function () { stemOn = stemOn === i ? -1 : i; $$('.stem').forEach(function (x, k) { x.classList.toggle('on', k === stemOn); }); });
+      box.appendChild(b);
+    });
+    var sel = $('#sumBadge'); sel.textContent = '';
+    BEHAVIORS.forEach(function (b) { var o = el('option', null, b.name); o.value = b.id; sel.appendChild(o); });
+    sel.value = 'join';
+    applyBonus5(); renderSummaryDynamic();
+    $('#sumSheet').hidden = false;
+  });
+  $('#sumClose').addEventListener('click', function () { $('#sumSheet').hidden = true; });
+
+  var WHEEL = [1, 6, 2, 7, 3, 8, 4, 9, 5, 10], wheelBusy = false;
+  function wheelSegs() {
+    var cur = 0;
+    return WHEEL.map(function (v) {
+      var sz = v <= 5 ? 360 * WHEEL_LOW_PROB / 5 : 360 * (1 - WHEEL_LOW_PROB) / 5;
+      var s = { v: v, a0: cur, a1: cur + sz }; cur += sz; return s;
+    });
+  }
+  function wpt(r, deg) { var t = deg * Math.PI / 180; return [130 + r * Math.sin(t), 140 - r * Math.cos(t)]; }
+  function buildWheel() {
+    var cols = [BLUE, YELLOW, GREEN, CORAL], paths = '', labels = '';
+    wheelSegs().forEach(function (s, i) {
+      var p0 = wpt(112, s.a0), p1 = wpt(112, s.a1), mid = wpt(80, (s.a0 + s.a1) / 2);
+      paths += '<path d="M130 140L' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) + 'A112 112 0 0 1 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1) + 'Z" fill="' + cols[i % 4] + '" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/>';
+      labels += '<text x="' + mid[0].toFixed(1) + '" y="' + (mid[1] + 6).toFixed(1) + '" text-anchor="middle" font-size="' + (s.v <= 5 ? 22 : 15) + '" fill="' + INK + '" font-family="Huninn, sans-serif">' + s.v + '</text>';
+    });
+    $('#wheelBox').innerHTML = '<svg viewBox="0 0 260 280" aria-label="加分輪盤"><g id="wheelG" style="transform-origin:130px 140px">' + paths + labels +
+      '<circle cx="130" cy="140" r="14" fill="' + CARD + '" stroke="' + INK + '" stroke-width="3"/></g>' +
+      '<polygon points="116,4 144,4 130,32" fill="' + CORAL + '" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round"/></svg>';
+  }
+  function openWheel() {
+    var cls = curClass(), key = today() + '|' + cls.id;
+    buildWheel(); wheelBusy = false;
+    $('#wheelRes').textContent = state.wheel[key] ? '今天已轉出：全班 +' + state.wheel[key] + ' ' + STAR_UNIT_LABEL : '';
+    $('#wheelGo').disabled = !!state.wheel[key];
+    chipsInto($('#wheelChips'), false);
+    $('#wheelDlg').showModal();
+  }
+  $('#wheelClose').addEventListener('click', function () { $('#wheelDlg').close(); });
+  $('#wheelGo').addEventListener('click', function () {
+    var cls = curClass(), key = today() + '|' + cls.id;
+    if (wheelBusy || state.wheel[key]) return;
+    wheelBusy = true; ensureAudio(); $('#wheelGo').disabled = true;
+    // 1～5 分佔 70%，6～10 分佔 30%
+    var v = Math.random() < WHEEL_LOW_PROB ? 1 + Math.floor(Math.random() * 5) : 6 + Math.floor(Math.random() * 5);
+    var seg = wheelSegs().filter(function (s) { return s.v === v; })[0];
+    var target = (seg.a0 + seg.a1) / 2 + (Math.random() - 0.5) * (seg.a1 - seg.a0) * 0.6;
+    $('#wheelG').style.transform = 'rotate(' + (360 * 5 + (360 - target)) + 'deg)';
+    $('#wheelRes').textContent = '轉轉轉……';
+    setTimeout(function () {
+      var ops = cls.students.map(function (s) { return { name: s.name, d: v, flag: 'wheel' }; });
+      applyOps(cls.id, ops); state.wheel[key] = v; pushUndo(cls.id, ops, key); save();
+      renderGrid(); bump(cls.students.map(function (s) { return s.name; }));
+      $('#wheelRes').textContent = '全班同時加 ' + v + ' ' + STAR_UNIT_LABEL + '！';
+      chipsInto($('#wheelChips'), false); renderSummaryDynamic(); sfx.wheel(); wheelBusy = false;
+    }, 4400);
+  });
+
+  /* ============================== 全螢幕與初始化 ============================== */
+  var fsBtn = $('#fsBtn'), root = document.documentElement;
+  function inFs() { return document.fullscreenElement || document.webkitFullscreenElement; }
+  function fsFail() { toast('此瀏覽器或嵌入視窗不允許全螢幕，請直接開啟網頁並按鍵盤 F11'); }
+  fsBtn.addEventListener('click', function () {
+    try {
+      var p;
+      if (inFs()) {
+        var ex = document.exitFullscreen || document.webkitExitFullscreen;
+        if (ex) p = ex.call(document);
+      } else {
+        var rq = root.requestFullscreen || root.webkitRequestFullscreen;
+        if (!rq) { fsFail(); return; }
+        p = rq.call(root);
+      }
+      if (p && p.catch) p.catch(fsFail);
+    } catch (e) { fsFail(); }
+  });
+  function fsLabel() { fsBtn.textContent = (document.fullscreenElement || document.webkitFullscreenElement) ? '退出全螢幕' : '全螢幕'; }
+  document.addEventListener('fullscreenchange', fsLabel);
+  document.addEventListener('webkitfullscreenchange', fsLabel);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { $('#gsheet').hidden = true; $('#sumSheet').hidden = true; }
+  });
+
+  $('#remindBtn').textContent = state.remind.on ? '隨機提醒：開' : '隨機提醒';
+  syncTSound();
+  renderAll();
+  scheduleRemind();
+})();
+</script>
+</body>
+</html>
