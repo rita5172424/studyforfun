@@ -51,7 +51,7 @@
     padding: 2px 14px; background: var(--paper);
   }
   .speed input[type=range] { width: clamp(90px, 14vw, 160px); accent-color: #F2A497; }
-  .speed output { min-width: 3em; text-align: center; font-variant-numeric: tabular-nums; }
+  .speed output { min-width: 3.6em; text-align: center; font-variant-numeric: tabular-nums; }
 
   /* 題目列 */
   .qbar {
@@ -163,8 +163,8 @@
     <div class="title">切切樂反應王</div>
     <div class="tools">
       <label class="speed" for="speed">速度
-        <input type="range" id="speed" min="0.4" max="1.6" step="0.1" value="1">
-        <output id="speedOut" for="speed">1.0x</output>
+        <input type="range" id="speed" min="0.25" max="3" step="0.25" value="1">
+        <output id="speedOut" for="speed">1.00x</output>
       </label>
       <button class="btn blue" id="bankBtn" type="button">題庫／模式</button>
       <button class="btn tog" id="boldBtn" type="button" aria-pressed="false">字體加粗</button>
@@ -265,12 +265,18 @@
   var Q_SECONDS = 30;          // 每題時間（秒）
   var HOVER_SECONDS = 2.5;     // 水果在空中停滯的時間（秒）
   var FALL_BASE = 110;         // 水果基本下落速度（像素／秒），再乘上速度橫桿的倍率
-  var WRONG_WINDOW_MS = 5000;  // 計算「連續錯誤」的時間窗
-  var WRONG_LIMIT = 5;         // 時間窗內錯誤觸碰達此次數 → 暫停冷靜
+  var WRONG_WINDOW_MS = 2000;  // 計算「連續錯誤」的時間窗（毫秒）
+  var WRONG_LIMIT = 2;         // 時間窗內錯誤觸碰達此次數 → 暫停冷靜
   var COOL_SECONDS = 3;        // 冷靜時間（秒）
   var COOL_MAX = 3;            // 冷靜次數達此值 → 終止遊戲
   var CONSEC_FROM = 1;         // 連續第幾次錯誤起開始倒扣（1＝每次錯誤都扣；2＝連續第 2 次起才扣）
-  var WRONG_PENALTY = 0.5;
+  var POINT_CORRECT = 150;     // 切中正確選項加幾分
+  var POINT_WRONG = 75;        // 切中混淆選項扣幾分（原本的 0.5 分 × 150）
+  var DISTRACTOR_RATIO = 0.6;  // 水果中混淆選項所佔比例（0～1）；越高越難「全部亂切」
+  // 速度橫桿 = 1 時，空中停滯 HOVER_SECONDS 秒；速度大於 1 時停滯時間會隨之縮短（見 hoverNow）
+  var READ_DELAY = 1.0;        // 水果完整出現後，需經過幾秒才能被切（避免沒看內容就亂切；0 代表關閉）
+  var MIN_SWIPE_PX = 24;       // 揮砍至少要移動多少像素才算有效（壓著不動不算）
+  var EXIT_FACTOR = 2.2;       // 水果離場下落時的加速倍率（越大越快離開畫面）
   var BETWEEN_SECONDS = 7;     // 每題結束後顯示正確答案的秒數
 
   var INK = '#3E3A39', SKIN = '#FFE3CF';
@@ -286,7 +292,8 @@
   /* ---------- 工具 ---------- */
   function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
   function rnd(a, b) { return a + Math.random() * (b - a); }
-  function numText(n) { return n % 1 ? n.toFixed(1) : String(n); }
+  function numText(n) { return String(Math.round(n)); }
+  function hoverNow() { return HOVER_SECONDS / Math.sqrt(Math.max(1, speed)); }
 
   /* ---------- 音效 ---------- */
   var actx = null, soundOn = true;
@@ -436,7 +443,7 @@
     $('#qNo').textContent = '第 ' + (G.qi + 1) + ' / ' + G.qs.length + ' 題';
     $('#qText').textContent = q.q;
     teams.forEach(function (t) {
-      clearFruits(t); t.spawnIn = 0.6; t.bag = [];
+      clearFruits(t); t.spawnIn = 0.6; t.goodBag = []; t.badBag = [];
     });
     if (G.qi > 0) sfx.next();
   }
@@ -457,18 +464,30 @@
     var fw = t.field.clientWidth;
     return Math.max(130, Math.min(mode === 'single' ? 300 : 220, fw * 0.42));
   }
-  function spawn(t) {
-    var max = mode === 'single' ? 5 : 3;
-    if (t.fruits.length >= max) return;
-    if (!t.bag.length) {
-      t.bag = shuffle(G.cur.good.map(function (x) { return { text: x, good: true }; }).concat(G.cur.bad.map(function (x) { return { text: x, good: false }; })));
+  // 依 DISTRACTOR_RATIO 決定出混淆或正確選項；各自洗牌輪流出，避免同一選項重複擠在畫面上
+  function pickOption(t) {
+    var wantBad = Math.random() < DISTRACTOR_RATIO;
+    var key = wantBad ? 'badBag' : 'goodBag', src = wantBad ? G.cur.bad : G.cur.good;
+    if (!t[key] || !t[key].length) t[key] = shuffle(src.slice());
+    var bag = t[key], idx = bag.length - 1;
+    for (var k = bag.length - 1; k >= 0; k--) {
+      if (!t.fruits.some(function (f) { return f.text === bag[k]; })) { idx = k; break; }
     }
-    var opt = t.bag.pop();
+    return { text: bag.splice(idx, 1)[0], good: !wantBad };
+  }
+  function returnOption(t, opt) {
+    var key = opt.good ? 'goodBag' : 'badBag';
+    (t[key] = t[key] || []).push(opt.text);
+  }
+  function spawn(t) {
+    var max = (mode === 'single' ? 5 : 3) + (speed > 1 ? Math.floor(speed - 1) : 0);
+    if (t.fruits.length >= max) return;
+    var opt = pickOption(t);
     var fw = t.field.clientWidth, fh = t.field.clientHeight;
     if (fw < 50 || fh < 80) return;
     var w = fruitWidth(t);
     var el = document.createElement('div');
-    el.className = 'fruit'; el.style.width = w + 'px'; el.style.visibility = 'hidden';
+    el.className = 'fruit'; el.style.width = w + 'px'; el.style.visibility = 'hidden'; el.style.opacity = '.5';
     var isz = Math.max(56, Math.min(96, w * 0.42));
     var kind = Math.floor(Math.random() * FRUITS.length);
     el.innerHTML = fruitSVG(kind, isz);
@@ -477,7 +496,7 @@
     el.appendChild(lab);
     t.field.appendChild(el);
     var h = el.offsetHeight;
-    var maxY = Math.max(8, fh - h - 24), placed = null;
+    var maxY = Math.max(8, Math.min(fh - h - 24, fh * 0.6 - h / 2)), placed = null; // 只停在畫面上半部
     for (var tries = 0; tries < 14 && !placed; tries++) {
       var x = rnd(4, Math.max(5, fw - w - 4)), hy = rnd(8, maxY), ok = true;
       for (var k = 0; k < t.fruits.length; k++) {
@@ -486,8 +505,9 @@
       }
       if (ok) placed = { x: x, hy: hy };
     }
-    if (!placed) { el.remove(); t.bag.push(opt); return; }
-    var f = { el: el, x: placed.x, y: -h - 6, w: w, h: h, hoverY: placed.hy, phase: 'in', hoverT: 0, good: opt.good, text: opt.text, kind: kind, isz: isz, team: t.i };
+    if (!placed) { el.remove(); returnOption(t, opt); return; }
+    var f = { el: el, x: placed.x, y: -h - 6, w: w, h: h, hoverY: placed.hy, phase: 'in', hoverT: 0, good: opt.good, text: opt.text, kind: kind, isz: isz, team: t.i, seen: 0, ready: READ_DELAY <= 0 };
+    if (f.ready) el.style.opacity = '';
     el.style.visibility = ''; el.style.transform = 'translate(' + f.x + 'px,' + f.y + 'px)';
     t.fruits.push(f);
   }
@@ -495,6 +515,10 @@
     var fh = t.field.clientHeight, base = FALL_BASE * speed;
     for (var k = t.fruits.length - 1; k >= 0; k--) {
       var f = t.fruits[k], yDraw;
+      if (!f.ready && f.y >= 0) {
+        f.seen += dt;
+        if (f.seen >= READ_DELAY) { f.ready = true; f.el.style.opacity = ''; }
+      }
       if (f.phase === 'in') {
         var dist = f.hoverY - f.y, v = base * Math.max(0.2, Math.min(1, dist / 70));
         f.y += v * dt;
@@ -503,9 +527,9 @@
       } else if (f.phase === 'hover') {
         f.hoverT += dt;
         yDraw = f.hoverY + Math.sin(f.hoverT * 3) * 3;
-        if (f.hoverT >= HOVER_SECONDS) { f.phase = 'out'; f.y = f.hoverY; }
+        if (f.hoverT >= hoverNow()) { f.phase = 'out'; f.y = f.hoverY; }
       } else {
-        f.y += base * dt;
+        f.y += base * EXIT_FACTOR * dt;
         yDraw = f.y;
         if (f.y > fh + 10) { f.el.remove(); t.fruits.splice(k, 1); continue; }
       }
@@ -529,13 +553,13 @@
     setTimeout(function () { fx.remove(); }, 900);
     var pop = document.createElement('div');
     if (f.good) {
-      t.score += 1; t.streak = 0; sfx.good();
-      pop.className = 'pop good'; pop.textContent = '+1';
+      t.score += POINT_CORRECT; t.streak = 0; sfx.good();
+      pop.className = 'pop good'; pop.textContent = '+' + POINT_CORRECT;
     } else {
       t.streak++; sfx.bad();
       var deduct = t.streak >= CONSEC_FROM;
-      if (deduct) t.score -= WRONG_PENALTY;
-      pop.className = 'pop bad'; pop.textContent = deduct ? '−' + WRONG_PENALTY : '×';
+      if (deduct) t.score -= POINT_WRONG;
+      pop.className = 'pop bad'; pop.textContent = deduct ? '−' + POINT_WRONG : '×';
       t.panel.classList.remove('shake'); void t.panel.offsetWidth; t.panel.classList.add('shake');
       registerWrong(t);
     }
@@ -552,6 +576,7 @@
       t.wrongs = []; t.cool++; updateHUD(t);
       if (t.cool >= COOL_MAX) { terminate(t); }
       else { t.coolUntil = now + COOL_SECONDS * 1000; t.coolEl.hidden = false; sfx.cool(); }
+      Object.keys(ptrs).forEach(function (id) { ptrs[id].used = true; });
     }
   }
 
@@ -676,12 +701,12 @@
     });
     Object.keys(ptrs).forEach(function (id) { if (ptrs[id].done && ptrs[id].pts.length < 2) delete ptrs[id]; });
   }
-  function hitSegment(x0, y0, x1, y1) {
-    if (!G || G.phase !== 'play') return;
+  function hitSegment(x0, y0, x1, y1, p) {
+    if (!G || G.phase !== 'play' || !p || p.used) return;
     var rects = [];
     teams.forEach(function (t) {
       if (!canPlay(t)) return;
-      t.fruits.forEach(function (f) { rects.push({ t: t, f: f, r: f.el.getBoundingClientRect() }); });
+      t.fruits.forEach(function (f) { if (f.ready) rects.push({ t: t, f: f, r: f.el.getBoundingClientRect() }); });
     });
     if (!rects.length) return;
     var dx = x1 - x0, dy = y1 - y0, steps = Math.max(1, Math.ceil(Math.hypot(dx, dy) / 8));
@@ -691,7 +716,7 @@
         var q = rects[k];
         if (!q.f.el.isConnected) continue;
         if (px >= q.r.left - 4 && px <= q.r.right + 4 && py >= q.r.top - 4 && py <= q.r.bottom + 4) {
-          if (canPlay(q.t)) slice(q.t, q.f);
+          if (canPlay(q.t)) { slice(q.t, q.f); p.used = true; return; } // 一次揮砍只切一個，需放開再切下一個
         }
       }
     }
@@ -699,16 +724,17 @@
   panelsEl.addEventListener('pointerdown', function (e) {
     if (e.target.closest('button')) return;
     ensureAudio();
-    ptrs[e.pointerId] = { pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }], done: false };
+    ptrs[e.pointerId] = { pts: [{ x: e.clientX, y: e.clientY, t: performance.now() }], done: false, used: false, dist: 0 };
     try { panelsEl.setPointerCapture(e.pointerId); } catch (x) {}
-    hitSegment(e.clientX, e.clientY, e.clientX, e.clientY);
+    hitSegment(e.clientX, e.clientY, e.clientX, e.clientY, ptrs[e.pointerId]); // 點一下也可切
   });
   panelsEl.addEventListener('pointermove', function (e) {
     var p = ptrs[e.pointerId];
     if (!p || p.done) return;
     var last = p.pts[p.pts.length - 1];
     p.pts.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-    hitSegment(last.x, last.y, e.clientX, e.clientY);
+    p.dist += Math.hypot(e.clientX - last.x, e.clientY - last.y);
+    if (p.dist >= MIN_SWIPE_PX) hitSegment(last.x, last.y, e.clientX, e.clientY, p);
   });
   function endPtr(e) { if (ptrs[e.pointerId]) ptrs[e.pointerId].done = true; }
   panelsEl.addEventListener('pointerup', endPtr);
@@ -751,7 +777,7 @@
 
   /* ---------- 速度、加粗、全螢幕 ---------- */
   var speedEl = $('#speed');
-  speedEl.addEventListener('input', function () { speed = parseFloat(speedEl.value) || 1; $('#speedOut').textContent = speed.toFixed(1) + 'x'; });
+  speedEl.addEventListener('input', function () { speed = parseFloat(speedEl.value) || 1; $('#speedOut').textContent = speed.toFixed(2) + 'x'; });
   var boldBtn = $('#boldBtn');
   boldBtn.addEventListener('click', function () { var on = document.body.classList.toggle('bold'); boldBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); });
   var fsBtn = $('#fsBtn'), root = document.documentElement;
