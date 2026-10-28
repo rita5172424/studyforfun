@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>幸福香水｜讚美與正向回饋句型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FFFCF6;
+    --ink: #3E3A39;
+    --coral: #F2A497;
+    --yellow: #F6D27A;
+    --blue: #A8D3E6;
+    --green: #B9DAA5;
+    --line: 3px solid var(--ink);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: "Huninn", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; line-height: 1.5;
+  }
+  .app { max-width: 1240px; margin: 0 auto; padding: 10px 14px 28px; display: flex; flex-direction: column; gap: 10px; }
+
+  .btn {
+    font: inherit; color: var(--ink); background: var(--paper); border: var(--line); border-radius: 999px;
+    padding: 4px 16px; cursor: pointer; text-decoration: none; display: inline-block; white-space: nowrap;
+    font-size: 16px; transition: transform .12s;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .btn:active:not(:disabled) { transform: translateY(1px); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn:focus-visible, button:focus-visible, input:focus-visible { outline: 3px dashed var(--ink); outline-offset: 3px; }
+  .btn.coral { background: var(--coral); } .btn.yellow { background: var(--yellow); }
+  .btn.blue { background: var(--blue); } .btn.green { background: var(--green); }
+  .btn.s { padding: 2px 12px; font-size: 14px; }
+  .btn[aria-pressed="true"].tog { background: var(--yellow); }
+
+  .bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .title { font-size: clamp(24px, 3.4vw, 36px); letter-spacing: .12em; margin-right: auto; }
+  .title small { font-size: 15px; letter-spacing: .05em; margin-left: 10px; }
+  .tools { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .card { border: var(--line); border-radius: 26px; background: var(--paper); padding: 12px 18px; }
+
+  .mission { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--yellow); padding: 6px 18px; font-size: 18px; }
+  .mission b { font-weight: 400; background: var(--paper); border: var(--line); border-radius: 999px; padding: 0 12px; font-size: 15px; }
+
+  .work { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+  @media (max-width: 900px) { .work { grid-template-columns: 1fr; } }
+
+  /* 左側：調香步驟 */
+  .who { display: flex; gap: 10px 18px; flex-wrap: wrap; align-items: center; font-size: 17px; }
+  .who label { display: flex; align-items: center; gap: 6px; }
+  input[type=text] {
+    font: inherit; color: var(--ink); background: #fff; border: var(--line); border-radius: 18px;
+    padding: 3px 12px; font-size: 17px; width: 100%; min-width: 0;
+  }
+  .who input { width: 9em; }
+  .stepper { display: flex; gap: 8px; margin: 10px 0 8px; padding: 0; list-style: none; }
+  .stepper li { flex: 1; }
+  .stepper button {
+    width: 100%; font: inherit; color: var(--ink); border: var(--line); border-radius: 18px; background: var(--paper);
+    padding: 4px 6px; cursor: pointer; font-size: 17px; display: flex; flex-direction: column; align-items: center; line-height: 1.25;
+  }
+  .stepper button small { font-size: 13px; }
+  .stepper button[aria-current="step"] { background: var(--c); transform: translateY(-3px); }
+  .stepper button.done::after { content: "✓ 完成"; font-size: 12px; }
+  .layerhead { font-size: 20px; margin: 4px 0; }
+  .layerhead small { display: block; font-size: 14px; opacity: .85; }
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 560px) { .chips { grid-template-columns: 1fr; } }
+  .chip {
+    font: inherit; color: var(--ink); text-align: left; background: var(--paper); border: var(--line); border-radius: 20px;
+    padding: 6px 14px; cursor: pointer; font-size: 18px; line-height: 1.35; overflow-wrap: anywhere;
+  }
+  .chip:hover { background: var(--c); }
+  .chip[aria-pressed="true"] { background: var(--c); transform: translateY(-2px); }
+  .blanks { display: grid; gap: 6px; margin-top: 10px; }
+  .blanks label { font-size: 15px; display: grid; gap: 2px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  #msg { min-height: 1.6em; margin: 8px 0 0; font-size: 15px; }
+  #msg.warn { color: #B4473A; }
+  body.bold .chip, body.bold .sentence, body.bold .layerhead { font-weight: 700; -webkit-text-stroke: .6px var(--ink); }
+
+  /* 右側：香水瓶與標籤 */
+  .bottleWrap { position: relative; display: flex; justify-content: center; }
+  .bottleWrap svg { width: min(100%, 210px); height: auto; overflow: visible; }
+  .liq { transform-box: fill-box; transform-origin: bottom; transform: scaleY(0); transition: transform .7s ease-out; }
+  .liq.on { transform: scaleY(1); }
+  .bottle.shake { animation: shake .7s ease-in-out; }
+  @keyframes shake { 15% { transform: rotate(-8deg); } 35% { transform: rotate(7deg); } 55% { transform: rotate(-5deg); } 75% { transform: rotate(3deg); } }
+  .mist { position: absolute; border-radius: 50%; border: 2px solid var(--ink); pointer-events: none; animation: mist 1.5s ease-out forwards; }
+  @keyframes mist { from { transform: translate(0, 0) scale(.3); opacity: 1; } to { transform: translate(var(--dx), var(--dy)) scale(1.2); opacity: 0; } }
+  .spk { position: absolute; width: 30px; height: 30px; pointer-events: none; animation: twinkle 1.6s ease-in-out forwards; }
+  @keyframes twinkle { 0% { transform: scale(0) rotate(0); opacity: 0; } 40% { transform: scale(1.2) rotate(40deg); opacity: 1; } 100% { transform: scale(.4) rotate(90deg); opacity: 0; } }
+
+  .label { border: var(--line); border-radius: 22px; background: #fff; padding: 10px 16px 12px; margin-top: 6px; position: relative; }
+  .label.glow { animation: glow 1.2s ease-in-out 3; }
+  @keyframes glow { 50% { background: var(--yellow); transform: scale(1.02); } }
+  .label .brand { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; border-bottom: 2px dashed var(--ink); padding-bottom: 3px; flex-wrap: wrap; }
+  .label .to { margin: 6px 0 0; font-size: 16px; }
+  .sentence { font-size: clamp(19px, 2.2vw, 25px); line-height: 1.6; margin: 4px 0; overflow-wrap: anywhere; min-height: 3.2em; }
+  .sentence .fill { background: var(--c); border-radius: 10px; padding: 0 6px; }
+  .sentence .fill.empty { background: none; border-bottom: 3px dashed var(--c); }
+  .sentence .ghostpart { opacity: .45; font-size: .8em; display: block; }
+  .stripe { display: flex; height: 10px; border: 2px solid var(--ink); border-radius: 999px; overflow: hidden; }
+  .stripe i { flex: 1; }
+  .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .checks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .checks span { border: var(--line); border-radius: 999px; padding: 0 12px; font-size: 14px; background: var(--green); }
+  .checks span.tip { background: var(--yellow); }
+
+  /* 視窗 */
+  dialog {
+    border: var(--line); border-radius: 28px; background: var(--paper); color: var(--ink);
+    width: min(860px, 94vw); max-height: 92dvh; padding: 18px 22px; font-family: inherit; overflow: auto;
+  }
+  dialog::backdrop { background: rgba(62, 58, 57, .4); }
+  dialog h2 { margin: 0 0 8px; font-weight: 400; font-size: 26px; letter-spacing: .1em; }
+  dialog h3 { margin: 12px 0 4px; font-weight: 400; font-size: 20px; }
+  dialog p, dialog li { font-size: 17px; margin: 4px 0; }
+  .dacts { display: flex; gap: 10px; justify-content: flex-end; margin-top: 12px; flex-wrap: wrap; }
+  .ex { border: var(--line); border-radius: 18px; padding: 4px 14px; margin: 6px 0; }
+  .ex.no { background: #fbe3dd; } .ex.yes { background: var(--green); }
+  .shelf { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .bt { border: var(--line); border-radius: 22px; padding: 8px 14px; background: #fff; }
+  .bt h4 { margin: 0; font-weight: 400; font-size: 16px; }
+  .bt p { font-size: 18px; }
+  .toast {
+    position: fixed; left: 50%; top: 14px; transform: translateX(-50%); z-index: 90; border: var(--line); border-radius: 999px;
+    background: var(--green); padding: 4px 22px; font-size: 18px; pointer-events: none; max-width: 94vw; text-align: center;
+  }
+
+  #printCard { display: none; }
+  @media (prefers-reduced-motion: reduce) { .bottle.shake, .label.glow, .mist, .spk { animation: none; } .liq { transition: none; } }
+
+  @page { size: A4 portrait; margin: 15mm; }
+  @media print {
+    html, body { background: #fff; }
+    .app, dialog, .toast, .mist, .spk { display: none !important; }
+    #printCard { display: block; border: 1.2mm solid #3E3A39; border-radius: 12mm; padding: 14mm 12mm; text-align: center; break-inside: avoid; }
+    #printCard h1 { margin: 0; font-size: 30pt; letter-spacing: .15em; font-weight: 400; }
+    #printCard .pn { font-size: 14pt; margin: 2mm 0 8mm; }
+    #printCard .pto, #printCard .pfrom { font-size: 18pt; margin: 4mm 0; }
+    #printCard .ps { font-size: 26pt; line-height: 1.7; margin: 8mm 0; overflow-wrap: anywhere; }
+    #printCard .pstripe { display: flex; height: 5mm; border: .6mm solid #3E3A39; border-radius: 3mm; overflow: hidden; margin-top: 8mm; }
+    #printCard .pstripe i { flex: 1; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <a class="btn yellow s" href="index.html">回首頁</a>
+    <div class="title">幸福香水<small>讚美與正向回饋句型</small></div>
+    <div class="tools">
+      <button class="btn blue s" id="tipBtn" type="button">讚美小秘訣</button>
+      <button class="btn green s" id="shelfBtn" type="button">香水收藏櫃</button>
+      <button class="btn s tog" id="boldBtn" type="button" aria-pressed="false">字體加粗</button>
+      <button class="btn s tog" id="soundBtn" type="button" aria-pressed="true">音效：開</button>
+      <button class="btn coral s" id="fsBtn" type="button">全螢幕</button>
+    </div>
+  </header>
+
+  <section class="card mission" aria-label="今日香氛任務">
+    <span>今日香氛任務：</span><b id="mission"></b>
+    <button class="btn s" id="missionBtn" type="button">換一個</button>
+  </section>
+
+  <main class="work">
+    <section class="card" aria-label="調製香水">
+      <div class="who">
+        <label>送給 <input type="text" id="toName" maxlength="10" placeholder="想感謝的人"></label>
+        <label>來自 <input type="text" id="fromName" maxlength="10" placeholder="我是…（可留空）"></label>
+      </div>
+      <ol class="stepper" id="stepper"></ol>
+      <div class="layerhead" id="layerHead"></div>
+      <div class="chips" id="chips"></div>
+      <div class="blanks" id="blanks"></div>
+      <div class="nav">
+        <button class="btn s" id="prevBtn" type="button">上一步</button>
+        <button class="btn coral" id="nextBtn" type="button">下一步</button>
+        <button class="btn s blue" id="demoBtn" type="button">靈感瓶（隨機示範）</button>
+      </div>
+      <p id="msg" role="status"></p>
+    </section>
+
+    <section class="card" aria-label="香水與標籤">
+      <div class="bottleWrap" id="bottleWrap"></div>
+      <div class="label" id="label">
+        <div class="brand"><span id="lbName">調製中…</span><span id="lbNo"></span></div>
+        <p class="to" id="lbTo"></p>
+        <div class="sentence" id="sentence"></div>
+        <p class="to" id="lbFrom"></p>
+        <div class="stripe" id="stripe"></div>
+      </div>
+      <div class="checks" id="checks"></div>
+      <div class="acts">
+        <button class="btn coral s" id="sprayBtn" type="button" disabled>噴香水</button>
+        <button class="btn s" id="speakBtn" type="button" disabled>朗讀</button>
+        <button class="btn s" id="copyBtn" type="button" disabled>複製句子</button>
+        <button class="btn green s" id="saveBtn" type="button" disabled>收進收藏櫃</button>
+        <button class="btn yellow s" id="printBtn" type="button" disabled>列印標籤</button>
+        <button class="btn s" id="newBtn" type="button">新的一瓶</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<dialog id="tipDlg">
+  <h2>讚美小秘訣</h2>
+  <h3>一瓶好香水，有三層香調</h3>
+  <p><b>前調・看見：</b>說出你看到的「具體行為」，不只說「你好棒」。</p>
+  <p><b>中調・感受：</b>說這件事帶給你或大家的感覺與幫助。</p>
+  <p><b>後調・祝福：</b>用「謝謝」或鼓勵收尾，讓對方帶著力量離開。</p>
+  <h3>比一比</h3>
+  <div class="ex no">你好棒喔。</div>
+  <div class="ex yes">我看見你主動幫忙擦黑板，這讓大家可以早一點開始上課，謝謝你！</div>
+  <h3>收到香水時，可以這樣回應</h3>
+  <p>微笑、看著對方，說：「謝謝你看見我的努力。」「聽你這樣說，我覺得很開心。」，也可以回送一瓶香水。</p>
+  <h3>小提醒</h3>
+  <p>多讚美「行動與努力」，少比較別人；真誠最重要。</p>
+  <div class="dacts"><button class="btn" id="tipClose" type="button">關閉</button></div>
+</dialog>
+
+<dialog id="shelfDlg">
+  <h2>香水收藏櫃</h2>
+  <p id="shelfInfo"></p>
+  <div class="shelf" id="shelfBody"></div>
+  <div class="dacts">
+    <button class="btn" id="shelfClear" type="button">清空收藏櫃</button>
+    <button class="btn coral" id="shelfClose" type="button">關閉</button>
+  </div>
+</dialog>
+
+<div id="printCard"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var INK = '#3E3A39';
+  var CORAL = '#F2A497', YELLOW = '#F6D27A', BLUE = '#A8D3E6', GREEN = '#B9DAA5';
+
+  /* =====================================================================
+   * 【句型擴充區｜修改指引】
+   * 一瓶香水有三層香調（LAYERS 的三個項目：前調、中調、後調）。
+   * 想新增句型，請在對應香調的 stems 陣列裡，複製一筆貼在後面（記得加逗號），格式：
+   *   { tpl: '句型，空格用 {0}、{1} 表示。', blanks: [ { ph: '空格的提示', ex: ['示範1', '示範2', '示範3'] } ] }
+   * - tpl：完整句子，結尾請有標點（。或！）。有幾個空格，blanks 就要有幾筆，順序對應 {0}、{1}…
+   * - blanks 裡的 ph 是輸入框的提示文字；ex 是「靈感瓶」隨機示範時會用的例子。
+   * - 不需要填空的句子（例如「謝謝你！」），blanks 寫成 [] 即可。
+   * - 想更改香調名稱、說明、顏色，改 name、tag、hint、color 即可。
+   * 學生填入的內容只會當作文字顯示，不會被當成程式執行。
+   * ===================================================================== */
+  var LAYERS = [
+    { id: 'top', name: '前調', tag: '看見', color: YELLOW, hint: '先說出你「看見」的具體行為：誰、做了什麼。', stems: [
+      { tpl: '我看見你{0}。', blanks: [{ ph: '做了什麼具體的事', ex: ['主動幫同學撿起掉在地上的筆', '很認真地聽別人發表', '把椅子輕輕靠回桌子'] }] },
+      { tpl: '今天{0}的時候，我注意到你{1}。', blanks: [{ ph: '什麼時候／什麼活動', ex: ['小組討論', '整理教室', '上課'] }, { ph: '做了什麼', ex: ['願意先讓別人說完', '主動分配工作', '一直很專心'] }] },
+      { tpl: '我發現你一直在努力{0}。', blanks: [{ ph: '努力的事情', ex: ['把字寫得更工整', '練習舉手發言', '幫忙照顧同學'] }] },
+      { tpl: '剛剛你{0}，我都看到了。', blanks: [{ ph: '做了什麼', ex: ['耐心地教同學解題', '主動說謝謝', '自己把垃圾撿起來'] }] },
+      { tpl: '你在{0}的表現，讓我印象很深刻。', blanks: [{ ph: '哪一件事', ex: ['報告', '合作任務', '值日工作'] }] }
+    ] },
+    { id: 'mid', name: '中調', tag: '感受', color: CORAL, hint: '接著說說這件事帶給你或大家的「感受」與「幫助」。', stems: [
+      { tpl: '這讓我覺得{0}。', blanks: [{ ph: '你的感受', ex: ['很溫暖', '被尊重', '很安心'] }] },
+      { tpl: '你的行動幫助了{0}。', blanks: [{ ph: '幫助了誰／什麼事', ex: ['整個小組順利完成任務', '大家可以早點開始上課', '需要幫忙的同學'] }] },
+      { tpl: '你的{0}讓我很欣賞。', blanks: [{ ph: '一項優點', ex: ['細心', '耐心', '勇氣'] }] },
+      { tpl: '因為你，大家{0}。', blanks: [{ ph: '大家有什麼改變', ex: ['變得更放鬆', '更有信心', '更願意分享想法'] }] },
+      { tpl: '我從你身上學到{0}。', blanks: [{ ph: '學到什麼', ex: ['原來慢慢來也可以做好', '要先聽別人說完', '努力真的有用'] }] }
+    ] },
+    { id: 'base', name: '後調', tag: '祝福', color: BLUE, hint: '最後用「謝謝」或「鼓勵」收尾，讓香氣留下來。', stems: [
+      { tpl: '謝謝你！', blanks: [] },
+      { tpl: '謝謝你讓{0}。', blanks: [{ ph: '讓什麼變好', ex: ['我們的教室更乾淨', '今天的學習更有趣', '我覺得不孤單'] }] },
+      { tpl: '期待你下次也能{0}。', blanks: [{ ph: '期待的行動', ex: ['繼續分享你的想法', '和我們一起合作', '帶給大家笑容'] }] },
+      { tpl: '繼續保持，你真的很棒！', blanks: [] },
+      { tpl: '希望你知道，你的努力我都看見了。', blanks: [] },
+      { tpl: '我也想跟你一起{0}。', blanks: [{ ph: '想一起做的事', ex: ['完成下一個任務', '練習更多', '玩這個遊戲'] }] }
+    ] }
+  ];
+
+  /* ---------- 今日香氛任務（可自行增修） ---------- */
+  var MISSIONS = [
+    '找一位今天幫助過你的人', '找一位今天認真聽你說話的人', '找一位今天有進步的同學', '找一位今天很有禮貌的人',
+    '找一位在小組裡幫大家完成任務的人', '找一位今天對你微笑的人', '找一位今天讓你學到新東西的人', '送一瓶香水給老師或學校的工作人員'
+  ];
+
+  /* ---------- 香水命名（形容詞 ＋ 名詞，隨機組合） ---------- */
+  var NAME_A = ['暖陽', '微風', '星光', '蜂蜜', '雲朵', '薄荷', '櫻花', '茉莉', '晨露', '彩虹'];
+  var NAME_B = ['擁抱', '午後', '合唱', '晨光', '小確幸', '微笑', '花園', '散步', '祝福', '約定'];
+
+  var SHELF_KEY = 'happyPerfume.v1';
+
+  /* ============================== 工具 ============================== */
+  var $ = function (s) { return document.querySelector(s); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function clean(v) { return String(v || '').trim().replace(/[。！!，,、．.\s]+$/, ''); }
+  function toast(t) { var d = el('div', 'toast', t); document.body.appendChild(d); setTimeout(function () { d.remove(); }, 2200); }
+
+  /* ============================== 音效 ============================== */
+  var actx = null, soundOn = true;
+  function ensureAudio() { try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } }
+  function tone(f, at, d, type, v) {
+    if (!soundOn || !actx) return;
+    var o = actx.createOscillator(), g = actx.createGain(), t0 = actx.currentTime + at;
+    o.type = type || 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(v || 0.16, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    o.connect(g); g.connect(actx.destination); o.start(t0); o.stop(t0 + d + 0.05);
+  }
+  var sfx = {
+    pick: function () { tone(880, 0, 0.08, 'triangle', 0.1); },
+    next: function () { tone(660, 0, 0.1, 'sine'); tone(880, 0.09, 0.14, 'sine'); },
+    brew: function () { [523, 659, 784, 1047, 1319].forEach(function (f, i) { tone(f, i * 0.11, 0.35, 'triangle', 0.17); }); },
+    spray: function () {
+      if (!soundOn || !actx) return;
+      var len = Math.floor(actx.sampleRate * 0.55), buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / len);
+      var src = actx.createBufferSource(), flt = actx.createBiquadFilter(), g = actx.createGain();
+      src.buffer = buf; flt.type = 'bandpass'; flt.frequency.value = 3800; g.gain.value = 0.25;
+      src.connect(flt); flt.connect(g); g.connect(actx.destination); src.start();
+      tone(1568, 0.3, 0.4, 'sine', 0.1); tone(2093, 0.45, 0.5, 'sine', 0.08);
+    }
+  };
+  $('#soundBtn').addEventListener('click', function () {
+    soundOn = !soundOn; this.textContent = '音效：' + (soundOn ? '開' : '關'); this.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    if (soundOn) { ensureAudio(); sfx.pick(); }
+  });
+
+  /* ============================== 香水瓶（SVG） ============================== */
+  function buildBottle() {
+    var layers = [BLUE, CORAL, YELLOW]; // 由下而上：後調、中調、前調
+    var ys = [220, 154, 88];
+    var liq = layers.map(function (c, i) { return '<rect class="liq" id="liq' + (2 - i) + '" x="30" y="' + ys[i] + '" width="160" height="66" fill="' + c + '"/>'; }).join('');
+    $('#bottleWrap').innerHTML =
+      '<svg viewBox="0 0 220 300" id="bottle" class="bottle" role="img" aria-label="香水瓶，由下而上依序是後調、中調、前調">' +
+      '<defs><clipPath id="bodyClip"><rect x="30" y="88" width="160" height="198" rx="36"/></clipPath></defs>' +
+      '<rect x="134" y="14" width="34" height="12" rx="5" fill="#FFFCF6" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<rect x="88" y="6" width="44" height="36" rx="10" fill="' + CORAL + '" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<rect x="104" y="40" width="12" height="20" fill="#FFFCF6" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<rect x="84" y="58" width="52" height="14" rx="4" fill="' + YELLOW + '" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<rect x="94" y="72" width="32" height="14" fill="#fff" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<rect x="26" y="84" width="168" height="206" rx="40" fill="#fff"/>' +
+      '<g clip-path="url(#bodyClip)">' + liq +
+      '<circle cx="60" cy="250" r="6" fill="#FFFCF6" opacity=".7"/><circle cx="150" cy="230" r="4" fill="#FFFCF6" opacity=".7"/>' +
+      '<circle cx="80" cy="180" r="5" fill="#FFFCF6" opacity=".7"/><circle cx="140" cy="120" r="6" fill="#FFFCF6" opacity=".7"/></g>' +
+      '<rect x="26" y="84" width="168" height="206" rx="40" fill="none" stroke="' + INK + '" stroke-width="3.5"/>' +
+      '<path d="M46 118V230" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".8"/>' +
+      '<path d="M110 232C84 214 76 196 82 184C88 172 104 172 110 186C116 172 132 172 138 184C144 196 136 214 110 232Z" fill="#FFFCF6" stroke="' + INK + '" stroke-width="3.5" stroke-linejoin="round"/></svg>';
+    $('#stripe').innerHTML = '<i style="background:' + YELLOW + '"></i><i style="background:' + CORAL + '"></i><i style="background:' + BLUE + '"></i>';
+  }
+  function sparkle() {
+    var wrap = $('#bottleWrap'), cols = [YELLOW, CORAL, BLUE, GREEN];
+    for (var i = 0; i < 9; i++) {
+      var s = el('div', 'spk'); s.style.left = (8 + Math.random() * 80) + '%'; s.style.top = (Math.random() * 90) + '%';
+      s.style.animationDelay = (Math.random() * 0.6) + 's';
+      s.innerHTML = '<svg viewBox="0 0 100 100"><polygon points="50,4 62,38 96,50 62,62 50,96 38,62 4,50 38,38" fill="' + cols[i % 4] + '" stroke="' + INK + '" stroke-width="5" stroke-linejoin="round"/></svg>';
+      wrap.appendChild(s); (function (n) { setTimeout(function () { n.remove(); }, 2400); })(s);
+    }
+  }
+  function mist() {
+    var wrap = $('#bottleWrap'), svg = $('#bottle'), wr = wrap.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+    var ox = sr.left - wr.left + sr.width * (168 / 220), oy = sr.top - wr.top + sr.height * (20 / 300), cols = [YELLOW, CORAL, BLUE, GREEN];
+    for (var i = 0; i < 18; i++) {
+      var m = el('div', 'mist'), sz = 8 + Math.random() * 18;
+      m.style.width = m.style.height = sz + 'px'; m.style.left = ox + 'px'; m.style.top = oy + 'px'; m.style.background = cols[i % 4];
+      m.style.setProperty('--dx', (30 + Math.random() * 110) + 'px'); m.style.setProperty('--dy', (-70 + Math.random() * 110) + 'px');
+      m.style.animationDelay = (Math.random() * 0.25) + 's';
+      wrap.appendChild(m); (function (n) { setTimeout(function () { n.remove(); }, 1900); })(m);
+    }
+  }
+
+  /* ============================== 狀態與畫面 ============================== */
+  var S;
+  function freshState() { return { layer: 0, pick: [null, null, null], vals: [[], [], []], brewed: false, saved: false, pname: '', no: 0 }; }
+  S = freshState();
+
+  function layerReady(li) {
+    var pk = S.pick[li]; if (pk == null) return false;
+    var st = LAYERS[li].stems[pk];
+    return st.blanks.every(function (_, bi) { return clean(S.vals[li][bi]).length > 0; });
+  }
+  function allReady() { return [0, 1, 2].every(layerReady); }
+  function sentenceText() {
+    var out = '';
+    LAYERS.forEach(function (L, li) {
+      var pk = S.pick[li]; if (pk == null) return;
+      out += L.stems[pk].tpl.replace(/\{(\d+)\}/g, function (_, n) { return clean(S.vals[li][+n]); });
+    });
+    return out;
+  }
+  function setMsg(t, warn) { var m = $('#msg'); m.textContent = t || ''; m.className = warn ? 'warn' : ''; }
+
+  function renderStepper() {
+    var ol = $('#stepper'); ol.textContent = '';
+    LAYERS.forEach(function (L, i) {
+      var li = el('li'), b = el('button'); b.type = 'button'; b.style.setProperty('--c', L.color);
+      b.appendChild(el('span', null, (i + 1) + '. ' + L.name)); b.appendChild(el('small', null, L.tag));
+      if (i === S.layer) b.setAttribute('aria-current', 'step');
+      if (layerReady(i)) b.classList.add('done');
+      b.addEventListener('click', function () { S.layer = i; renderLayer(); });
+      li.appendChild(b); ol.appendChild(li);
+    });
+  }
+  function renderLayer() {
+    var L = LAYERS[S.layer], li = S.layer;
+    renderStepper();
+    var head = $('#layerHead'); head.textContent = '';
+    head.appendChild(document.createTextNode('第 ' + (li + 1) + ' 步・' + L.name + '「' + L.tag + '」'));
+    head.appendChild(el('small', null, L.hint));
+    var box = $('#chips'); box.textContent = '';
+    L.stems.forEach(function (st, si) {
+      var label = st.tpl.replace(/\{\d+\}/g, '＿＿');
+      var c = el('button', 'chip', label); c.type = 'button'; c.style.setProperty('--c', L.color);
+      c.setAttribute('aria-pressed', S.pick[li] === si ? 'true' : 'false');
+      c.addEventListener('click', function () {
+        ensureAudio(); sfx.pick();
+        S.pick[li] = si; S.vals[li] = st.blanks.map(function () { return ''; }); S.brewed = false; S.saved = false;
+        renderLayer(); renderAll(); var f = $('#blanks input'); if (f) f.focus();
+      });
+      box.appendChild(c);
+    });
+    var bl = $('#blanks'); bl.textContent = '';
+    if (S.pick[li] != null) {
+      LAYERS[li].stems[S.pick[li]].blanks.forEach(function (b, bi) {
+        var lab = el('label'); lab.appendChild(el('span', null, '空格 ' + (bi + 1) + '：' + b.ph));
+        var inp = el('input'); inp.type = 'text'; inp.maxLength = 30; inp.placeholder = '例如：' + b.ex[0]; inp.value = S.vals[li][bi] || '';
+        inp.setAttribute('aria-label', b.ph);
+        inp.addEventListener('input', function () { S.vals[li][bi] = inp.value; S.brewed = false; S.saved = false; renderAll(); renderStepper(); });
+        lab.appendChild(inp); bl.appendChild(lab);
+      });
+    }
+    renderNav();
+  }
+  function renderNav() {
+    var li = S.layer;
+    $('#prevBtn').disabled = li === 0;
+    var nb = $('#nextBtn');
+    if (li < 2) { nb.textContent = '下一步'; nb.disabled = !layerReady(li); }
+    else { nb.textContent = '調製香水'; nb.disabled = !allReady(); }
+    if (S.pick[li] == null) setMsg('先選一個句型，再把空格補完整。');
+    else if (!layerReady(li)) setMsg('請把空格補完整，才能前往下一步。');
+    else setMsg(li < 2 ? '很好！按「下一步」繼續調香。' : '三層香調都準備好了，按「調製香水」！');
+  }
+
+  function renderBottle() {
+    [0, 1, 2].forEach(function (i) { var r = $('#liq' + i); if (r) r.classList.toggle('on', S.pick[i] != null); });
+  }
+  function renderLabel() {
+    var box = $('#sentence'); box.textContent = '';
+    LAYERS.forEach(function (L, li) {
+      var pk = S.pick[li];
+      if (pk == null) { box.appendChild(el('span', 'ghostpart', '（' + L.name + '：尚未選擇）')); return; }
+      L.stems[pk].tpl.split(/(\{\d+\})/).forEach(function (tk) {
+        var m = /^\{(\d+)\}$/.exec(tk);
+        if (m) {
+          var v = clean(S.vals[li][+m[1]]), sp = el('span', 'fill' + (v ? '' : ' empty'), v || '＿＿'); sp.style.setProperty('--c', L.color); box.appendChild(sp);
+        } else if (tk) box.appendChild(document.createTextNode(tk));
+      });
+    });
+    var to = clean($('#toName').value), fr = clean($('#fromName').value);
+    $('#lbTo').textContent = to ? '送給：' + to : '送給：（想感謝的人）';
+    $('#lbFrom').textContent = fr ? '來自：' + fr : '';
+    $('#lbName').textContent = S.brewed ? S.pname : '調製中…';
+    $('#lbNo').textContent = S.brewed ? 'No.' + (S.no < 10 ? '0' : '') + S.no : '';
+  }
+  function renderChecks() {
+    var box = $('#checks'); box.textContent = '';
+    if (!S.brewed) return;
+    var top = clean((S.vals[0] || []).join('')), mid = clean((S.vals[1] || []).join('')), all = (S.vals[0].concat(S.vals[1])).join('');
+    function add(ok, good, tip) { box.appendChild(el('span', ok ? '' : 'tip', ok ? '✓ ' + good : '△ ' + tip)); }
+    add(true, '三層香調齊全', '');
+    add(top.length >= 4, '有具體的行為', '前調可以再說得更具體一點');
+    add(mid.length >= 2, '說出了感受或幫助', '中調可以再說說你的感受');
+    add(!/漂亮|好看|帥|胖|瘦|醜|比.{0,4}(好|強|厲害)|最/.test(all), '聚焦行為與努力', '小提醒：多讚美行動與努力，少比較別人');
+  }
+  function renderActions() {
+    ['sprayBtn', 'speakBtn', 'copyBtn', 'printBtn'].forEach(function (id) { $('#' + id).disabled = !S.brewed; });
+    $('#saveBtn').disabled = !S.brewed || S.saved;
+    $('#saveBtn').textContent = S.saved ? '已收藏' : '收進收藏櫃';
+  }
+  function renderAll() { renderBottle(); renderLabel(); renderChecks(); renderActions(); renderNav(); }
+
+  /* ============================== 操作 ============================== */
+  function shelfLoad() { try { var a = JSON.parse(localStorage.getItem(SHELF_KEY) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
+  function shelfSave(a) { try { localStorage.setItem(SHELF_KEY, JSON.stringify(a.slice(-40))); } catch (e) {} }
+
+  function brew() {
+    if (!allReady()) { setMsg('還有空格沒補完整喔。', true); return; }
+    ensureAudio();
+    S.brewed = true; S.saved = false;
+    S.pname = pick(NAME_A) + pick(NAME_B); S.no = shelfLoad().length + 1;
+    renderAll();
+    var b = $('#bottle'); b.classList.remove('shake'); void b.getBoundingClientRect(); b.classList.add('shake');
+    var lb = $('#label'); lb.classList.remove('glow'); void lb.offsetWidth; lb.classList.add('glow');
+    sparkle(); sfx.brew(); setMsg('香水調製完成！可以噴一噴、朗讀，或送給對方。');
+  }
+  $('#nextBtn').addEventListener('click', function () {
+    ensureAudio();
+    if (S.layer < 2) { if (!layerReady(S.layer)) return; S.layer++; sfx.next(); renderLayer(); } else brew();
+  });
+  $('#prevBtn').addEventListener('click', function () { if (S.layer > 0) { S.layer--; renderLayer(); } });
+  $('#demoBtn').addEventListener('click', function () {
+    ensureAudio(); sfx.next();
+    LAYERS.forEach(function (L, li) {
+      var si = Math.floor(Math.random() * L.stems.length);
+      S.pick[li] = si; S.vals[li] = L.stems[si].blanks.map(function (b) { return pick(b.ex); });
+    });
+    S.brewed = false; S.saved = false; S.layer = 0; renderLayer(); renderAll();
+    setMsg('這是老師示範的靈感瓶，你可以點選句型、修改空格，調成你自己的版本。');
+  });
+  $('#newBtn').addEventListener('click', function () {
+    S = freshState(); $('#toName').value = ''; renderLayer(); renderAll(); setMsg('新的一瓶開始囉！');
+  });
+  $('#toName').addEventListener('input', renderLabel);
+  $('#fromName').addEventListener('input', renderLabel);
+
+  $('#sprayBtn').addEventListener('click', function () {
+    if (!S.brewed) return;
+    ensureAudio(); mist(); sfx.spray(); sparkle();
+    var lb = $('#label'); lb.classList.remove('glow'); void lb.offsetWidth; lb.classList.add('glow');
+  });
+  var canSpeak = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
+  if (!canSpeak) $('#speakBtn').hidden = true;
+  $('#speakBtn').addEventListener('click', function () {
+    if (!S.brewed || !canSpeak) return;
+    var to = clean($('#toName').value), u = new SpeechSynthesisUtterance((to ? to + '，' : '') + sentenceText());
+    u.lang = 'zh-TW'; u.rate = .9; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
+  });
+  function fullText() {
+    var to = clean($('#toName').value), fr = clean($('#fromName').value);
+    return (to ? '送給 ' + to + '：' : '') + sentenceText() + (fr ? '（來自 ' + fr + '）' : '');
+  }
+  $('#copyBtn').addEventListener('click', function () {
+    var t = fullText();
+    function fallback() {
+      var ta = el('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); toast('已複製句子'); } catch (e) { toast('無法自動複製，請手動選取文字'); }
+      ta.remove();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(function () { toast('已複製句子'); }, fallback); else fallback();
+  });
+  $('#saveBtn').addEventListener('click', function () {
+    if (!S.brewed || S.saved) return;
+    var a = shelfLoad();
+    a.push({ ts: Date.now(), to: clean($('#toName').value), from: clean($('#fromName').value), name: S.pname, no: S.no, text: sentenceText() });
+    shelfSave(a); S.saved = true; renderActions(); toast('已收進香水收藏櫃');
+  });
+  $('#printBtn').addEventListener('click', function () {
+    if (!S.brewed) return;
+    var p = $('#printCard'); p.textContent = '';
+    p.appendChild(el('h1', null, '幸福香水'));
+    p.appendChild(el('div', 'pn', S.pname + '　No.' + S.no));
+    var to = clean($('#toName').value), fr = clean($('#fromName').value);
+    if (to) p.appendChild(el('div', 'pto', '送給：' + to));
+    p.appendChild(el('div', 'ps', sentenceText()));
+    if (fr) p.appendChild(el('div', 'pfrom', '來自：' + fr));
+    var st = el('div', 'pstripe'); st.innerHTML = '<i style="background:' + YELLOW + '"></i><i style="background:' + CORAL + '"></i><i style="background:' + BLUE + '"></i>';
+    p.appendChild(st);
+    window.print();
+  });
+
+  /* ---------- 收藏櫃 ---------- */
+  function renderShelf() {
+    var a = shelfLoad().slice().reverse(), box = $('#shelfBody'); box.textContent = '';
+    $('#shelfInfo').textContent = a.length ? '共 ' + a.length + ' 瓶（只存在這台電腦的瀏覽器裡）。' : '收藏櫃還是空的，調好香水後按「收進收藏櫃」。';
+    a.forEach(function (it) {
+      var d = el('div', 'bt');
+      d.appendChild(el('h4', null, it.name + ' No.' + it.no + (it.to ? '　送給 ' + it.to : '') + (it.from ? '　來自 ' + it.from : '')));
+      d.appendChild(el('p', null, it.text));
+      box.appendChild(d);
+    });
+  }
+  $('#shelfBtn').addEventListener('click', function () { renderShelf(); $('#shelfDlg').showModal(); });
+  $('#shelfClose').addEventListener('click', function () { $('#shelfDlg').close(); });
+  $('#shelfClear').addEventListener('click', function () {
+    if (!confirm('確定要清空收藏櫃嗎？此動作無法復原。')) return;
+    shelfSave([]); renderShelf();
+  });
+  $('#tipBtn').addEventListener('click', function () { $('#tipDlg').showModal(); });
+  $('#tipClose').addEventListener('click', function () { $('#tipDlg').close(); });
+
+  /* ---------- 任務、加粗、全螢幕 ---------- */
+  var mi = Math.floor(Math.random() * MISSIONS.length);
+  function showMission() { $('#mission').textContent = MISSIONS[mi]; }
+  $('#missionBtn').addEventListener('click', function () { mi = (mi + 1 + Math.floor(Math.random() * (MISSIONS.length - 1))) % MISSIONS.length; showMission(); });
+  $('#boldBtn').addEventListener('click', function () {
+    var on = document.body.classList.toggle('bold'); this.setAttribute('aria-pressed', on ? 'true' : 'false');
+  });
+  var fsBtn = $('#fsBtn'), root = document.documentElement;
+  function fsFail() { toast('此瀏覽器或嵌入視窗不允許全螢幕，請直接開啟網頁並按鍵盤 F11'); }
+  fsBtn.addEventListener('click', function () {
+    try {
+      var p;
+      if (document.fullscreenElement || document.webkitFullscreenElement) { var ex = document.exitFullscreen || document.webkitExitFullscreen; if (ex) p = ex.call(document); }
+      else { var rq = root.requestFullscreen || root.webkitRequestFullscreen; if (!rq) { fsFail(); return; } p = rq.call(root); }
+      if (p && p.catch) p.catch(fsFail);
+    } catch (e) { fsFail(); }
+  });
+  function fsLabel() { fsBtn.textContent = (document.fullscreenElement || document.webkitFullscreenElement) ? '退出全螢幕' : '全螢幕'; }
+  document.addEventListener('fullscreenchange', fsLabel); document.addEventListener('webkitfullscreenchange', fsLabel);
+
+  /* ---------- 初始化 ---------- */
+  buildBottle(); showMission(); renderLayer(); renderAll();
+})();
+</script>
+</body>
+</html>
