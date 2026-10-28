@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分類配對</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dp-color-ground: #f1f2fa;
+    --dp-color-ink: #383139;
+    --dp-color-ink-secondary: #48404b;
+    --dp-color-accent: #f6a3ca;
+    --dp-color-surface-support: #c0efdc;
+    --dp-color-surface-compare: #ded0f9;
+    --dp-color-surface-warm: #f9e7a8;
+    --dp-color-surface-cool: #c5e5fb;
+    --dp-color-surface: #fffdf7;
+    /* Instrument Sans 沒有中文字，後面接 Noto Sans TC 與系統中文字型 */
+    --dp-typography-face: "Claymorphism Instrument", "Instrument Sans", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --shadow: 0 16px 32px rgba(56, 49, 57, .13), inset 5px 5px 10px rgba(255, 255, 255, .75), inset -7px -7px 14px rgba(56, 49, 57, .13);
+    --shadow-s: 0 8px 16px rgba(56, 49, 57, .14), inset 3px 3px 6px rgba(255, 255, 255, .8), inset -4px -4px 8px rgba(56, 49, 57, .12);
+    --r-tray: 48px;
+    --r-surface: 32px;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html, body { margin: 0; }
+  body {
+    background: var(--dp-color-ground); color: var(--dp-color-ink);
+    font-family: var(--dp-typography-face); line-height: 1.6;
+  }
+  .app { max-width: 1180px; margin: 0 auto; padding: 18px 16px 48px; display: flex; flex-direction: column; gap: 18px; }
+
+  /* 按鈕：厚實膠囊 */
+  .btn {
+    font: inherit; font-weight: 700; color: var(--dp-color-ink); background: var(--dp-color-surface);
+    border: 0; border-radius: 999px; padding: 11px 24px; cursor: pointer; box-shadow: var(--shadow-s);
+    transition: transform .12s, box-shadow .12s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px) scale(.98); box-shadow: 0 3px 6px rgba(56, 49, 57, .15), inset 3px 3px 7px rgba(56, 49, 57, .16); }
+  .btn.primary { background: var(--dp-color-surface-warm); }
+  .btn:focus-visible, .ghost:focus-visible, textarea:focus-visible, select:focus-visible, .big:focus-visible, .sm:focus-visible { outline: 3px solid var(--dp-color-ink); outline-offset: 3px; }
+  .ghost { color: var(--dp-color-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 6px; }
+
+  /* 開場粉色大墊子 */
+  .hero {
+    position: relative; overflow: hidden; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 16px;
+    background: var(--dp-color-accent); border-radius: var(--r-tray); box-shadow: var(--shadow);
+    padding: clamp(18px, 3vw, 34px) clamp(20px, 3.4vw, 44px);
+  }
+  .hero h1 { margin: 0; font-size: clamp(40px, 5.4vw, 68px); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; }
+  .hero p { margin: 8px 0 16px; font-size: 18px; color: var(--dp-color-ink-secondary); max-width: 34em; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .sculpt { position: relative; height: 170px; }
+  .sculpt i { position: absolute; border-radius: 50%; box-shadow: var(--shadow); }
+  .sculpt i:nth-child(1) { width: 104px; height: 104px; left: 6%; top: 6%; background: var(--dp-color-surface-support); }
+  .sculpt i:nth-child(2) { width: 136px; height: 136px; left: 26%; top: 28%; background: var(--dp-color-surface-compare); }
+  .sculpt i:nth-child(3) { width: 84px; height: 84px; left: 64%; top: 2%; background: var(--dp-color-surface-warm); }
+  .sculpt i:nth-child(4) { width: 112px; height: 112px; left: 58%; top: 42%; background: var(--dp-color-surface-cool); }
+  .sculpt i:nth-child(5) { width: 64px; height: 64px; left: 4%; top: 62%; background: var(--dp-color-surface); }
+
+  /* 題庫設定：薰衣草色托盤 */
+  .panel { background: var(--dp-color-surface-compare); border-radius: var(--r-tray); box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 28px); }
+  .panel h2 { margin: 0 0 6px; font-size: 26px; font-weight: 700; }
+  .panel p { margin: 4px 0 10px; font-size: 15px; color: var(--dp-color-ink-secondary); }
+  .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
+  select {
+    font: inherit; font-weight: 700; color: var(--dp-color-ink); background: var(--dp-color-surface);
+    border: 0; border-radius: 999px; padding: 8px 18px; box-shadow: var(--shadow-s); max-width: 100%;
+  }
+  textarea {
+    width: 100%; min-height: 150px; resize: vertical; font: inherit; color: var(--dp-color-ink); background: var(--dp-color-surface);
+    border: 0; border-radius: var(--r-surface); padding: 14px 18px;
+    box-shadow: inset 5px 5px 12px rgba(56, 49, 57, .14), inset -5px -5px 10px rgba(255, 255, 255, .9);
+  }
+  .err { color: #9b2c2c; font-weight: 700; min-height: 1.6em; margin: 8px 0 0; white-space: pre-line; }
+
+  /* 遊戲區：奶油色共享托盤 */
+  .stage { background: var(--dp-color-surface); border-radius: var(--r-tray); box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 32px); }
+  .statbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .stat { border-radius: 999px; padding: 6px 20px; font-weight: 700; box-shadow: var(--shadow-s); display: inline-flex; align-items: center; gap: 8px; }
+  .stat.support { background: var(--dp-color-surface-support); }
+  .stat.warm { background: var(--dp-color-surface-warm); }
+  .dot { width: 18px; height: 18px; border-radius: 50%; background: var(--dp-color-surface); box-shadow: inset 2px 2px 4px rgba(56, 49, 57, .2); display: inline-block; }
+  .dot.used { background: #f08a84; }
+  #msg { font-weight: 700; color: var(--dp-color-ink-secondary); flex: 1; min-width: 200px; }
+
+  .bigs { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); justify-items: center; gap: 18px; margin-bottom: 18px; }
+  .big {
+    position: relative; width: clamp(150px, min(100%, 280px, calc((100dvh - 400px) / var(--rows, 1))), 280px); aspect-ratio: 1; border-radius: 50%;
+    background: var(--c); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center;
+    padding: 13% 11% 9%; transition: transform .15s, background-color .25s; cursor: default;
+  }
+  .big::before { content: ""; position: absolute; top: 8%; left: 15%; width: 20%; height: 11%; border-radius: 50%; background: rgba(255, 255, 255, .6); transform: rotate(-28deg); }
+  .big h3 { margin: 0; font-size: clamp(18px, 2.1vw, 27px); font-weight: 800; text-align: center; line-height: 1.2; position: relative; }
+  .slot { flex: 1; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; align-content: center; margin-top: 4%; }
+  .big.over { transform: scale(1.05); outline: 4px dashed var(--dp-color-ink); outline-offset: 4px; }
+  .big.wrong { background: #f08a84; animation: shake .45s; }
+  @keyframes shake { 20% { transform: translateX(-9px); } 50% { transform: translateX(9px); } 80% { transform: translateX(-4px); } }
+  .pill {
+    background: var(--dp-color-surface); border-radius: 999px; padding: 2px 11px; font-weight: 700; line-height: 1.35;
+    font-size: clamp(12px, 1.35vw, 15px); box-shadow: var(--shadow-s); animation: pop .3s ease-out;
+  }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } }
+
+  /* 底部小泡泡 */
+  .tray {
+    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 20px; min-height: 120px;
+    border-radius: var(--r-surface); background: var(--dp-color-ground);
+    box-shadow: inset 6px 6px 14px rgba(56, 49, 57, .14), inset -6px -6px 12px rgba(255, 255, 255, .9);
+  }
+  .sm {
+    --sm: clamp(72px, 8vw, 94px); width: var(--sm); height: var(--sm); border-radius: 50%; border: 0; padding: 8px;
+    background: var(--dp-color-surface); box-shadow: var(--shadow); font: inherit; font-weight: 800; color: var(--dp-color-ink);
+    display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.2;
+    cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; overflow-wrap: anywhere;
+  }
+  .sm.t1 { font-size: 21px; } .sm.t2 { font-size: 17px; } .sm.t3 { font-size: 14px; } .sm.t4 { font-size: 12px; }
+  .sm.dragging { opacity: .25; }
+  .sm.sel { outline: 4px solid var(--dp-color-ink); outline-offset: 4px; }
+  .sm.ghost { position: fixed; z-index: 1000; pointer-events: none; transform: scale(1.1); margin: 0; opacity: 1; cursor: grabbing; }
+
+  .conf { position: fixed; top: -20px; width: 14px; height: 14px; border-radius: 50%; z-index: 900; pointer-events: none; box-shadow: var(--shadow-s); animation: fall linear 1 both; }
+  @keyframes fall { to { transform: translateY(112vh) rotate(540deg); } }
+
+  /* 列印／匯出 PDF 專用版面（螢幕上不顯示） */
+  #printSheet { display: none; }
+
+  @media (max-width: 1100px) { .app { gap: 14px; } }
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; }
+    .sculpt { height: 120px; }
+    .sculpt i { transform: scale(.7); transform-origin: top left; }
+  }
+  @media (max-width: 560px) { .bigs { grid-template-columns: repeat(2, 1fr); } .sculpt { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+    .conf { display: none; }
+  }
+
+  @page { size: A4 portrait; margin: 12mm; }
+  @media print {
+    html, body { background: #fff; }
+    .app, .conf, .ghost { display: none !important; }
+    #printSheet { display: block; color: #383139; font-family: var(--dp-typography-face); }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pt { margin: 0 0 6mm; text-align: center; font-size: 9mm; font-weight: 700; line-height: 1.2; }
+    .pbigs { display: grid; justify-content: center; gap: 4mm 6mm; margin-bottom: 8mm; }
+    .pbig, .psm { box-sizing: border-box; border: .6mm solid #383139; border-radius: 50%; background: #fff; break-inside: avoid; }
+    .pbig { width: var(--big); height: var(--big); display: flex; justify-content: center; padding: calc(var(--big) * .13) calc(var(--big) * .12) 0; }
+    .pbig span { font-size: calc(var(--big) * .1); font-weight: 700; text-align: center; line-height: 1.2; }
+    .psmalls { display: flex; flex-wrap: wrap; justify-content: center; gap: 3mm; }
+    .psm { width: var(--small); height: var(--small); display: flex; align-items: center; justify-content: center; padding: 1.5mm; text-align: center; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div>
+      <h1>分類配對</h1>
+      <p>把下方的小泡泡拖進對應的巨型泡泡裡。放錯三次，這一回合就會重新開始。</p>
+      <div class="actions">
+        <button class="btn primary" id="bankBtn" type="button">題庫設定</button>
+        <button class="btn" id="restartBtn" type="button">重新開始</button>
+        <button class="btn" id="pdfBtn" type="button">匯出 PDF</button>
+        <a class="ghost" href="index.html">回首頁</a>
+      </div>
+    </div>
+    <div class="sculpt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </header>
+
+  <section class="panel" id="panel" hidden>
+    <h2>題庫設定</h2>
+    <p>每行一個大分類，格式：大分類／[小分類1][小分類2][小分類3]。輸入的內容只會當作資料使用。</p>
+    <div class="row">
+      <label for="presetSel">預設題庫</label>
+      <select id="presetSel"></select>
+    </div>
+    <textarea id="bankInput" spellcheck="false" aria-label="題庫內容"></textarea>
+    <p class="err" id="bankErr" role="alert"></p>
+    <div class="actions">
+      <button class="btn primary" id="startBtn" type="button">載入並開始</button>
+      <button class="btn" id="closeBtn" type="button">關閉</button>
+    </div>
+  </section>
+
+  <main class="stage" aria-label="配對遊戲">
+    <div class="statbar">
+      <div class="stat support" id="progress">已配對 0 / 0</div>
+      <div class="stat warm"><span>失敗</span><span id="dots"></span></div>
+      <div id="msg" role="status" aria-live="polite"></div>
+    </div>
+    <div class="bigs" id="bigs"></div>
+    <div class="tray" id="tray" aria-label="小泡泡"></div>
+  </main>
+</div>
+
+<div id="printSheet" aria-hidden="true"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* =====================================================================
+   * 【預設題庫區｜擴充指引】
+   * 想新增預設題庫時，請只改這一區：
+   *  1. 複製下面任一個 { id: ..., name: ..., text: `...` } 區塊，
+   *     貼在最後一個區塊後面，並在前一個區塊結尾補上逗號 ,
+   *  2. id：英文或數字，不可與其他題庫重複。
+   *  3. name：顯示在「預設題庫」下拉選單中的名稱（匯出 PDF 時也會當作副標題）。
+   *  4. text：用反引號 ` ` 包住，每行一個大分類，格式如下：
+   *       大分類／[小分類1][小分類2][小分類3]
+   *     - 小分類用中括號 [ ] 包住（全形［］也可以），括號之間有空格不影響
+   *     - 大分類 2～6 個（每個會是一種顏色的巨型泡泡）
+   *     - 每個大分類 1～8 個小分類，全部小分類合計最多 30 個，且不可重複
+   *     - 大分類建議 12 字以內、小分類建議 10 字以內（泡泡裡放得下）
+   *     - text 內不要出現反引號 ` 或 ${
+   *  5. 陣列第一個題庫，會是開啟頁面時預設載入的題庫。
+   * ===================================================================== */
+  var PRESET_BANKS = [
+    {
+      id: 'animals',
+      name: '動物分類',
+      text: `哺乳類／[鯨魚][蝙蝠][大象]
+鳥類／[企鵝][老鷹][鴕鳥]
+魚類／[鯊魚][鮭魚][海馬]
+爬蟲類／[烏龜][蜥蜴][鱷魚]`
+    },
+    {
+      id: 'pos',
+      name: '詞性分類',
+      text: `名詞／[老師][教室][書包]
+動詞／[奔跑][閱讀][思考]
+形容詞／[美麗][安靜][勇敢]`
+    }
+    // ↑ 在這裡新增下一個題庫（記得上一個 } 後面要有逗號）
+  ];
+
+  var CAT_COLORS = ['#f6a3ca', '#c0efdc', '#ded0f9', '#f9e7a8', '#c5e5fb', '#fbcdb5']; // 粉、薄荷、薰衣草、奶油黃、淺藍、蜜桃
+  var MAX_FAILS = 3;
+
+  var $ = function (s) { return document.querySelector(s); };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+
+  var bigsEl = $('#bigs'), trayEl = $('#tray'), msgEl = $('#msg');
+  var G = null, selected = null, suppressClick = false;
+
+  function say(t) { msgEl.textContent = t || ''; }
+
+  /* ---------- 題庫解析（僅當資料，不執行） ---------- */
+  function parseBank(text) {
+    var cats = [], errors = [], seen = {}, total = 0, lines = text.split(/\r?\n/);
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line) continue;
+      var cut = /[／\/]\s*(?=[\[［])/.exec(line);
+      if (!cut) { errors.push('第 ' + (i + 1) + ' 行：格式需為「大分類／[小分類1][小分類2]」'); continue; }
+      var name = line.slice(0, cut.index).trim();
+      var rest = line.slice(cut.index + cut[0].length);
+      if (!name || name.length > 12) { errors.push('第 ' + (i + 1) + ' 行：大分類需為 1～12 個字'); continue; }
+      var re = /(?:\[|［)([^\]］]*)(?:\]|］)/g, m, items = [], bad = false;
+      while ((m = re.exec(rest))) {
+        var t = m[1].trim();
+        if (!t || t.length > 14) { bad = true; break; }
+        if (seen[t]) { errors.push('第 ' + (i + 1) + ' 行：小分類「' + t + '」重複了'); bad = true; break; }
+        seen[t] = true; items.push(t);
+      }
+      if (bad) continue;
+      if (items.length < 1 || items.length > 8) { errors.push('第 ' + (i + 1) + ' 行：每個大分類需有 1～8 個小分類'); continue; }
+      total += items.length;
+      cats.push({ name: name, items: items });
+    }
+    if (!errors.length) {
+      if (cats.length < 2 || cats.length > 6) errors.push('大分類需為 2～6 個（目前 ' + cats.length + ' 個）');
+      if (total > 30) errors.push('小分類合計最多 30 個（目前 ' + total + ' 個）');
+    }
+    return { cats: cats, errors: errors };
+  }
+
+  /* ---------- 建立畫面 ---------- */
+  function sizeClass(t) { var n = t.length; return n <= 3 ? 't1' : (n <= 5 ? 't2' : (n <= 8 ? 't3' : 't4')); }
+  function updateStatus() {
+    $('#progress').textContent = '已配對 ' + G.placed + ' / ' + G.total;
+    var d = $('#dots'); d.textContent = '';
+    for (var i = 0; i < MAX_FAILS; i++) d.appendChild(el('span', 'dot' + (i < G.fails ? ' used' : '')));
+  }
+  function buildStage() {
+    var n = G.cats.length, cols = n <= 3 ? n : (n === 4 ? 2 : 3);
+    bigsEl.style.setProperty('--cols', cols); bigsEl.style.setProperty('--rows', Math.ceil(n / cols));
+    bigsEl.textContent = ''; trayEl.textContent = ''; selected = null;
+    G.bigEls = [];
+    G.cats.forEach(function (c, i) {
+      var b = el('div', 'big'); b.style.setProperty('--c', CAT_COLORS[i % CAT_COLORS.length]);
+      b.dataset.cat = i; b.tabIndex = 0; b.setAttribute('role', 'button'); b.setAttribute('aria-label', '放入「' + c.name + '」');
+      b.appendChild(el('h3', null, c.name));
+      var slot = el('div', 'slot'); b.appendChild(slot); b._slot = slot;
+      b.addEventListener('click', function () { if (selected) { var it = selected; clearSel(); attempt(it, i); } });
+      b.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && selected) { e.preventDefault(); var it = selected; clearSel(); attempt(it, i); } });
+      bigsEl.appendChild(b); G.bigEls.push(b);
+    });
+    G.items = [];
+    G.cats.forEach(function (c, ci) { c.items.forEach(function (t) { G.items.push({ text: t, cat: ci, el: null }); }); });
+    shuffle(G.items.slice()).forEach(function (it) {
+      var b = el('button', 'sm ' + sizeClass(it.text), it.text); b.type = 'button'; b._item = it; it.el = b;
+      trayEl.appendChild(b);
+    });
+    G.placed = 0; G.fails = 0; G.locked = false;
+    updateStatus();
+  }
+  function startGame(cats, title) {
+    G = { cats: cats, total: cats.reduce(function (a, c) { return a + c.items.length; }, 0), title: title || '' };
+    document.querySelectorAll('.conf').forEach(function (c) { c.remove(); });
+    buildStage();
+    say('拖曳（或點選）小泡泡，放進對應的巨型泡泡。');
+  }
+
+  /* ---------- 配對判斷 ---------- */
+  function clearSel() { if (selected && selected.el) selected.el.classList.remove('sel'); selected = null; }
+  function attempt(item, ci) {
+    if (!G || G.locked || !item.el || !item.el.isConnected || item.placed) return;
+    var big = G.bigEls[ci];
+    if (item.cat === ci) {
+      item.placed = true; item.el.remove(); G.placed++;
+      big._slot.appendChild(el('span', 'pill', item.text));
+      say('答對了！「' + item.text + '」屬於「' + G.cats[ci].name + '」。');
+      updateStatus();
+      if (G.placed === G.total) win();
+    } else {
+      G.fails++; updateStatus();
+      big.classList.remove('wrong'); void big.offsetWidth; big.classList.add('wrong');
+      setTimeout(function () { big.classList.remove('wrong'); }, 900);
+      say('不是這一類喔，再想想看。（失敗 ' + G.fails + ' / ' + MAX_FAILS + '）');
+      if (G.fails >= MAX_FAILS) {
+        G.locked = true; say('失敗 ' + MAX_FAILS + ' 次，這一回合重新開始！');
+        setTimeout(function () { buildStage(); say('新的一回合開始，加油！'); }, 1500);
+      }
+    }
+  }
+  function win() {
+    G.locked = true; say('全部配對成功，太棒了！');
+    var cols = CAT_COLORS;
+    for (var i = 0; i < 40; i++) {
+      var c = el('i', 'conf'); c.style.left = (Math.random() * 100) + 'vw'; c.style.background = cols[i % cols.length];
+      c.style.animationDuration = (2.5 + Math.random() * 2.5) + 's'; c.style.animationDelay = (Math.random() * 1.2) + 's';
+      document.body.appendChild(c);
+    }
+    setTimeout(function () { document.querySelectorAll('.conf').forEach(function (c) { c.remove(); }); }, 7000);
+  }
+
+  /* ---------- 拖曳（滑鼠與觸控）；不拖動時視為「點選」 ---------- */
+  trayEl.addEventListener('pointerdown', function (e) {
+    var b = e.target.closest('.sm');
+    if (!b || !G || G.locked || e.button > 0) return;
+    e.preventDefault();
+    var item = b._item, rect = b.getBoundingClientRect();
+    var sx = e.clientX, sy = e.clientY, offX = sx - rect.left, offY = sy - rect.top, ghost = null, over = null;
+    function bigAt(x, y) { var t = document.elementFromPoint(x, y); return t && t.closest ? t.closest('.big') : null; }
+    function setOver(big) { if (over && over !== big) over.classList.remove('over'); over = big; if (big) big.classList.add('over'); }
+    function move(ev) {
+      if (!ghost && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) {
+        ghost = b.cloneNode(true); ghost.classList.add('ghost'); ghost.classList.remove('sel');
+        ghost.style.width = rect.width + 'px'; ghost.style.height = rect.height + 'px';
+        document.body.appendChild(ghost); b.classList.add('dragging'); clearSel();
+      }
+      if (ghost) {
+        ghost.style.left = (ev.clientX - offX) + 'px'; ghost.style.top = (ev.clientY - offY) + 'px';
+        setOver(bigAt(ev.clientX, ev.clientY));
+      }
+    }
+    function done(ev, cancel) {
+      window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); window.removeEventListener('pointercancel', cx);
+      if (ghost) {
+        var target = cancel ? null : bigAt(ev.clientX, ev.clientY);
+        ghost.remove(); b.classList.remove('dragging'); setOver(null);
+        suppressClick = true; setTimeout(function () { suppressClick = false; }, 60);
+        if (target) attempt(item, +target.dataset.cat);
+      }
+    }
+    function up(ev) { done(ev, false); }
+    function cx(ev) { done(ev, true); }
+    window.addEventListener('pointermove', move); window.addEventListener('pointerup', up); window.addEventListener('pointercancel', cx);
+  });
+  // 點選／鍵盤：先選小泡泡，再點巨型泡泡
+  trayEl.addEventListener('click', function (e) {
+    var b = e.target.closest('.sm');
+    if (!b || suppressClick || !G || G.locked) return;
+    if (selected && selected.el === b) { clearSel(); say(''); return; }
+    clearSel(); selected = b._item; b.classList.add('sel'); say('已選取「' + b._item.text + '」，請點選要放入的巨型泡泡。');
+  });
+
+  /* ---------- 題庫設定面板 ---------- */
+  var presetSel = $('#presetSel'), input = $('#bankInput'), err = $('#bankErr');
+  (function () {
+    var o0 = el('option', null, '自訂輸入'); o0.value = ''; presetSel.appendChild(o0);
+    PRESET_BANKS.forEach(function (p) { var o = el('option', null, p.name); o.value = p.id; presetSel.appendChild(o); });
+  })();
+  function loadPreset(id) {
+    var p = PRESET_BANKS.filter(function (x) { return x.id === id; })[0];
+    if (p) { input.value = p.text.trim(); presetSel.value = id; }
+    err.textContent = '';
+  }
+  presetSel.addEventListener('change', function () { loadPreset(presetSel.value); });
+  input.addEventListener('input', function () { presetSel.value = ''; });
+  $('#bankBtn').addEventListener('click', function () { var p = $('#panel'); p.hidden = !p.hidden; });
+  $('#closeBtn').addEventListener('click', function () { $('#panel').hidden = true; });
+  function titleFromSelect() { var p = PRESET_BANKS.filter(function (x) { return x.id === presetSel.value; })[0]; return p ? p.name : ''; }
+  $('#startBtn').addEventListener('click', function () {
+    var r = parseBank(input.value);
+    if (r.errors.length) { err.textContent = r.errors.slice(0, 5).join('\n'); return; }
+    err.textContent = ''; $('#panel').hidden = true; startGame(r.cats, titleFromSelect());
+  });
+  $('#restartBtn').addEventListener('click', function () { if (G) { document.querySelectorAll('.conf').forEach(function (c) { c.remove(); }); buildStage(); say('重新開始，加油！'); } });
+
+  /* ---------- 匯出 PDF：只含標題、實線巨型圈與小圈圈，單張 A4 ---------- */
+  function fitPrint(n, m) {
+    var W = 184, H = 262, rows = n <= 3 ? 1 : 2, cols = Math.ceil(n / rows), best = null;
+    for (var big = 80; big >= 36; big -= 2) {
+      if (cols * big + (cols - 1) * 6 > W) continue;
+      for (var sm = 32; sm >= 14; sm--) {
+        var per = Math.floor((W + 3) / (sm + 3)); if (per < 1) continue;
+        var srows = Math.ceil(m / per);
+        var h = 24 + rows * big + (rows - 1) * 4 + 8 + srows * sm + (srows - 1) * 3;
+        if (h <= H) { var sc = sm * 2 + big; if (!best || sc > best.sc) best = { big: big, sm: sm, cols: cols, sc: sc }; break; }
+      }
+    }
+    return best || { big: 36, sm: 14, cols: cols };
+  }
+  function buildPrint() {
+    var sheet = $('#printSheet'); sheet.textContent = '';
+    var cats = G.cats, all = [];
+    cats.forEach(function (c) { c.items.forEach(function (t) { all.push(t); }); });
+    shuffle(all);
+    var f = fitPrint(cats.length, all.length);
+    sheet.style.setProperty('--big', f.big + 'mm'); sheet.style.setProperty('--small', f.sm + 'mm');
+    sheet.appendChild(el('h1', 'pt', G.title ? '分類配對｜' + G.title : '分類配對'));
+    var bigs = el('div', 'pbigs'); bigs.style.gridTemplateColumns = 'repeat(' + f.cols + ', ' + f.big + 'mm)';
+    cats.forEach(function (c) { var b = el('div', 'pbig'); b.appendChild(el('span', null, c.name)); bigs.appendChild(b); });
+    sheet.appendChild(bigs);
+    var smalls = el('div', 'psmalls');
+    all.forEach(function (t) {
+      var d = el('div', 'psm'), k = t.length <= 3 ? .27 : (t.length <= 5 ? .22 : (t.length <= 8 ? .18 : .15));
+      d.style.fontSize = (f.sm * k) + 'mm'; d.textContent = t; smalls.appendChild(d);
+    });
+    sheet.appendChild(smalls);
+  }
+  $('#pdfBtn').addEventListener('click', function () {
+    if (!G) { say('請先載入題庫再匯出。'); return; }
+    buildPrint();
+    say('請在列印視窗選擇「另存為 PDF」，紙張選 A4。');
+    window.print();
+  });
+
+  /* ---------- 初始化 ---------- */
+  if (PRESET_BANKS.length) {
+    loadPreset(PRESET_BANKS[0].id);
+    var r0 = parseBank(input.value);
+    if (!r0.errors.length) startGame(r0.cats, PRESET_BANKS[0].name);
+    else { err.textContent = r0.errors.join('\n'); $('#panel').hidden = false; }
+  } else { $('#panel').hidden = false; }
+})();
+</script>
+</body>
+</html>
