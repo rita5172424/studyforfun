@@ -46,25 +46,23 @@
   .btn:focus-visible, .ghost:focus-visible, textarea:focus-visible, select:focus-visible, .big:focus-visible, .sm:focus-visible { outline: 3px solid var(--dp-color-ink); outline-offset: 3px; }
   .ghost { color: var(--dp-color-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; padding: 8px 6px; }
 
-  /* 開場粉色大墊子 */
+  /* 開場粉色墊子（精簡版） */
   .hero {
-    position: relative; overflow: hidden; display: grid; grid-template-columns: 1.15fr .85fr; align-items: center; gap: 16px;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 22px;
     background: var(--dp-color-accent); border-radius: var(--r-tray); box-shadow: var(--shadow);
-    padding: clamp(18px, 3vw, 34px) clamp(20px, 3.4vw, 44px);
+    padding: 10px clamp(18px, 3vw, 34px);
   }
-  .hero h1 { margin: 0; font-size: clamp(40px, 5.4vw, 68px); font-weight: 700; letter-spacing: -.02em; line-height: 1.08; }
-  .hero p { margin: 8px 0 16px; font-size: 18px; color: var(--dp-color-ink-secondary); max-width: 34em; }
+  .heroText { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 18px; flex: 1 1 420px; min-width: 0; }
+  .hero h1 { margin: 0; font-size: 40pt; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
+  .hero p { margin: 0; font-size: 15px; line-height: 1.45; color: var(--dp-color-ink-secondary); flex: 1 1 220px; max-width: 30em; }
   .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .sculpt { position: relative; height: 170px; }
-  .sculpt i { position: absolute; border-radius: 50%; box-shadow: var(--shadow); }
-  .sculpt i:nth-child(1) { width: 104px; height: 104px; left: 6%; top: 6%; background: var(--dp-color-surface-support); }
-  .sculpt i:nth-child(2) { width: 136px; height: 136px; left: 26%; top: 28%; background: var(--dp-color-surface-compare); }
-  .sculpt i:nth-child(3) { width: 84px; height: 84px; left: 64%; top: 2%; background: var(--dp-color-surface-warm); }
-  .sculpt i:nth-child(4) { width: 112px; height: 112px; left: 58%; top: 42%; background: var(--dp-color-surface-cool); }
-  .sculpt i:nth-child(5) { width: 64px; height: 64px; left: 4%; top: 62%; background: var(--dp-color-surface); }
 
   /* 題庫設定：薰衣草色托盤 */
-  .panel { background: var(--dp-color-surface-compare); border-radius: var(--r-tray); box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 28px); }
+  .panel {
+    width: min(760px, 94vw); max-height: 92dvh; overflow: auto; border: 0; color: var(--dp-color-ink);
+    background: var(--dp-color-surface-compare); border-radius: var(--r-tray); box-shadow: var(--shadow); padding: clamp(16px, 2.4vw, 28px);
+  }
+  .panel::backdrop { background: rgba(56, 49, 57, .35); }
   .panel h2 { margin: 0 0 6px; font-size: 26px; font-weight: 700; }
   .panel p { margin: 4px 0 10px; font-size: 15px; color: var(--dp-color-ink-secondary); }
   .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0; }
@@ -89,37 +87,41 @@
   .dot.used { background: #f08a84; }
   #msg { font-weight: 700; color: var(--dp-color-ink-secondary); flex: 1; min-width: 200px; }
 
-  .bigs { display: grid; grid-template-columns: repeat(var(--cols, 3), 1fr); justify-items: center; gap: 18px; margin-bottom: 18px; }
+  .bigs { display: grid; justify-content: center; align-content: center; gap: 16px; margin-bottom: 16px; }
   .big {
-    position: relative; width: clamp(150px, min(100%, 280px, calc((100dvh - 400px) / var(--rows, 1))), 280px); aspect-ratio: 1; border-radius: 50%;
+    position: relative; width: var(--d, 200px); height: var(--d, 200px); border-radius: 50%; flex: none;
     background: var(--c); box-shadow: var(--shadow); display: flex; flex-direction: column; align-items: center;
-    padding: 13% 11% 9%; transition: transform .15s, background-color .25s; cursor: default;
+    padding: calc(var(--d, 200px) * .11) calc(var(--d, 200px) * .1) calc(var(--d, 200px) * .1);
+    transition: transform .15s, background-color .25s; cursor: default;
   }
   .big::before { content: ""; position: absolute; top: 8%; left: 15%; width: 20%; height: 11%; border-radius: 50%; background: rgba(255, 255, 255, .6); transform: rotate(-28deg); }
-  .big h3 { margin: 0; font-size: clamp(18px, 2.1vw, 27px); font-weight: 800; text-align: center; line-height: 1.2; position: relative; }
-  .slot { flex: 1; display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; align-content: center; margin-top: 4%; }
+  .big h3 { margin: 0; font-size: var(--tfs, 20px); font-weight: 800; text-align: center; line-height: 1.25; position: relative; }
+  .slot { flex: 1; width: 76%; min-height: 0; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-content: center; margin-top: 2%; }
   .big.over { transform: scale(1.05); outline: 4px dashed var(--dp-color-ink); outline-offset: 4px; }
   .big.wrong { background: #f08a84; animation: shake .45s; }
   @keyframes shake { 20% { transform: translateX(-9px); } 50% { transform: translateX(9px); } 80% { transform: translateX(-4px); } }
   .pill {
-    background: var(--dp-color-surface); border-radius: 999px; padding: 2px 11px; font-weight: 700; line-height: 1.35;
-    font-size: clamp(12px, 1.35vw, 15px); box-shadow: var(--shadow-s); animation: pop .3s ease-out;
+    background: var(--dp-color-surface); border-radius: 999px; padding: .08em .7em; font-weight: 700; line-height: 1.4;
+    font-size: var(--pfs, 14px); box-shadow: var(--shadow-s); animation: pop .3s ease-out;
   }
   @keyframes pop { from { transform: scale(.4); opacity: 0; } }
 
   /* 底部小泡泡 */
   .tray {
-    display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; padding: 20px; min-height: 120px;
+    --s: 80px; display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-content: center; padding: 12px;
     border-radius: var(--r-surface); background: var(--dp-color-ground);
     box-shadow: inset 6px 6px 14px rgba(56, 49, 57, .14), inset -6px -6px 12px rgba(255, 255, 255, .9);
   }
   .sm {
-    --sm: clamp(72px, 8vw, 94px); width: var(--sm); height: var(--sm); border-radius: 50%; border: 0; padding: 8px;
+    width: var(--s); height: var(--s); border-radius: 50%; border: 0; padding: calc(var(--s) * .08); flex: none;
     background: var(--dp-color-surface); box-shadow: var(--shadow); font: inherit; font-weight: 800; color: var(--dp-color-ink);
     display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.2;
     cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; overflow-wrap: anywhere;
   }
-  .sm.t1 { font-size: 21px; } .sm.t2 { font-size: 17px; } .sm.t3 { font-size: 14px; } .sm.t4 { font-size: 12px; }
+  .sm.t1 { font-size: max(12px, calc(var(--s) * .27)); }
+  .sm.t2 { font-size: max(11px, calc(var(--s) * .21)); }
+  .sm.t3 { font-size: max(11px, calc(var(--s) * .17)); }
+  .sm.t4 { font-size: max(10px, calc(var(--s) * .145)); }
   .sm.dragging { opacity: .25; }
   .sm.sel { outline: 4px solid var(--dp-color-ink); outline-offset: 4px; }
   .sm.ghost { position: fixed; z-index: 1000; pointer-events: none; transform: scale(1.1); margin: 0; opacity: 1; cursor: grabbing; }
@@ -130,22 +132,40 @@
   /* 列印／匯出 PDF 專用版面（螢幕上不顯示） */
   #printSheet { display: none; }
 
-  @media (max-width: 1100px) { .app { gap: 14px; } }
-  @media (max-width: 760px) {
-    .hero { grid-template-columns: 1fr; }
-    .sculpt { height: 120px; }
-    .sculpt i { transform: scale(.7); transform-origin: top left; }
+  /* 橫向螢幕：整個遊戲固定在一個畫面內，不需捲動 */
+  @media (min-width: 761px) and (min-height: 520px) {
+    body { overflow: hidden; }
+    .app { height: 100dvh; padding: 10px 14px 12px; gap: 10px; }
+    .stage { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 12px 20px 14px; }
+    .statbar { margin-bottom: 8px; flex: none; }
+    .bigs { flex: 1; min-height: 0; margin-bottom: 0; }
+    .tray { flex: none; margin-top: 12px; }
   }
-  @media (max-width: 560px) { .bigs { grid-template-columns: repeat(2, 1fr); } .sculpt { display: none; } }
+  @media (max-width: 760px) { .hero h1 { font-size: 32pt; } }
+
+  /* 全部成功：巨型泡泡周圍光圈閃爍 */
+  .big.glow { animation: halo 1.2s ease-in-out infinite; animation-delay: calc(var(--i, 0) * .18s); }
+  .big.glow::after {
+    content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 5px solid var(--c);
+    box-shadow: 0 0 16px 4px var(--c); pointer-events: none;
+    animation: ripple 1.2s ease-out infinite; animation-delay: calc(var(--i, 0) * .18s);
+  }
+  @keyframes halo {
+    0%, 100% { box-shadow: var(--shadow), 0 0 0 5px rgba(255, 255, 255, .95), 0 0 16px 5px var(--c); }
+    50% { box-shadow: var(--shadow), 0 0 0 12px rgba(255, 255, 255, .95), 0 0 46px 22px var(--c); }
+  }
+  @keyframes ripple { from { transform: scale(1); opacity: .95; } to { transform: scale(1.32); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
     .conf { display: none; }
+    .big.glow { box-shadow: var(--shadow), 0 0 0 10px rgba(255, 255, 255, .95), 0 0 34px 14px var(--c); }
+    .big.glow::after { display: none; }
   }
 
   @page { size: A4 portrait; margin: 12mm; }
   @media print {
     html, body { background: #fff; }
-    .app, .conf, .ghost { display: none !important; }
+    .app, .conf, .ghost, dialog { display: none !important; }
     #printSheet { display: block; color: #383139; font-family: var(--dp-typography-face); }
     * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .pt { margin: 0 0 6mm; text-align: center; font-size: 9mm; font-weight: 700; line-height: 1.2; }
@@ -161,20 +181,19 @@
 <body>
 <div class="app">
   <header class="hero">
-    <div>
+    <div class="heroText">
       <h1>分類配對</h1>
       <p>把下方的小泡泡拖進對應的巨型泡泡裡。放錯三次，這一回合就會重新開始。</p>
-      <div class="actions">
-        <button class="btn primary" id="bankBtn" type="button">題庫設定</button>
-        <button class="btn" id="restartBtn" type="button">重新開始</button>
-        <button class="btn" id="pdfBtn" type="button">匯出 PDF</button>
-        <a class="ghost" href="index.html">回首頁</a>
-      </div>
     </div>
-    <div class="sculpt" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="actions">
+      <button class="btn primary" id="bankBtn" type="button">題庫設定</button>
+      <button class="btn" id="restartBtn" type="button">重新開始</button>
+      <button class="btn" id="pdfBtn" type="button">匯出 PDF</button>
+      <a class="ghost" href="index.html">回首頁</a>
+    </div>
   </header>
 
-  <section class="panel" id="panel" hidden>
+  <dialog class="panel" id="panel">
     <h2>題庫設定</h2>
     <p>每行一個大分類，格式：大分類／[小分類1][小分類2][小分類3]。輸入的內容只會當作資料使用。</p>
     <div class="row">
@@ -187,10 +206,10 @@
       <button class="btn primary" id="startBtn" type="button">載入並開始</button>
       <button class="btn" id="closeBtn" type="button">關閉</button>
     </div>
-  </section>
+  </dialog>
 
-  <main class="stage" aria-label="配對遊戲">
-    <div class="statbar">
+  <main class="stage" id="stage" aria-label="配對遊戲">
+    <div class="statbar" id="statbar">
       <div class="stat support" id="progress">已配對 0 / 0</div>
       <div class="stat warm"><span>失敗</span><span id="dots"></span></div>
       <div id="msg" role="status" aria-live="polite"></div>
@@ -248,7 +267,7 @@
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
 
-  var bigsEl = $('#bigs'), trayEl = $('#tray'), msgEl = $('#msg');
+  var bigsEl = $('#bigs'), trayEl = $('#tray'), msgEl = $('#msg'), stageEl = $('#stage'), statEl = $('#statbar');
   var G = null, selected = null, suppressClick = false;
 
   function say(t) { msgEl.textContent = t || ''; }
@@ -291,8 +310,6 @@
     for (var i = 0; i < MAX_FAILS; i++) d.appendChild(el('span', 'dot' + (i < G.fails ? ' used' : '')));
   }
   function buildStage() {
-    var n = G.cats.length, cols = n <= 3 ? n : (n === 4 ? 2 : 3);
-    bigsEl.style.setProperty('--cols', cols); bigsEl.style.setProperty('--rows', Math.ceil(n / cols));
     bigsEl.textContent = ''; trayEl.textContent = ''; selected = null;
     G.bigEls = [];
     G.cats.forEach(function (c, i) {
@@ -311,7 +328,7 @@
       trayEl.appendChild(b);
     });
     G.placed = 0; G.fails = 0; G.locked = false;
-    updateStatus();
+    updateStatus(); fit();
   }
   function startGame(cats, title) {
     G = { cats: cats, total: cats.reduce(function (a, c) { return a + c.items.length; }, 0), title: title || '' };
@@ -319,6 +336,60 @@
     buildStage();
     say('拖曳（或點選）小泡泡，放進對應的巨型泡泡。');
   }
+
+  /* ---------- 依畫面大小自動排版：巨型泡泡固定為圓形，必要時換排 ---------- */
+  var fixedMQ = window.matchMedia('(min-width: 761px) and (min-height: 520px)'), rz = 0;
+  function textW(t, fs) { var w = 0; for (var i = 0; i < t.length; i++) w += t.charCodeAt(i) > 255 ? 1.05 : .58; return w * fs; }
+  function fitPills(d, tfs) {
+    var best = 18;
+    G.cats.forEach(function (c) {
+      var lines = Math.max(1, Math.ceil(textW(c.name, tfs) / (d * .74)));
+      var avW = d * .74, avH = (d - d * .11 - lines * tfs * 1.25 - d * .17) * .92, fs, gp = 4;
+      for (fs = Math.min(18, d * .085); fs > 9; fs -= .5) {
+        var rows = 1, cur = 0;
+        c.items.forEach(function (t) {
+          var w = textW(t, fs) + fs * 1.5;
+          if (cur > 0 && cur + gp + w > avW) { rows++; cur = w; } else cur += (cur ? gp : 0) + w;
+        });
+        if (rows * fs * 1.5 + (rows - 1) * gp <= avH) break;
+      }
+      best = Math.min(best, fs);
+    });
+    return Math.max(9, best);
+  }
+  function fit() {
+    if (!G) return;
+    var n = G.cats.length, m = G.total, gap = 12, fixed = fixedMQ.matches;
+    var cs = getComputedStyle(stageEl), sw = stageEl.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+    var s, th, i;
+    if (fixed) {
+      var sh = stageEl.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom) - statEl.offsetHeight - parseFloat(getComputedStyle(statEl).marginBottom) - 2 * gap;
+      for (s = 88; s >= 40; s -= 2) {
+        var per = Math.max(1, Math.floor((sw - 24 + gap) / (s + gap))), rows = Math.ceil(m / per);
+        th = rows * s + (rows - 1) * gap + 24;
+        if (th <= sh * .34) break;
+      }
+      trayEl.style.minHeight = th + 'px';
+    } else {
+      s = Math.max(60, Math.min(84, Math.floor(sw / 5.2)));
+      trayEl.style.minHeight = '';
+    }
+    trayEl.style.setProperty('--s', s + 'px');
+    var bw = bigsEl.clientWidth, bh = fixed ? bigsEl.clientHeight : 1e9, bestD = 0, bestC = 1, g = 16;
+    for (var cols = 1; cols <= n; cols++) {
+      var r = Math.ceil(n / cols), dW = (bw - (cols - 1) * g) / cols, dH = (bh - (r - 1) * g) / r, d = Math.min(dW, dH, 300);
+      if (d > bestD + .5) { bestD = d; bestC = cols; }
+    }
+    var D = Math.floor(Math.max(100, bestD)), tfs = Math.max(13, Math.min(26, D * .095));
+    bigsEl.style.gridTemplateColumns = 'repeat(' + bestC + ', ' + D + 'px)';
+    bigsEl.style.gridAutoRows = D + 'px';
+    bigsEl.style.setProperty('--d', D + 'px');
+    bigsEl.style.setProperty('--tfs', tfs + 'px');
+    bigsEl.style.setProperty('--pfs', fitPills(D, tfs) + 'px');
+  }
+  window.addEventListener('resize', function () { cancelAnimationFrame(rz); rz = requestAnimationFrame(fit); });
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 
   /* ---------- 配對判斷 ---------- */
   function clearSel() { if (selected && selected.el) selected.el.classList.remove('sel'); selected = null; }
@@ -344,6 +415,7 @@
   }
   function win() {
     G.locked = true; say('全部配對成功，太棒了！');
+    G.bigEls.forEach(function (b, i) { b.style.setProperty('--i', i); b.classList.add('glow'); });
     var cols = CAT_COLORS;
     for (var i = 0; i < 40; i++) {
       var c = el('i', 'conf'); c.style.left = (Math.random() * 100) + 'vw'; c.style.background = cols[i % cols.length];
@@ -365,7 +437,7 @@
     function move(ev) {
       if (!ghost && Math.hypot(ev.clientX - sx, ev.clientY - sy) > 6) {
         ghost = b.cloneNode(true); ghost.classList.add('ghost'); ghost.classList.remove('sel');
-        ghost.style.width = rect.width + 'px'; ghost.style.height = rect.height + 'px';
+        ghost.style.width = rect.width + 'px'; ghost.style.height = rect.height + 'px'; ghost.style.setProperty('--s', rect.width + 'px');
         document.body.appendChild(ghost); b.classList.add('dragging'); clearSel();
       }
       if (ghost) {
@@ -407,13 +479,13 @@
   }
   presetSel.addEventListener('change', function () { loadPreset(presetSel.value); });
   input.addEventListener('input', function () { presetSel.value = ''; });
-  $('#bankBtn').addEventListener('click', function () { var p = $('#panel'); p.hidden = !p.hidden; });
-  $('#closeBtn').addEventListener('click', function () { $('#panel').hidden = true; });
+  $('#bankBtn').addEventListener('click', function () { var p = $('#panel'); if (p.open) p.close(); else p.showModal(); });
+  $('#closeBtn').addEventListener('click', function () { $('#panel').close(); });
   function titleFromSelect() { var p = PRESET_BANKS.filter(function (x) { return x.id === presetSel.value; })[0]; return p ? p.name : ''; }
   $('#startBtn').addEventListener('click', function () {
     var r = parseBank(input.value);
     if (r.errors.length) { err.textContent = r.errors.slice(0, 5).join('\n'); return; }
-    err.textContent = ''; $('#panel').hidden = true; startGame(r.cats, titleFromSelect());
+    err.textContent = ''; $('#panel').close(); startGame(r.cats, titleFromSelect());
   });
   $('#restartBtn').addEventListener('click', function () { if (G) { document.querySelectorAll('.conf').forEach(function (c) { c.remove(); }); buildStage(); say('重新開始，加油！'); } });
 
@@ -461,8 +533,8 @@
     loadPreset(PRESET_BANKS[0].id);
     var r0 = parseBank(input.value);
     if (!r0.errors.length) startGame(r0.cats, PRESET_BANKS[0].name);
-    else { err.textContent = r0.errors.join('\n'); $('#panel').hidden = false; }
-  } else { $('#panel').hidden = false; }
+    else { err.textContent = r0.errors.join('\n'); $('#panel').showModal(); }
+  } else { $('#panel').showModal(); }
 })();
 </script>
 </body>
