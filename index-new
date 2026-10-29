@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>老師的教學百寶箱｜互動工具中樞</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F2E8D0;--ink:#3E3A39;color-scheme:light;
+--font:"Huninn","Microsoft JhengHei","微軟正黑體","Source Han Sans TC","Noto Sans TC","思源黑體","PingFang TC",sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.35}
+.wrap{max-width:1040px;margin:0 auto;padding:12px 14px 20px}
+.hero{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;background:#A8D3E6;border:3px solid var(--ink);border-radius:28px;padding:6px 18px;box-shadow:3px 3px 0 var(--ink)}
+.hero svg{width:230px;max-width:100%;flex:none}
+.hero div{text-align:center}
+.hero h1{margin:0;font-size:clamp(1.5rem,4.5vw,2.1rem);letter-spacing:.06em;line-height:1.2}
+.tag{display:inline-block;margin-top:2px;background:var(--bg);border:3px solid var(--ink);border-radius:999px;padding:0 14px;font-size:.9rem}
+.sec{margin-top:12px;border:3px solid var(--ink);border-radius:26px;padding:8px 12px 12px;background:var(--c)}
+.y{--c:#F6D27A;--t:#FBE6AE;--d:#8A6410;--p:#E8BC4E}
+.a{--c:#A8D3E6;--t:#CFE6F1;--d:#27688A;--p:#79B6D2}
+.r{--c:#F2A497;--t:#F8CCC4;--d:#A23F31;--p:#E4806F}
+.g{--c:#B9DAA5;--t:#D5E8C8;--d:#46742F;--p:#93C27A}
+.sec>header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.sec>header svg{width:40px;height:40px;flex:none}
+.sec h2{margin:0;font-size:1.2rem;font-weight:400;background:var(--t);border:3px solid var(--ink);border-radius:999px;padding:0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:9px}
+.card{display:block;text-decoration:none;color:inherit;background:var(--bg);border:3px solid var(--ink);border-radius:20px;padding:5px 14px 6px;box-shadow:2px 2px 0 var(--ink);transition:transform .12s,box-shadow .12s}
+a.card:hover,a.card:focus-visible{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink);outline:none}
+a.card:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+.card b{display:block;font-size:1.25rem;font-weight:400;line-height:1.3}
+.card small{display:block;font-size:.78rem;opacity:.8}
+.card small i{font-style:normal;font-weight:700;color:var(--d);opacity:1;margin-right:6px;font-size:.72rem}
+.wide{grid-column:1/-1}
+.rows{display:flex;flex-wrap:wrap;gap:4px 22px;margin-top:4px}
+.grp{display:flex;align-items:center;gap:6px}
+.grp span{font-size:.95rem;width:1.6em}
+.pill{text-decoration:none;color:var(--ink);background:var(--p);border:2px solid var(--ink);border-radius:999px;padding:0 13px;font-size:.92rem;box-shadow:1.5px 1.5px 0 var(--ink);transition:transform .12s}
+.pill:hover,.pill:focus-visible{transform:translateY(-1px);outline:none}
+.pill:active{transform:translate(1px,1px);box-shadow:0 0 0 var(--ink)}
+footer{margin-top:12px;text-align:center;font-size:.85rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+<svg viewBox="0 0 260 112" role="img" aria-label="插畫：開心的寶箱與飄出的小符號">
+<defs>
+<path id="hp" d="M0 6C-10-2-8-10 0-5C8-10 10-2 0 6z" vector-effect="non-scaling-stroke"/>
+<g id="qm" fill="none" stroke-linecap="round"><path vector-effect="non-scaling-stroke" d="M-5-6Q-5-12 0-12Q5-12 5-7Q5-3 0 0V3"/><circle cx="0" cy="9" r=".6" vector-effect="non-scaling-stroke"/></g>
+<g id="ex" fill="none" stroke-linecap="round"><path vector-effect="non-scaling-stroke" d="M0-12V2"/><circle cx="0" cy="9" r=".6" vector-effect="non-scaling-stroke"/></g>
+<path id="bolt" d="M3-12L-6 2H0L-3 12 7-3H1z" vector-effect="non-scaling-stroke"/>
+<path id="star" d="M0-9L2.5-3 9-2.5 4 1.5 5.5 8 0 4.5-5.5 8-4 1.5-9-2.5-2.5-3z" vector-effect="non-scaling-stroke"/>
+</defs>
+<g stroke="#3E3A39" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+<ellipse cx="130" cy="106" rx="52" ry="5" fill="#3E3A39" opacity=".15" stroke="none"/>
+<path d="M86 58h88v38a9 9 0 0 1-9 9H95a9 9 0 0 1-9-9z" fill="#F6D27A"/>
+<path d="M78 60a52 32 0 0 1 104 0z" fill="#F2A497"/>
+<path d="M104 78v4M156 78v4" stroke-width="4" fill="none"/>
+<path d="M121 86q9 7 18 0" fill="none"/>
+<ellipse cx="102" cy="90" rx="6" ry="3.5" fill="#F2A497" stroke="none"/><ellipse cx="158" cy="90" rx="6" ry="3.5" fill="#F2A497" stroke="none"/>
+<use href="#hp" transform="translate(40 38) scale(3.2)" fill="#F2A497"/>
+<use href="#hp" transform="translate(76 22) scale(1.6)" fill="#F2A497"/>
+<use href="#hp" transform="translate(22 82) scale(1.7)" fill="#FFFCF6"/>
+<use href="#star" transform="translate(130 18) scale(1.5)" fill="#F6D27A"/>
+<use href="#qm" transform="translate(195 32) scale(2)"/>
+<use href="#qm" transform="translate(222 80) scale(1.2)"/>
+<use href="#ex" transform="translate(165 22) scale(1.4)"/>
+<use href="#ex" transform="translate(238 40) scale(1.8)"/>
+<use href="#bolt" transform="translate(210 62) scale(1.6)" fill="#F6D27A"/>
+<use href="#bolt" transform="translate(52 66) scale(1)" fill="#F6D27A"/>
+<use href="#star" transform="translate(30 20) scale(1)" fill="#FFFCF6"/>
+</g>
+</svg>
+<div><h1>老師的教學百寶箱</h1><span class="tag">互動工具中樞</span></div>
+</div>
+
+<!-- 第一類別：01_games/ -->
+<section class="sec y">
+<header><svg viewBox="0 0 60 60"><g stroke="#3E3A39" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="16" width="50" height="30" rx="15" fill="#F2E8D0"/><path d="M18 24v14M11 31h14" fill="none"/><circle cx="40" cy="27" r="3" fill="#F2A497"/><circle cx="46" cy="35" r="3" fill="#A8D3E6"/></g></svg><h2>🎮 互動遊戲與競賽</h2></header>
+<div class="grid">
+<a class="card" href="01_games/01_1_pairing-game.html"><b>分類配對快手</b><small><i>01_1</i>把詞語分到正確的類別</small></a>
+<a class="card" href="01_games/01_2_slashing-game.html"><b>切切樂反應王</b><small><i>01_2</i>眼明手快的反應挑戰</small></a>
+<a class="card" href="01_games/01_3_ultimate-tug.html"><b>終極拔河大對決</b><small><i>01_3</i>全班一起分組拔河</small></a>
+<a class="card" href="01_games/01_4_word-game.html"><b>字謎 連線</b><small><i>01_4</i>猜字謎、連連看</small></a>
+</div>
+</section>
+
+<!-- 第二類別：02_tools/ -->
+<section class="sec a">
+<header><svg viewBox="0 0 60 60"><g stroke="#3E3A39" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"><circle cx="30" cy="33" r="21" fill="#F2E8D0"/><path d="M30 20v14l9 6" fill="none"/><path d="M22 7h16" fill="none"/></g></svg><h2>⏱️ 教學工具</h2></header>
+<div class="grid">
+<a class="card" href="02_tools/02_1_bonus-system.html"><b>班級星光加分板</b><small><i>02_1</i>累積班級的閃亮星星</small></a>
+<a class="card" href="02_tools/02_2_Chinese-Learning_00.html"><b>語文常識</b><small><i>02_2</i>語文小知識一把抓</small></a>
+<div class="card wide">
+<b>國中語文學習任務</b><small><i>02_3</i>選擇班級進入</small>
+<div class="rows">
+<div class="grp"><span>翰</span><a class="pill" href="02_tools/chinese-learning/h7/02_3_Chinese-Learning_h7.html">翰7</a><a class="pill" href="02_tools/chinese-learning/h8/02_3_Chinese-Learning_h8.html">翰8</a><a class="pill" href="02_tools/chinese-learning/h9/02_3_Chinese-Learning_h9.html">翰9</a></div>
+<div class="grp"><span>南</span><a class="pill" href="02_tools/chinese-learning/n7/02_3_Chinese-Learning_n7.html">南7</a><a class="pill" href="02_tools/chinese-learning/n8/02_3_Chinese-Learning_n8.html">南8</a><a class="pill" href="02_tools/chinese-learning/n9/02_3_Chinese-Learning_n9.html">南9</a></div>
+<div class="grp"><span>康</span><a class="pill" href="02_tools/chinese-learning/k7/02_3_Chinese-Learning_k7.html">康7</a><a class="pill" href="02_tools/chinese-learning/k8/02_3_Chinese-Learning_k8.html">康8</a><a class="pill" href="02_tools/chinese-learning/k9/02_3_Chinese-Learning_k9.html">康9</a></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- 第三類別：03_social-emotional/ -->
+<section class="sec r">
+<header><svg viewBox="0 0 60 60"><path d="M30 52C8 36 6 20 16 13c7-5 14-1 14 6 0-7 7-11 14-6 10 7 8 23-14 39z" fill="#F2E8D0" stroke="#3E3A39" stroke-width="3.5" stroke-linejoin="round"/><circle cx="23" cy="28" r="2.5" fill="#3E3A39"/><circle cx="37" cy="28" r="2.5" fill="#3E3A39"/><path d="M26 35q4 4 8 0" stroke="#3E3A39" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg><h2>💖 社會情緒與人際溝通專區</h2></header>
+<div class="grid">
+<a class="card" href="03_social-emotional/03_1_gratitude-share.html"><b>感恩回饋區</b><small><i>03_1</i>當下的快樂與靈感提示</small></a>
+<a class="card" href="03_social-emotional/03_2_calm-down.html"><b>班級靜心專區</b><small><i>03_2</i>視覺呼吸球</small></a>
+<a class="card" href="03_social-emotional/03_3_discussion-guide.html"><b>小組討論指引欄</b><small><i>03_3</i>步驟、原則與例句</small></a>
+<a class="card" href="03_social-emotional/03_4_happy-perfume.html"><b>幸福香水</b><small><i>03_4</i>讚美與正向回饋句型</small></a>
+<a class="card" href="03_social-emotional/03_5_emotion-awareness.html"><b>情緒覺察站</b><small><i>03_5</i>認識此刻的心情</small></a>
+<a class="card" href="03_social-emotional/03_6_debate-topics.html"><b>辯論題目百寶箱</b><small><i>03_6</i>精選辯論題目</small></a>
+<a class="card" href="03_social-emotional/03_7_chat-helper.html"><b>閒聊專區</b><small><i>03_7</i>隨機話題與萬用句型</small></a>
+<a class="card" href="03_social-emotional/03_8_quote-cards.html"><b>指引小卡</b><small><i>03_8</i>隨機抽取名言佳句</small></a>
+</div>
+</section>
+
+<!-- 第四類別：04_utilities/ -->
+<section class="sec g">
+<header><svg viewBox="0 0 60 60"><g stroke="#3E3A39" stroke-width="3.5" stroke-linecap="round" fill="none"><path d="M26 34a9 9 0 0 0 13 0l8-8a9 9 0 0 0-13-13l-4 4" fill="#F2E8D0"/><path d="M34 26a9 9 0 0 0-13 0l-8 8a9 9 0 0 0 13 13l4-4"/></g></svg><h2>🔗 教學小工具與導航</h2></header>
+<div class="grid">
+<a class="card" href="04_utilities/04_1_lucky-draw.html"><b>小教室座位抽籤板</b><small><i>04_1</i>隨機抽座位不偏心</small></a>
+<a class="card" href="04_utilities/04_2_typing-game.html"><b>打字練習板</b><small><i>04_2</i>練習打字速度</small></a>
+<a class="card" href="04_utilities/04_3_journal-lead.html"><b>寫作練習板</b><small><i>04_3</i>引導式寫作練習</small></a>
+<a class="card" href="04_utilities/04_4_resource-links.html"><b>常用教學資源連結</b><small><i>04_4</i>常用資源一次收納</small></a>
+</div>
+</section>
+
+<footer>🌸 選一個工具，開始今天的課堂吧 🌸</footer>
+</div>
+</body>
+</html>
