@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>康軒版 七年級｜國中語文學習任務</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@300;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#1C1B1A;
+  --tab:#322E2B; --tab-text:#D3BC8E;
+  --gold:#ECC066; --gold-line:#D9AE4E;
+  --jade:#F5F3ED; --pale:#EFECE3; --board:#E4DFD1;
+  --ink:#2D2B2A; --ink-soft:#6B645B;
+  --muted:rgba(245,243,237,.62);
+  --cut:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--jade);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  line-height:1.7;min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at 50% -10%,rgba(236,192,102,.10),transparent 60%);
+}
+#crystals{position:fixed;inset:0;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1020px;margin:0 auto;padding:28px 20px 64px}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* ===== 站內導覽（每頁共用） ===== */
+.sitenav{display:flex;align-items:center;gap:6px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.sitenav .sep{flex:none;width:1px;height:18px;background:rgba(211,188,142,.3);margin:0 6px}
+.nv{
+  --c:8px;flex:none;position:relative;text-decoration:none;white-space:nowrap;
+  background:var(--tab);color:var(--tab-text);font-size:.88rem;letter-spacing:.08em;padding:6px 16px;
+  clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c));
+  transition:background .12s,color .12s;
+}
+.nv:hover{color:var(--gold)}
+.nv.on{background:var(--gold);color:var(--ink);font-weight:500;padding-left:26px}
+.nv.on::before,.tab[aria-selected="true"]::before{
+  content:"";position:absolute;left:10px;top:50%;width:4px;height:4px;margin-top:-2px;background:var(--ink);
+}
+
+/* ===== 標題 ===== */
+header{text-align:center;margin:44px 0 30px}
+h1{
+  font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;font-weight:500;
+  font-size:clamp(2.6rem,9vw,4.4rem);letter-spacing:.22em;padding-left:.22em;color:var(--gold);line-height:1.2;
+}
+.sub{margin-top:8px;color:var(--muted);font-size:1.05rem;letter-spacing:.3em;padding-left:.3em;font-weight:300}
+.divider{display:flex;align-items:center;gap:12px;margin:22px auto 0;max-width:520px}
+.divider::before,.divider::after{content:"";flex:1;height:1px}
+.divider::before{background:linear-gradient(90deg,transparent,rgba(236,192,102,.4))}
+.divider::after{background:linear-gradient(270deg,transparent,rgba(236,192,102,.4))}
+.divider i{width:8px;height:8px;background:var(--gold);transform:rotate(45deg);flex:none}
+
+/* ===== 側邊目錄 + 淺色主方框 ===== */
+.layout{display:flex;align-items:flex-start}
+.tabs{display:flex;flex-direction:column;gap:8px;flex:none;width:132px;padding-top:26px}
+.tab{
+  --c:12px;position:relative;cursor:pointer;font:inherit;font-size:1rem;letter-spacing:.2em;text-align:left;
+  background:var(--tab);color:var(--tab-text);border:0;padding:16px 16px 16px 30px;margin-right:10px;
+  clip-path:polygon(var(--c) 0,100% 0,100% 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));
+  transition:background .1s,color .1s;
+}
+.tab:hover{color:var(--gold)}
+.tab[aria-selected="true"]{background:var(--gold);color:var(--ink);font-weight:500;margin-right:-1px;position:relative;z-index:3;padding-right:26px}
+.tab[aria-selected="true"]::before{left:14px}
+
+.board{
+  position:relative;flex:1;min-width:0;background:var(--board);color:var(--ink);padding:30px 28px 34px;
+  clip-path:polygon(0 0,calc(100% - var(--cut)) 0,100% var(--cut),100% 100%,var(--cut) 100%,0 calc(100% - var(--cut)));
+}
+.frame{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.frame .base{fill:none;stroke:var(--gold-line);stroke-width:1.5;opacity:.7}
+.frame .glow{fill:none;stroke:var(--gold);stroke-width:2.5;stroke-linecap:round;opacity:0}
+.frame .glow.run{animation:flow .55s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes flow{
+  0%{stroke-dasharray:90 910;stroke-dashoffset:0;opacity:1}
+  100%{stroke-dasharray:90 910;stroke-dashoffset:-1000;opacity:1}
+}
+
+.panel{display:none}
+.panel.active{display:block;animation:open .18s ease-out}
+@keyframes open{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.panel-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px}
+.panel-head h2{font-family:"Noto Serif TC",serif;font-weight:500;font-size:1.3rem;letter-spacing:.18em}
+.panel-head span{color:var(--ink-soft);font-size:.85rem}
+.rule{height:1px;margin-bottom:18px;background:linear-gradient(90deg,var(--gold-line),transparent)}
+
+/* ===== 課程方框 ===== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{
+  position:relative;display:flex;align-items:center;gap:14px;overflow:hidden;
+  background:var(--jade);border:1px solid #DDD8C9;padding:16px 16px 16px 18px;
+  transition:border-color .15s;
+}
+.card::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(236,192,102,.28),transparent);
+  transform:skewX(-20deg);opacity:0;
+}
+.card:hover,.card:focus-within{border-color:var(--gold-line);box-shadow:0 0 0 1px var(--gold-line)}
+.card:hover::after{opacity:1;animation:sweep .7s ease-out}
+@keyframes sweep{to{left:130%}}
+.no{
+  flex:none;width:34px;height:34px;display:grid;place-items:center;
+  border:1px solid var(--gold-line);color:#9A7A2C;font-family:"Noto Serif TC",serif;font-size:.9rem;transform:rotate(45deg);
+}
+.no b{transform:rotate(-45deg);font-weight:500}
+.info{min-width:0;flex:1}
+.title{display:block;font-size:1.05rem;font-weight:500;letter-spacing:.05em;color:var(--ink)}
+.author{display:block;font-size:.85rem;color:var(--ink-soft);font-weight:300}
+/* 整個方框可點：連到教材頁 */
+.main-link{text-decoration:none;color:inherit}
+.main-link::before{content:"";position:absolute;inset:0;z-index:1}
+/* 測驗小方塊 */
+.test{
+  position:relative;z-index:2;flex:none;text-decoration:none;
+  background:var(--pale);border:1px solid #E1DCCB;color:var(--ink-soft);
+  font-size:.78rem;letter-spacing:.1em;padding:3px 10px;
+  transition:border-color .12s,color .12s,background .12s;
+}
+.test:hover{border-color:var(--gold-line);color:var(--ink);background:#F7EBC9}
+
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:40px;letter-spacing:.1em}
+
+@media (max-width:640px){
+  .wrap{padding-top:18px}
+  .layout{flex-direction:column}
+  .tabs{flex-direction:row;width:100%;padding:0;gap:8px}
+  .tab{flex:1;margin:0 0 -1px;padding:12px 12px 14px 28px;
+    clip-path:polygon(var(--c) 0,100% 0,100% 100%,0 100%,0 var(--c))}
+  .tab[aria-selected="true"]{margin-right:0;padding-right:12px}
+  .board{width:100%;padding:22px 16px 28px}
+  .grid{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .panel.active,.card:hover::after,.frame .glow.run{animation:none}
+  #crystals{display:none}
+}
+</style>
+</head>
+<body>
+<canvas id="crystals" aria-hidden="true"></canvas>
+
+<main class="wrap">
+  <nav class="sitenav" id="sitenav" aria-label="站內導覽"></nav>
+
+  <header>
+    <h1>康軒版　七年級</h1>
+    <p class="sub">國中語文學習任務</p>
+    <div class="divider"><i></i></div>
+  </header>
+
+  <div class="layout">
+    <div class="tabs" role="tablist" aria-label="學期選擇">
+      <button class="tab" role="tab" id="tab-up" aria-selected="true" aria-controls="panel-up">上學期</button>
+      <button class="tab" role="tab" id="tab-down" aria-selected="false" aria-controls="panel-down">下學期</button>
+    </div>
+
+    <div class="board" id="board">
+      <svg class="frame" id="frame" aria-hidden="true">
+        <path class="base" id="fbase"></path>
+        <path class="glow" id="fglow" pathLength="1000"></path>
+      </svg>
+      <section class="panel active" id="panel-up" role="tabpanel" aria-labelledby="tab-up"></section>
+      <section class="panel" id="panel-down" role="tabpanel" aria-labelledby="tab-down"></section>
+    </div>
+  </div>
+
+  <footer>
+    <div class="divider" style="margin-bottom:14px"><i></i></div>
+    國語文學習任務導覽
+  </footer>
+</main>
+
+<script>
+/* ===== 站內導覽設定：其他頁面只要改 CURRENT 即可共用 ===== */
+const CURRENT = "k7";
+const NAV = [
+  { href: "../../index.html", label: "首頁" }, "|",
+  { id: "h7", href: "h7.html", label: "翰7" },
+  { id: "h8", href: "h8.html", label: "翰8" },
+  { id: "h9", href: "h9.html", label: "翰9" }, "|",
+  { id: "n7", href: "n7.html", label: "南7" },
+  { id: "n8", href: "n8.html", label: "南8" },
+  { id: "n9", href: "n9.html", label: "南9" }, "|",
+  { id: "k7", href: "k7.html", label: "康7" },
+  { id: "k8", href: "k8.html", label: "康8" },
+  { id: "k9", href: "k9.html", label: "康9" }, "|",
+  { id: "00", href: "../2_chinese-learning00.html", label: "語文常識" }
+];
+document.getElementById("sitenav").innerHTML = NAV.map(n => {
+  if (n === "|") return '<span class="sep"></span>';
+  const on = n.id === CURRENT;
+  return `<a class="nv${on ? " on" : ""}" href="${n.href}"${on ? ' aria-current="page"' : ""}>${n.label}</a>`;
+}).join("");
+
+/* ===== 課文資料：f = 檔名中間段，自動組出教材頁與測驗頁網址 ===== */
+/* 課文頁：k7/上下學期_課次_課名.html　測驗頁：結尾加 _test */
+const BASE = "k7/";
+const DATA = {
+  up: { name: "七年級上學期（七上）", lessons: [
+    ["夏夜", "楊喚", "1_01_summernight"],
+    ["生之歌選", "杏林子", "1_02_songoflife"],
+    ["吃冰的滋味", "古蒙仁", "1_03_tasteofice"],
+    ["差不多先生傳", "胡適", "1_04_mralmost"],
+    ["論語選", "孔子弟子及再傳弟子", "1_05_analects"],
+    ["那默默的一群", "張騰蛟", "1_06_silentgroup"],
+    ["兒時記趣", "沈復", "1_07_childhoodfun"],
+    ["紙船印象", "洪醒夫", "1_08_paperboat"],
+    ["下雨天，真好", "琦君", "1_09_rainyday"],
+    ["鬧元宵", "朱天衣", "1_10_lanternfestival"]
+  ]},
+  down: { name: "七年級下學期（七下）", lessons: [
+    ["傘（新詩選）", "蓉子", "2_01_umbrella"],
+    ["近體詩選：早發白帝城", "李白", "2_02_zaofabaidicheng"],
+    ["近體詩選：山居秋暝", "王維", "2_03_shanjuqiuming"],
+    ["近體詩選：聞官軍收河南河北", "杜甫", "2_04_wenguanshouhenan"],
+    ["另一個春天", "褚士瑩", "2_05_another_spring"],
+    ["四種讀書的方法", "李偉文", "2_06_fourreadingmethods"],
+    ["背影", "朱自清", "2_07_backview"],
+    ["聲音鐘", "陳黎", "2_08_soundclock"],
+    ["今夜看螢去", "南方朔", "2_09_fireflies"],
+    ["記承天夜遊", "蘇軾", "2_10_chengtian"],
+    ["音樂家與職籃巨星", "王溢嘉", "2_11_musicianbasketballstar"],
+    ["謝天", "陳之藩", "2_12_thankingheaven"],
+    ["玉山——迎接臺灣第一道曙光", "路寒袖", "2_13_yushan"]
+  ]}
+};
+
+function render(key, el) {
+  const d = DATA[key];
+  const cards = d.lessons.map(([title, author, f], i) => `
+    <div class="card">
+      <span class="no"><b>${i + 1}</b></span>
+      <span class="info">
+        <a class="main-link" href="${BASE}${f}.html"><span class="title">${title}</span><span class="author">${author}</span></a>
+      </span>
+      <a class="test" href="${BASE}${f}_test.html" aria-label="${title} 測驗">測驗</a>
+    </div>`).join("");
+  el.innerHTML = `<div class="panel-head"><h2>${d.name}</h2><span>共 ${d.lessons.length} 課</span></div>
+    <div class="rule"></div><div class="grid">${cards}</div>`;
+}
+render("up", document.getElementById("panel-up"));
+render("down", document.getElementById("panel-down"));
+
+/* ===== 主方框的沙金切角邊框（SVG 繪製，與 CSS 切角同形） ===== */
+const board = document.getElementById("board"), frame = document.getElementById("frame"),
+      fbase = document.getElementById("fbase"), fglow = document.getElementById("fglow");
+function drawFrame() {
+  const w = board.offsetWidth, h = board.offsetHeight, c = 18, o = .75;
+  frame.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  const d = `M${o} ${o}L${w - c} ${o}L${w - o} ${c}L${w - o} ${h - o}L${c} ${h - o}L${o} ${h - c}Z`;
+  fbase.setAttribute("d", d); fglow.setAttribute("d", d);
+}
+drawFrame();
+new ResizeObserver(drawFrame).observe(board);
+
+/* ===== 切換：0.18 秒縮放淡入，完成後金光沿邊框游走一圈 ===== */
+const tabs = [...document.querySelectorAll(".tab")];
+function select(tab) {
+  if (tab.getAttribute("aria-selected") === "true") return;
+  tabs.forEach(t => {
+    const on = t === tab;
+    t.setAttribute("aria-selected", on);
+    document.getElementById(t.getAttribute("aria-controls")).classList.toggle("active", on);
+  });
+  fglow.classList.remove("run"); void fglow.getBoundingClientRect();
+  setTimeout(() => fglow.classList.add("run"), 180);
+}
+tabs.forEach((t, i) => {
+  t.addEventListener("click", () => select(t));
+  t.addEventListener("keydown", e => {
+    if (["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"].includes(e.key)) {
+      const n = tabs[(i + 1) % tabs.length]; n.focus(); select(n);
+    }
+  });
+});
+if (location.hash === "#down") select(tabs[1]);
+
+/* ===== 方形金色岩晶粒子 ===== */
+(function () {
+  const c = document.getElementById("crystals"), x = c.getContext("2d");
+  let w, h, ps = [];
+  function size() { w = c.width = innerWidth; h = c.height = innerHeight; }
+  size(); addEventListener("resize", size);
+  for (let i = 0; i < 24; i++) ps.push({
+    x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+    s: 2 + Math.random() * 4, v: .12 + Math.random() * .25, a: .08 + Math.random() * .2
+  });
+  (function loop() {
+    x.clearRect(0, 0, w, h);
+    ps.forEach(p => {
+      p.y -= p.v; if (p.y < -8) { p.y = h + 8; p.x = Math.random() * w; }
+      x.fillStyle = `rgba(236,192,102,${p.a})`; x.fillRect(p.x, p.y, p.s, p.s);
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>
