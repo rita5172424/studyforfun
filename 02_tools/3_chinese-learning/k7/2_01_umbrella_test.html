@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>康軒七年級｜傘（新詩選）測驗與重點複習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1C1B1A;--tab:#322E2B;--tt:#D3BC8E;--gold:#ECC066;--gl:#D9AE4E;--jade:#F5F3ED;--pale:#EFECE3;--board:#E4DFD1;--ink:#2D2B2A;--soft:#6B645B;--red:#B3261E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--jade);font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;line-height:1.7}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+a{color:var(--tt)}
+.top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:10px 18px;background:#262321;border-bottom:1px solid var(--gl);position:sticky;top:0;z-index:5}
+.top h1{font-size:1.15rem;font-weight:500;letter-spacing:.15em;color:var(--gold)}
+.tb2{display:flex;gap:6px;flex-wrap:wrap}
+.b{background:var(--tab);color:var(--tt);padding:7px 14px;font-size:.88rem;letter-spacing:.06em;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.b:hover{filter:brightness(1.3)}.b.on{background:var(--gold);color:var(--ink)}
+.b.g{background:#2F3B39;color:#BCD3CA}.b.r{background:#3E2B2B;color:#EBC9BE}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 14px 60px}
+.note{color:rgba(245,243,237,.6);font-size:.85rem;margin-bottom:12px}
+.rc{background:var(--board);color:var(--ink);border:1px solid var(--gl);padding:18px 22px;margin-bottom:16px;font-size:1.1rem}
+.sh{font-size:1.3rem;font-weight:500;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;margin-bottom:6px}
+.sh small{font-size:.85rem;font-weight:400;color:var(--soft);letter-spacing:0}
+.tipb{background:#FFF3B0;border:1px solid #E0C34A;padding:3px 12px;font-size:.85rem;color:var(--ink)}
+.tip{background:#FFF8D6;border-left:4px solid var(--gl);padding:8px 14px;margin:4px 0 10px;font-size:1rem}
+.rc .tip{display:block}.sx .tip{display:none}.sx .tip.on{display:block}
+.flg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.fl{perspective:900px;height:130px;cursor:pointer}
+.fi{position:relative;height:100%;transition:transform .3s;transform-style:preserve-3d}
+.fl.on .fi{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;inset:0;backface-visibility:hidden;padding:12px;display:grid;place-items:center;text-align:center;border:1px solid var(--gl);overflow:auto}
+.ff{background:var(--ink);color:var(--gold);font-size:1.25rem}
+.fb{background:var(--jade);transform:rotateY(180deg);font-size:1rem;line-height:1.5}
+.fb b{font-size:1.5rem;color:var(--red);display:block}
+.nb{position:absolute;top:5px;left:7px;font-size:.75rem;opacity:.8}
+.pv{padding:14px;overflow:auto}
+#paper.full{background:var(--bg)}
+#paper:fullscreen{overflow:auto;background:#1C1B1A;padding:10px}
+@media (prefers-reduced-motion:reduce){.fi{transition:none}}
+</style>
+<style id="tcss"></style>
+</head>
+<body>
+<div class="top">
+  <h1>〈傘〉測驗・重點複習</h1>
+  <div class="tb2" id="tabs"></div>
+  <div class="tb2" id="acts"></div>
+</div>
+<div class="wrap">
+  <p class="note" id="note"></p>
+  <div id="review"></div>
+  <div id="paper" class="live" hidden></div>
+</div>
+<script>
+const LESSON = { name: "傘（新詩選）", short: "傘" };
+const $ = s => document.querySelector(s);
+/* ===== 資料區：題目取自預習單、靜心戀字、in講義、課次卷、習作；字頻分級為估計值，可自行調整 =====
+   TZY：[題幹（「」內為目標）, 答案, 詳解]。前 6 題 3000 字內、中 8 題 3000～4500、後 2 題 4500～6000；國字⇄注音各 8 題 */
+const TZY = [
+  ["「載」花的樹", "ㄗㄞˋ", "「載花的樹」的「載」是裝運，念ㄗㄞˋ。"], ["權「ㄅㄧㄥˇ」", "柄", "權柄指權力；器物上可以拿的地方叫「柄」，從木。"], ["自在自「ㄕˋ」", "適", "自適＝自我調適；「適」念ㄕˋ，有舒服、合宜的意思。"],
+  ["「寧」靜", "ㄋㄧㄥˊ", "寧靜念ㄋㄧㄥˊ，安靜不吵鬧。"], ["不修邊「ㄈㄨˊ」", "幅", "邊幅指布帛的邊緣；不修邊幅是不注意儀容。"], ["「孤」掌難鳴", "ㄍㄨ", "孤是單獨，念ㄍㄨ；一隻手拍不響。"],
+  ["鳥「翅」初撲", "ㄔˋ", "翅是鳥類和昆蟲的翼，念ㄔˋ。"], ["「ㄏㄨˊ」形", "弧", "弧是彎曲的形狀；右邊是「瓜」，不是「爪」。"], ["無「懈」可擊", "ㄒㄧㄝˋ", "懈是怠惰，引申為缺點，念ㄒㄧㄝˋ。"],
+  ["「ㄧㄢˋ」陽", "豔", "豔陽是明亮耀眼的太陽。"], ["雙「翼」", "ㄧˋ", "翼是翅膀，念ㄧˋ。"], ["溫柔「ㄉㄨㄣ」厚", "敦", "敦是質樸、篤厚；不是墩、燉。"],
+  ["開「闔」自如", "ㄏㄜˊ", "闔是關閉，念ㄏㄜˊ；開闔就是打開和闔上。"], ["初「ㄆㄨ」", "撲", "撲是翅膀連續拍擊，念ㄆㄨ。"],
+  ["朝「暾」", "ㄊㄨㄣ", "暾是剛升起的太陽，念ㄊㄨㄣ。"], ["「ㄅㄧㄢ」蝠", "蝙", "蝙蝠是會飛的哺乳類動物；「蝙」從虫。"]
+];
+const TN = [["無懈可擊", "沒有缺點可讓人攻擊，形容非常完美"], ["荷蓋", "此指荷葉"], ["暾", "剛升起的太陽"], ["撲", "（翅膀）在空氣中連續拍擊"], ["載", "裝運"], ["自適", "自我調適，有自我排遣、自我娛悅的意思"]];
+const TX = [
+  { c: [["載", "ㄗㄞˋ", "裝運、記錄、充滿"], ["栽", "ㄗㄞ", "種植、安上"], ["裁", "ㄘㄞˊ", "用刀剪割開；體制、格式"], ["戴", "ㄉㄞˋ", "把東西附加在頭上；擁護"]], b: [["（　）花種樹", "栽"], ["（　）眼鏡", "戴"], ["怨聲（　）道", "載"], ["（　）布製衣", "裁"], ["深受愛（　）", "戴"], ["文章體（　）", "裁"]] },
+  { c: [["幅", "ㄈㄨˊ", "布帛的寬度；畫的單位"], ["蝠", "ㄈㄨˊ", "蝙蝠，會飛的動物"], ["副", "ㄈㄨˋ", "成套成組的單位"]], b: [["不修邊（　）", "幅"], ["一（　）耳環", "副"], ["一（　）畫", "幅"], ["蝙（　）", "蝠"], ["篇（　）", "幅"], ["一（　）眼鏡", "副"]] },
+  { c: [["暾", "ㄊㄨㄣ", "剛升起的太陽"], ["墩", "ㄉㄨㄣ", "支撐、墊物的柱石"], ["敦", "ㄉㄨㄣ", "和睦；質樸、篤厚"], ["燉", "ㄉㄨㄣˋ", "用小火慢煮"]], b: [["溫柔（　）厚", "敦"], ["整修橋（　）", "墩"], ["（　）煮補品", "燉"], ["朝（　）夕暉", "暾"], ["（　）親睦鄰", "敦"], ["清（　）牛肉", "燉"]] }
+];
+const TY1 = [["一種用來擦拭距離的／橡皮／卻擦不去／一路的崎嶇", "輪胎", "輪子滾過路面，像擦掉距離，卻擦不掉崎嶇。"], ["你用一隻眼睛看黑暗／被你看到的地方變為光明／我有兩隻眼睛／卻要由一隻眼睛的你帶路", "手電筒", "一隻眼睛、照亮黑暗、帶路，是手電筒。"], ["開，或者關／都可以／有時候是阻擋／有時候是歡迎／進，或者出／都可以／它真正的意思／只是通過", "門", "開關、阻擋或歡迎、讓人通過，是門。"], ["量身姓氏／裁剪名銜／燙金加蠟／印刷精美的薄薄一紙臉譜", "名片", "印著姓氏、名銜的薄薄一紙，是名片。"]];
+const TY2 = [["「朱」墨爛然", "紅", "朱是紅色。"], ["明眸「皓」齒", "白", "皓是潔白。"], ["「碧」草如茵", "綠", "碧是青綠色。"], ["草木蒼「翠」", "綠", "翠是翠綠色。"], ["不分青紅「皂」白", "黑", "皂是黑色。"], ["「烏」雲密布", "黑", "烏是黑色。"]];
+const TI = [
+  ["無懈可擊", "沒有缺點可讓人攻擊，形容非常完美。", "這支球隊陣容堅強，防守滴水不漏，可以說是{}。"],
+  ["天衣無縫", "形容事情做得非常周密，找不出破綻。", "他的計畫安排得{}，連經驗豐富的老師也挑不出毛病。"],
+  ["破綻百出", "漏洞很多，缺點一大堆。", "這篇報告資料前後矛盾，說起來{}，難以讓人信服。"],
+  ["操之在己", "掌握在自己手中。", "成績能不能進步，完全{}，只要努力就有機會。"],
+  ["赤子之心", "像初生嬰兒般善良、純潔、真誠的心。", "即使長大成人，他仍保有{}，總是真誠待人。"]
+];
+const TQ = [
+  { q: "下列文句「　」中的詞語，何者替換後意思不變？", o: ["「朝暾」初上，她掙扎一會兒才起床梳洗→旭日", "一聲尖叫劃破了山野的「寧靜」→喧囂", "他將籃球以完美的「弧形」軌跡拋出→方形", "他為人溫柔「善良」，常主動幫忙鄰居→機靈"], a: 0, e: "朝暾是剛升起的太陽，和「旭日」意思相同。(B)寧靜和喧囂相反；(C)弧形不是方形；(D)善良不是機靈。" },
+  { q: "下列文句，何者用字最精簡？", o: ["他的表現十分非常穩重", "他依稀彷彿看到家人的身影", "上課時應該必須帶齊所有用具", "面對挑戰應不畏艱難，全力以赴"], a: 3, e: "(A)「十分」「非常」重複；(B)「依稀」「彷彿」重複；(C)「應該」「必須」重複。" },
+  { s: "鳥翅初撲／幅幅相連　以蝙蝠弧形的雙翼／連成一個無懈可擊的圓", q: "這段詩句主要在描寫什麼？", o: ["傘使用的時機", "傘開啟的過程", "傘販售的銷量", "傘製作的技術"], a: 1, e: "從鳥翅初撲、蝙蝠的雙翼，到完整的圓，一步步寫傘打開的過程。" },
+  { s: "一把綠色小傘是一頂荷蓋／紅色朝暾　黑色晚雲／各種顏色的傘是載花的樹", q: "作者將傘比喻成荷蓋、朝暾、晚雲，是針對傘的什麼特點進行聯想？", o: ["大小", "顏色", "材質", "形狀"], a: 1, e: "荷蓋（綠）、朝暾（紅）、晚雲（黑）都是顏色的聯想。" },
+  { q: "下列描寫傘的詩句，何者具「動態感」？", o: ["一把綠色小傘是一頂荷蓋／紅色朝暾　黑色晚雲", "各種顏色的傘是載花的樹／而且能夠行走……", "自在自適的小小世界", "亭中藏一個寧靜的我"], a: 1, e: "「而且能夠行走」寫出傘會移動，有動態感；其他都是靜態描寫。" },
+  { s: "一柄頂天／頂著豔陽　頂著雨／頂著單純兒歌的透明音符", q: "關於這段詩句的分析，何者正確？", o: ["用字艱難晦澀，刻意營造拗口難讀的狀況", "運用長短錯落的詩句及重複出現的字詞，營造出輕快的節奏感", "字詞多四聲讀音，念起來沉重悲壯", "語句仿造文言文，且句句押韻"], a: 1, e: "詩句長短錯落，又重複「頂」、「一」，節奏輕快；其他選項都不符合。" },
+  { s: "一傘在握　開闔自如", q: "這句詩的含義，與下列何者最接近？", o: ["有眼不識泰山", "人不可貌相，海水不可斗量", "每個人都是自己的命運建築師", "一寸光陰一寸金，寸金難買寸光陰"], a: 2, e: "傘的開關操之在己，象徵人生由自己掌握，和「命運建築師」意思接近。" },
+  { s: "亭中藏一個寧靜的我", q: "這句詩暗示作者追求怎樣的人生境界？", o: ["安詳寧靜，圓融自在", "損人利己，功利至上", "憂民憂國，我為人人", "以小搏大，人定勝天"], a: 0, e: "傘下寧靜自在的「我」，顯示作者追求圓融自在的人生。" }
+];
+const TR = [
+  { t: "蓉子〈雖說傘是一庭花樹〉", p: "雖說傘是一庭花樹／開放在充足的雨水和陽光中／傘也是一匠心獨具的美好結構／每一把傘都有其基形／當傘骨與傘骨把臂相扣／沿著弧形的路徑／一齊向中心密集　形成張力和均衡／撐開了傘的形態和功能／為圓的整體　美的輻射／它宜晴宜雨　閃漾著金片或銀線的光／滿月般令人激賞！", n: "（註：「圓的整體」指傘面，「美的輻射」指傘骨。）", qs: [
+    { q: "詩中「圓的整體」、「美的輻射」分別指傘的哪一部分？", o: ["傘面、傘骨", "傘面、傘柄", "傘骨、傘柄", "傘柄、傘骨"], a: 0, e: "註解已說明：圓的整體指傘面，美的輻射指傘骨。" },
+    { q: "關於本詩的分析，下列敘述何者正確？", o: ["分別敘寫傘開闔時的狀態，但著重描摹傘開啟時的美好", "透過日常生活中常見的傘，表現出積極向上的精神", "以「沿著弧形的路徑」形容雨滴自傘面滾落的樣子", "以「閃漾著金片或銀線的光」形容陽光及雨水所造成的反射光線"], a: 3, e: "(A)全詩只寫開啟時；(B)沒有積極向上的內容；(C)弧形的路徑指傘骨向中心聚合。" }] },
+  { t: "蕭詒徽〈我又下雨了〉", p: "因為剛剛見你／我總是用盡所有晴朗去見你／但對你而言／這不過是又一個非常方便／不必帶傘的日子", n: "", qs: [
+    { q: "下列何者最適合形容「我」與對方的關係？", o: ["不對等的愛，「我」總是為對方一再付出", "相知相惜，給予彼此最溫暖的回應", "感情走到終點，打算和平分手", "萌發曖昧，刻意製造共處的機會"], a: 0, e: "「我」用盡晴朗去見你，對方卻只覺得方便，付出並不對等。" },
+    { q: "詩名「我又下雨了」是暗示「我」懷著怎樣的心情？", o: ["害羞嬌怯", "傷心垂淚", "怒不可遏", "悲喜交加"], a: 1, e: "「下雨」暗示流淚，表達傷心。" }] }
+];
+const TIP = {
+  1: "先想整個詞語的意思，再找出要寫的那一個字。形近字（載／栽／裁／戴）要看偏旁和字義。",
+  2: "先連最有把握的；再把解釋放回原本的詞語裡讀一讀，通不通順。",
+  3: "先看字義，再看詞語；把字義「代入」詞語檢查，例如「栽花種樹」的栽是種植。",
+  4: "詠物詩：抓「形狀、聲音、功用」三個線索；顏色字：想一個熟悉的詞語，例如「近朱者赤」。",
+  5: "先拆開成語看字面意思（無／懈／可／擊），再把成語放回句子，確認意思通順。",
+  6: "回到課文那一句話；先刪掉明顯錯的選項；再用自己的話說一次句意。",
+  7: "先讀題目、再讀文章；把答案的線索用螢光筆畫起來；選項要在文中找得到證據。"
+};
+/* ===== 試卷組版（mode：stu 學生版、tch 教師版、live 互動版）===== */
+const L = "ＡＢＣＤ", NO = "①②③④⑤⑥⑦⑧", ZH = "一二三四五六七";
+const ak = (m, t) => m === "stu" ? "" : m === "tch" ? `<b class="a">${t}</b>` : `<b class="a rv">${t}</b>`;
+const ex = (m, e) => m === "live" && e ? `<div class="rv ex2">💬 ${e}</div>` : "";
+const it = (m, h, c = "") => `<div class="${m === "live" ? "it " : ""}${c}">${h}</div>`;
+const sq = (m, t) => `<span class="sq">${ak(m, t)}</span>`;
+const ops = o => o.map((t, j) => `<span class="op">（${L[j]}）${t}</span>`).join("");
+const lines = s => s.replace(/／/g, "<br>");
+const rot = (a, k) => a.map((_, i) => a[(i + k) % a.length]);
+const wrap = (m, k, t, d, b) => `<div class="sx"><h2 class="sh">${ZH[k - 1]}、${t}<small>${d}</small>${m === "live" ? '<button class="tipb">💡 答題小錦囊</button>' : ""}</h2>${m === "live" ? `<div class="tip">${TIP[k]}</div>` : ""}${b}</div>`;
+const paren = (m, t) => `（<span class="bk">${m === "stu" ? "" : ak(m, t)}</span>）`;
+const SEC = {
+  1: m => wrap(m, 1, "國字注音", "請寫出「　」中字的注音，或把注音寫成正確的國字。", `<div class="g2i">${TZY.map((z, i) => it(m, `${i + 1}. ${z[0]}${sq(m, z[1])}${ex(m, z[2])}`, "zy")).join("")}</div>`),
+  2: m => { const r = rot(TN.map((_, i) => i), 3); return wrap(m, 2, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", TN.map((n, i) => it(m, `<div class="mt"><div class="ml">${NO[i]} ${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${TN[r[i]][1]} ${ak(m, NO[r[i]])}</div></div>`)).join("")); },
+  3: m => wrap(m, 3, "形音義填空", "參考字形、字音、字義，在（　）中填入正確的字。", TX.map(g => `<div class="grp"><table><tr><th>字形</th><th>字音</th><th>字義</th></tr>${g.c.map(c => `<tr><td>${c[0]}</td><td>${c[1]}</td><td>${c[2]}</td></tr>`).join("")}</table><div class="g2i">${g.b.slice(0, 4).map((b, i) => it(m, `${i + 1}. ${b[0].replace("（　）", paren(m, b[1]))}`, "zy")).join("")}</div></div>`).join("")),
+  4: m => wrap(m, 4, "應用練習", "（一）詠物詩猜謎　（二）顏色練習", `<div class="bank">（一）從提示選出詩的題目：　門　　名片　　輪胎　　枴杖　　手電筒</div><div class="g2i">${TY1.map((t, i) => it(m, `<div class="poem">${i + 1}. ${lines(t[0])}</div><div class="ra">→（${ak(m, t[1])}${m === "stu" ? "　　　" : ""}）</div>${ex(m, t[2])}`)).join("")}</div><div class="bank" style="margin-top:2mm">（二）「　」中的字代表什麼顏色？　白　　黑　　紅　　綠</div><div class="g2i">${TY2.map((t, i) => it(m, `${paren(m, t[1])}${i + 1}. ${t[0]}${ex(m, t[2])}`, "zy")).join("")}</div>`),
+  5: m => { const w = TI.map(x => x[0]), o = [3, 0, 4, 2, 1]; return wrap(m, 5, "成語填空", "先看語意，從選項選出成語；再把成語填入例句。", `<div class="bank">成語選項：${rot(w, 2).map(x => `<span>${x}</span>`).join("")}</div><div class="g2"><div>${TI.map((t, i) => it(m, `${i + 1}. ${t[1]}<span class="bl">${ak(m, t[0])}</span>`, "zy5")).join("")}</div><div>${o.map((k, i) => it(m, `${i + 1}. ${TI[k][2].replace("{}", `（<span class="bk12">${m === "stu" ? "" : ak(m, TI[k][0])}</span>）`)}`, "zy6")).join("")}</div></div>`); },
+  6: m => wrap(m, 6, "選擇題", "每題只有一個答案，把代號填入（　）中。", `<div class="cl2">${TQ.map((x, i) => it(m, `<div class="qt">${paren(m, L[x.a])}${i + 1}. ${x.q}</div>${x.s ? `<div class="qs">課文：「${x.s.replace(/／/g, "　")}」</div>` : ""}<div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`),
+  7: m => { let n = 0; return wrap(m, 7, "閱讀題組", "先讀文本，再回答問題。", `<div class="g2">${TR.map(g => `<div><div class="qt">${g.t}</div><div class="rp">${lines(g.p)}${g.n ? `<div class="nt">${g.n}</div>` : ""}</div>${g.qs.map(x => it(m, `<div class="qt">${paren(m, L[x.a])}${++n}. ${x.q}</div><div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`).join("")}</div>`); }
+};
+const page = (n, b) => `<div class="tp"><div class="th"><h1>〈${LESSON.short}〉測驗</h1><span>姓名：<i></i></span></div><div class="tb">${b}</div><div class="tf">第 ${n} 頁　／　共 4 頁</div></div>`;
+const g2 = (a, b) => `<div class="g2"><div>${a}</div><div>${b}</div></div>`;
+const pages = m => { const S = k => SEC[k](m); return page(1, g2(S(1) + S(2), S(3))) + page(2, g2(S(4), S(5))) + page(3, S(6)) + page(4, S(7)); };
+const TCSS = `
+.tp,.tp *{box-sizing:border-box}
+.tp{width:353mm;height:249mm;background:#fff;color:#222;margin:12px auto;padding:8mm 12mm 6mm;overflow:hidden;font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;font-size:13.7pt;line-height:1.5;display:flex;flex-direction:column;box-shadow:0 0 14px rgba(0,0,0,.45);break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tp:last-child{break-after:auto;page-break-after:auto}
+.tp .th{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #333;padding-bottom:1.5mm;margin-bottom:3mm}
+.tp .th h1{font-size:19pt;font-weight:500;letter-spacing:.2em}.tp .th span{font-size:14pt}.tp .th i{display:inline-block;border-bottom:.8pt solid #222;width:70mm;height:1em}
+.tp .tb{flex:1;min-height:0;overflow:hidden}
+.tp .tf{text-align:center;font-size:10pt;color:#555;padding-top:1mm;border-top:.5pt solid #bbb}
+.tp .g2{display:grid;grid-template-columns:1fr 1fr;gap:0 12mm;align-items:start}
+.tp .g2i{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm}
+.tp h2{font-size:14.5pt;font-weight:500;letter-spacing:.1em;border-left:3pt solid #333;padding-left:2.5mm;margin:0 0 1.5mm}
+.tp h2 small{font-size:10pt;font-weight:400;color:#555;letter-spacing:0;margin-left:3mm}
+.tp .sx{margin-bottom:3mm}
+.tp .zy{line-height:2.7;white-space:nowrap}
+.tp .sq{display:inline-block;width:13mm;height:13mm;border:1pt solid #333;vertical-align:middle;text-align:center;line-height:12mm;margin-left:2mm;font-size:12pt;white-space:nowrap}
+.tp .bk{display:inline-block;min-width:1.4em;text-align:center;border-bottom:.6pt solid #333}.tp .bk12{display:inline-block;min-width:12em;text-align:center}
+.tp .bl{display:inline-block;min-width:34mm;border-bottom:.8pt solid #222;text-align:center;margin-left:2mm}
+.tp .zy5{line-height:2.7}.tp .zy6{line-height:2.2;margin-bottom:.5mm}
+.tp .a{color:#B3261E;font-weight:500}
+.tp .mt{display:grid;grid-template-columns:60mm 1fr;align-items:center;min-height:11mm;border-bottom:.4pt dotted #aaa;font-size:13pt;line-height:1.35}
+.tp .ml{text-align:right;padding-right:2mm}.tp .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #333;border-radius:50%;margin:0 2mm;vertical-align:middle}
+.tp table{border-collapse:collapse;width:100%;font-size:10.5pt;margin-bottom:1mm}.tp td,.tp th{border:.5pt solid #555;padding:.3mm 1.5mm;text-align:left;font-weight:400}.tp th{background:#eee}
+.tp .grp{margin-bottom:2mm}
+.tp .bank{border:.8pt solid #333;padding:1.2mm 3mm;margin-bottom:2mm;font-size:12.5pt}.tp .bank span{margin-right:5mm}
+.tp .poem{border:.6pt solid #333;background:#f4f4ee;padding:1.5mm 3mm;font-size:12.5pt;line-height:1.45;margin:0 0 .5mm}.tp .ra{text-align:right;margin-bottom:1.5mm}
+.tp .q{margin-bottom:2.2mm;break-inside:avoid}.tp .qt{font-weight:500}.tp .qs{border-left:2pt solid #999;background:#f4f4ee;padding:.3mm 2.5mm;margin:.5mm 0;font-size:12.5pt}.tp .op{display:inline-block;margin-right:3.5mm}
+.tp .cl2{column-count:2;column-gap:12mm}
+.tp .rp{border:.6pt solid #333;padding:1.5mm 3mm;text-align:justify;line-height:1.55;margin-bottom:1.5mm;font-size:13pt}.tp .nt{font-size:10.5pt;margin-top:.5mm}
+.tp .rv,.tp .ex2{display:none}
+.tp .it{cursor:pointer}.tp .it:hover{background:rgba(236,192,102,.15)}
+.tp .it.open .rv{display:inline}.tp .it.open .rv.ex2{display:block;font-size:11pt;line-height:1.45;color:#333;background:#FFF8D6;padding:.8mm 2mm;margin:.5mm 0 1.5mm;white-space:normal}
+.tp .tip{display:none}
+@media print{.tp{margin:0!important;box-shadow:none!important;zoom:1!important}}`;
+$("#tcss").textContent = TCSS + `
+.live .tp{height:auto;min-height:249mm;zoom:var(--z,1)}.live .tp .tb{overflow:visible}
+.live .tp .sh{cursor:pointer}.live .tp .tipb{background:#FFF3B0;border:1px solid #E0C34A;padding:1mm 3mm;font-size:10pt;margin-left:3mm}
+.live .tp .tip{font-size:12pt;background:#FFF8D6;border-left:4px solid #D9AE4E;padding:1.5mm 3mm;margin:1mm 0 2mm}.live .tp .tip.on{display:block}`;
+/* ===== 重點複習（翻牌＋答案詳解）===== */
+const flip = (n, f, b) => `<div class="fl"><div class="fi"><div class="ff"><span class="nb">${n}</span><div>${f}</div></div><div class="fb"><span class="nb">${n}</span><div>${b}</div></div></div></div>`;
+const rcard = (k, t, d, body) => `<section class="rc"><h2 class="sh" style="cursor:default">${ZH[k - 1]}、${t}<small>${d}</small></h2><div class="tip">💡 答題小錦囊：${TIP[k]}</div>${body}</section>`;
+function buildReview() {
+  const sx = k => SEC[k]("live").replace(/<h2 class="sh">.*?<\/h2>/, "").replace(/<div class="tip">.*?<\/div>/, "");
+  const sxw = k => `<div class="sx live"><div class="tp" style="all:unset;display:block;font-size:1.1rem;font-family:inherit">${sx(k)}</div></div>`;
+  return rcard(1, "國字注音", "點卡片翻面看答案與小叮嚀", `<div class="flg">${TZY.map((z, i) => flip(i + 1, z[0].replace("「", "<b>「").replace("」", "」</b>") + "<br>？", `<b>${z[1]}</b>${z[2]}`)).join("")}</div>`)
+    + rcard(2, "注釋連連看", "點卡片翻面看解釋", `<div class="flg">${TN.map((n, i) => flip(i + 1, n[0], n[1])).join("")}</div>`)
+    + rcard(3, "形音義填空", "點小題看答案", sxw(3)) + rcard(4, "應用練習", "點小題看答案與詳解", sxw(4))
+    + rcard(5, "成語填空", "點卡片翻面看語意與例句", `<div class="flg">${TI.map((t, i) => flip(i + 1, t[0], `${t[1]}<br><small>${t[2].replace("{}", "<b style='font-size:1rem;display:inline'>" + t[0] + "</b>")}</small>`)).join("")}</div>`)
+    + rcard(6, "選擇題", "點小題看答案與詳解", sxw(6)) + rcard(7, "閱讀題組", "點小題看答案與詳解", sxw(7));
+}
+/* ===== 介面 ===== */
+const dl = (html, name) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([html], { type: "text/html" })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); };
+const doc = m => `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>${LESSON.name} 測驗${m === "tch" ? "（教師版）" : ""}</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#4a463f}${TCSS}@page{size:353mm 250mm;margin:0}.bar{padding:8px;text-align:center}.bar button{padding:8px 16px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}@media print{.bar{display:none}body{background:#fff}}</style></head><body><div class="bar"><button onclick="print()">🖨️ 列印（B4 橫式）</button></div>${pages(m)}</body></html>`;
+const tabs = $("#tabs"), acts = $("#acts"), rv = $("#review"), pp = $("#paper"), note = $("#note");
+const mk = (p, t, c, f) => { const b = document.createElement("button"); b.className = "b " + c; b.textContent = t; b.onclick = f; p.append(b); return b; };
+function view(v) { rv.hidden = v !== 0; pp.hidden = v !== 1; t0.classList.toggle("on", v === 0); t1.classList.toggle("on", v === 1); fit();
+  note.textContent = v === 0 ? "快速複習：點卡片翻面；點小題看答案與詳解；點大標題一次看整大題。" : "試卷互動版：點大標題＝顯示整大題答案；點小題＝只顯示該題答案與詳解；每大題有💡答題小錦囊。"; }
+const t0 = mk(tabs, "📘 重點複習", "", () => view(0)), t1 = mk(tabs, "📝 測驗試卷", "", () => view(1));
+mk(acts, "⛶ 全螢幕測驗", "g", () => { view(1); (pp.requestFullscreen || pp.webkitRequestFullscreen).call(pp); });
+mk(acts, "⬇ 下載測驗（學生版）", "r", () => dl(doc("stu"), `${LESSON.name}_測驗_學生版.html`));
+mk(acts, "⬇ 下載測驗（教師版）", "r", () => dl(doc("tch"), `${LESSON.name}_測驗_教師版.html`));
+acts.insertAdjacentHTML("afterbegin", '<a class="b" href="2_01_umbrella.html" style="text-decoration:none">← 回電子書</a>');
+rv.innerHTML = buildReview(); pp.innerHTML = pages("live");
+function fit() { const w = document.fullscreenElement ? innerWidth - 24 : Math.min(innerWidth - 30, 1400); pp.style.setProperty("--z", Math.min(w / 1334, 1.5).toFixed(3)); }
+addEventListener("resize", fit); document.addEventListener("fullscreenchange", fit);
+document.addEventListener("click", e => {
+  const h = e.target.closest(".sh"), s = h && h.closest(".sx");
+  if (e.target.closest(".tipb")) { e.target.closest(".sx").querySelector(".tip").classList.toggle("on"); return; }
+  if (h && s && h.closest(".tp")) { const its = [...s.querySelectorAll(".it")], all = its.every(i => i.classList.contains("open")); its.forEach(i => i.classList.toggle("open", !all)); return; }
+  const i = e.target.closest(".it"); if (i) { i.classList.toggle("open"); return; }
+  const f = e.target.closest(".fl"); if (f) f.classList.toggle("on");
+});
+view(0);
+</script>
+</body>
+</html>
