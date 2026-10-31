@@ -555,12 +555,13 @@ const WS_POOL = [["無懈可擊", 4], ["蝙蝠", 3], ["弧形", 3], ["朝暾", 4
 function wsMake() {
   const N = 7, D = [[0, 1], [1, 0], [1, 1], [1, -1], [0, -1], [-1, 0], [-1, -1], [-1, 1]], R = n => Math.floor(Math.random() * n);
   for (let t = 0; t < 300; t++) {
+    const D2 = D.filter(d => !(d[0] === 1 && d[1] === 0)), pick = () => Math.random() < .65 ? [1, 0] : D2[R(D2.length)];
     const n = 7 + R(4), pool = WS_POOL.flatMap(([w, k]) => Array(k).fill(w)), ws = [];
     while (ws.length < n) { const w = pool[R(pool.length)]; if (!ws.includes(w)) ws.push(w); }
     ws.sort((a, b) => b.length - a.length);
     const g = Array.from({ length: N }, () => Array(N).fill("")), pos = []; let ok = true;
     for (const w of ws) { let done = false;
-      for (let k = 0; k < 120 && !done; k++) { const [dr, dc] = D[R(8)], r = R(N), c = R(N), cells = [];
+      for (let k = 0; k < 120 && !done; k++) { const [dr, dc] = pick(), r = R(N), c = R(N), cells = [];
         let good = true; for (let i = 0; i < w.length; i++) { const rr = r + dr * i, cc = c + dc * i;
           if (rr < 0 || cc < 0 || rr >= N || cc >= N || (g[rr][cc] && g[rr][cc] !== w[i])) { good = false; break; } cells.push([rr, cc]); }
         if (good) { cells.forEach(([rr, cc], i) => g[rr][cc] = w[i]); pos.push({ w, cells }); done = true; } }
@@ -572,17 +573,17 @@ function wsMake() {
   }
 }
 function wsPage(g, pos) {
-  return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>〈傘〉字謎</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@500&display=swap" rel="stylesheet"><style>
-body{margin:0;padding:14px;background:#1C1B1A;color:#F5F3ED;font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif}
-h1{font-family:"Noto Serif TC",serif;font-weight:500;color:#ECC066;text-align:center;letter-spacing:.25em;margin:2px 0 4px}
+  return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>〈傘〉字謎</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;padding:14px;background:#1C1B1A;color:#F5F3ED;font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif}
+h1{font-weight:500;color:#ECC066;text-align:center;letter-spacing:.25em;margin:2px 0 4px}
 .t{text-align:center;color:#D3BC8E;margin:0 auto 14px;max-width:760px;font-size:1.05rem}
 .w{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
 .g{--c:clamp(42px,min(10.5vw,8.4vh),70px);display:grid;grid-template-columns:repeat(7,var(--c));gap:4px}
-.g button{width:var(--c);height:var(--c);padding:0;cursor:pointer;font:500 clamp(1.5rem,5.2vw,2.4rem) "Noto Serif TC",serif;background:#F5F3ED;color:#2D2B2A;border:1px solid #D9AE4E}
+.g button{width:var(--c);height:var(--c);padding:0;cursor:pointer;font:500 clamp(1.5rem,5.2vw,2.4rem) "Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;background:#F5F3ED;color:#2D2B2A;border:1px solid #D9AE4E}
 .g button.s{background:#ECC066}
 .l{background:#322E2B;border:1px solid #D9AE4E;padding:12px 18px;width:270px;max-width:100%}
 .l b{display:block;color:#ECC066;margin-bottom:6px;letter-spacing:.2em}
-.l span{display:inline-block;font:500 1.4rem "Noto Serif TC",serif;margin:3px 12px 3px 0}
+.l span{display:inline-block;font:500 1.4rem "Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;margin:3px 12px 3px 0}
 .l span.d{text-decoration:line-through;opacity:.45}
 .bar{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 .bar button{font:inherit;padding:8px 18px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}
