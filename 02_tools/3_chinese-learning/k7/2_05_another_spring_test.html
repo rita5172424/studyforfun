@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>康軒七年級｜另一個春天 測驗與重點複習</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1C1B1A;--tab:#322E2B;--tt:#D3BC8E;--gold:#ECC066;--gl:#D9AE4E;--jade:#F5F3ED;--pale:#EFECE3;--board:#E4DFD1;--ink:#2D2B2A;--soft:#6B645B;--red:#B3261E}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--jade);font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;line-height:1.7}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+a{color:var(--tt)}
+.top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:10px 18px;background:#262321;border-bottom:1px solid var(--gl);position:sticky;top:0;z-index:5}
+.top h1{font-size:1.15rem;font-weight:500;letter-spacing:.15em;color:var(--gold)}
+.tb2{display:flex;gap:6px;flex-wrap:wrap}
+.b{background:var(--tab);color:var(--tt);padding:7px 14px;font-size:.88rem;letter-spacing:.06em;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.b:hover{filter:brightness(1.3)}.b.on{background:var(--gold);color:var(--ink)}
+.b.g{background:#2F3B39;color:#BCD3CA}.b.r{background:#3E2B2B;color:#EBC9BE}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 14px 60px}
+.note{color:rgba(245,243,237,.75);font-size:1rem;margin-bottom:12px}
+.rc{background:var(--board);color:var(--ink);border:1px solid var(--gl);padding:20px 24px;margin-bottom:18px;font-size:1.3rem}
+.rc .tp{font-size:1.35rem;line-height:1.75}
+.rc .tp table{font-size:1.3rem;margin:8px 0 10px}
+.rc .tp table{table-layout:fixed}.rc .tp th:nth-child(1){width:15%}.rc .tp th:nth-child(2){width:18%}.rc .tp .tx th:nth-child(4){width:30%}.rc .tp .tx td{font-size:1.25rem}.rc .tp .tx .vw{font-size:1.35rem}
+.rc .tp td,.rc .tp th{padding:7px 14px}
+.rc .tp .grp{margin-bottom:22px}
+.rc .tp .zy,.rc .tp .zy5,.rc .tp .zy6{line-height:2;white-space:normal;font-size:1.35rem}
+.rc .tp .bank,.rc .tp .poem,.rc .tp .qs,.rc .tp .op{font-size:1.25rem}
+.rc .tp .poem{padding:8px 14px}
+.rc .tp .qs{padding:4px 12px}
+.rc .tp .it{padding:4px 6px;margin-bottom:4px}
+.rc .tp .it.open .rv.ex2{font-size:1.2rem;padding:6px 12px;margin:4px 0 8px}
+.rc .tp .g2i{gap:4px 24px}
+.rc .tp .sq,.rc .tp .bk{font-size:1.2rem}
+.sh{font-size:1.6rem;font-weight:500;letter-spacing:.1em;cursor:pointer;display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px;margin-bottom:6px}
+.sh small{font-size:1.05rem;font-weight:400;color:var(--soft);letter-spacing:0}
+.tipb{background:#FFF3B0;border:1px solid #E0C34A;padding:3px 12px;font-size:.85rem;color:var(--ink)}
+.tip{background:#FFF8D6;border-left:4px solid var(--gl);padding:10px 16px;margin:6px 0 14px;font-size:1.2rem}
+.rc .tip{display:block}.sx .tip{display:none}.sx .tip.on{display:block}
+.flg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.fl{perspective:900px;height:170px;cursor:pointer}
+.fi{position:relative;height:100%;transition:transform .3s;transform-style:preserve-3d}
+.fl.on .fi{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;inset:0;backface-visibility:hidden;padding:12px;display:grid;place-items:center;text-align:center;border:1px solid var(--gl);overflow:auto}
+.ff{background:#E9DDC5;color:#3B2F22;font-size:1.6rem;line-height:1.5}
+.fb{background:var(--jade);color:var(--ink);transform:rotateY(180deg);font-size:1.25rem;line-height:1.55}
+.fb b{font-size:1.8rem;color:#8B3A2E;display:block}
+.nb{position:absolute;top:5px;left:8px;font-size:.95rem;opacity:.8}
+.pv{padding:14px;overflow:auto}
+#paper.full{background:var(--bg)}
+#paper:fullscreen{overflow:auto;background:#1C1B1A;padding:10px}
+@media (prefers-reduced-motion:reduce){.fi{transition:none}}
+</style>
+<style id="tcss"></style>
+</head>
+<body>
+<div class="top">
+  <h1>〈另一個春天〉測驗・重點複習</h1>
+  <div class="tb2" id="tabs"></div>
+  <div class="tb2" id="acts"></div>
+</div>
+<div class="wrap">
+  <p class="note" id="note"></p>
+  <div id="review"></div>
+  <div id="paper" class="live" hidden></div>
+</div>
+<script>
+const LESSON = { name: "另一個春天", short: "另一個春天" };
+const $ = s => document.querySelector(s);
+/* ===== 資料區：題目取自預習單、in講義、課次卷、習作；字頻分級為估計值，可自行調整 =====
+   TZY：[題幹（「」內為目標）, 答案, 詳解]。前 6 題 3000 字內、中 8 題 3000～4500、後 2 題 4500～6000；國字⇄注音各 8 題 */
+const TZY = [
+ [
+  "「ㄐㄧㄥˋ」技場",
+  "競",
+  "競是競賽，競技場是舉行體能競賽的場地。"
+ ],
+ [
+  "相「逢」",
+  "ㄈㄥˊ",
+  "逢是遇見，相逢念ㄈㄥˊ。"
+ ],
+ [
+  "年「ㄇㄞˋ」",
+  "邁",
+  "年邁是年紀大；邁念ㄇㄞˋ，不是萬。"
+ ],
+ [
+  "「薄」荷",
+  "ㄅㄛˋ",
+  "薄荷的薄念ㄅㄛˋ。"
+ ],
+ [
+  "「ㄞˋ」手礙腳",
+  "礙",
+  "礙是妨礙、阻擋；礙手礙腳就是妨礙別人做事。"
+ ],
+ [
+  "「躍」然紙上",
+  "ㄩㄝˋ",
+  "躍念ㄩㄝˋ，躍然紙上形容描寫得生動逼真。"
+ ],
+ [
+  "紅「暈」",
+  "ㄩㄣˋ",
+  "面頰泛起的紅色念ㄩㄣˋ；頭昏念ㄩㄣ。"
+ ],
+ [
+  "拮「据」",
+  "ㄐㄩ",
+  "拮据指經濟困難，据念ㄐㄩ。"
+ ],
+ [
+  "抑「ㄜˋ」",
+  "遏",
+  "抑遏是壓制、阻止；遏念ㄜˋ。"
+ ],
+ [
+  "「ㄑㄩㄝˋ」生生",
+  "怯",
+  "怯生生是害羞畏懼的樣子，怯是膽小。"
+ ],
+ [
+  "野「ㄔㄨˊ」菊",
+  "雛",
+  "雛菊是一種小型的菊花；雛有幼小的意思。"
+ ],
+ [
+  "笨「ㄓㄨㄛˊ」",
+  "拙",
+  "笨拙是不靈巧；拙念ㄓㄨㄛˊ。"
+ ],
+ [
+  "「哽」咽",
+  "ㄍㄥˇ",
+  "哽咽是悲痛得說不出話；哽念ㄍㄥˇ。"
+ ],
+ [
+  "熱「忱」",
+  "ㄔㄣˊ",
+  "熱忱是誠摯熱心；忱念ㄔㄣˊ。"
+ ],
+ [
+  "陰「霾」",
+  "ㄇㄞˊ",
+  "霾是空氣混濁造成的昏暗現象，念ㄇㄞˊ。"
+ ],
+ [
+  "羞「ㄋㄢˇ」",
+  "赧",
+  "羞赧是害羞而臉紅；赧念ㄋㄢˇ。"
+ ]
+];
+const TN = [
+ [
+  "陰霾",
+  "形容天氣陰沉昏暗"
+ ],
+ [
+  "拮据",
+  "指經濟困難"
+ ],
+ [
+  "怯生生",
+  "害羞畏懼的樣子"
+ ],
+ [
+  "羞赧",
+  "害羞而臉紅"
+ ],
+ [
+  "神采奕奕",
+  "形容人精神飽滿，容光煥發"
+ ],
+ [
+  "雜沓",
+  "雜亂、紛亂"
+ ]
+];
+const TX = [
+ {
+  "c": [
+   [
+    "鄰",
+    "ㄌㄧㄣˊ",
+    "接近；住處相近的人家",
+    "左（　）右舍"
+   ],
+   [
+    "憐",
+    "ㄌㄧㄢˊ",
+    "哀憫、同情",
+    "可（　）"
+   ],
+   [
+    "嶙",
+    "ㄌㄧㄣˊ",
+    "山石重疊聳峭的樣子",
+    "傲骨（　）峋"
+   ]
+  ]
+ },
+ {
+  "c": [
+   [
+    "据",
+    "ㄐㄩ",
+    "拮据：經濟困難",
+    "拮（　）"
+   ],
+   [
+    "踞",
+    "ㄐㄩˋ",
+    "占據、蹲坐",
+    "盤（　）"
+   ],
+   [
+    "倨",
+    "ㄐㄩˋ",
+    "傲慢無禮",
+    "前（　）後恭"
+   ]
+  ]
+ },
+ {
+  "c": [
+   [
+    "沓",
+    "ㄊㄚˋ",
+    "眾多而重複",
+    "紛至（　）來"
+   ],
+   [
+    "杳",
+    "ㄧㄠˇ",
+    "不見蹤影",
+    "（　）無音信"
+   ]
+  ]
+ }
+];
+const TY1 = {
+ "b": [
+  "汗涔涔",
+  "溼漉漉",
+  "黑壓壓",
+  "牙癢癢",
+  "淚潸潸",
+  "白皚皚"
+ ],
+ "q": [
+  [
+   "每逢百貨公司週年慶，一眼望去盡是{}的搶購人潮。",
+   "黑壓壓",
+   "黑壓壓形容人或物密集眾多。"
+  ],
+  [
+   "雨已經停歇，但是地上仍然{}的，路邊的小草都沾滿了水珠。",
+   "溼漉漉",
+   "溼漉漉形容非常潮溼的樣子。"
+  ],
+  [
+   "強烈大陸冷氣團來襲，使得合歡山上布滿了一整片{}的積雪。",
+   "白皚皚",
+   "白皚皚形容雪或霜一片雪白的樣子。"
+  ],
+  [
+   "一聽到家鄉傳來年邁祖父過世的消息，小瑜不禁{}，悲從中來。",
+   "淚潸潸",
+   "淚潸潸形容流淚不止的樣子。"
+  ],
+  [
+   "鄰里間對於那個慣竊早就恨得{}，如今他終於被警方逮捕，真是大快人心。",
+   "牙癢癢",
+   "牙癢癢形容恨得咬牙切齒。"
+  ]
+ ]
+};
+const TY2 = {
+ "b": [
+  "書",
+  "路",
+  "想法",
+  "前進",
+  "地點"
+ ],
+ "q": [
+  [
+   "讀萬卷書，行萬里{}。",
+   "路",
+   "「讀萬卷書，行萬里路」是說讀書與旅行同樣重要。"
+  ],
+  [
+   "我是為旅行而旅行，最棒的事就是{}。",
+   "前進",
+   "為旅行而旅行，重視的是不斷向前走的過程。"
+  ],
+  [
+   "旅行不只是看風景，而是不歇止的改變我們對於生活的{}，深刻又長久。",
+   "想法",
+   "旅行改變的是我們看待生活的想法。"
+  ],
+  [
+   "旅人的目的地不是一個{}，而是看待事物的新方式。",
+   "地點",
+   "目的地不只是某個地點，而是新的看法。"
+  ],
+  [
+   "世界是一本{}，而不旅行的人們只讀了其中的一頁。",
+   "書",
+   "把世界比喻成書，不旅行就只讀了一頁。"
+  ]
+ ]
+};
+const TI = [
+ [
+  "手足無措",
+  "形容舉止慌亂，沒有主意，不知如何是好。",
+  "突然停電，教室裡一片漆黑，同學們一時{}。"
+ ],
+ [
+  "神采奕奕",
+  "形容人精神飽滿，容光煥發。",
+  "經過一夜好眠，他今天上台報告時{}，讓大家精神一振。"
+ ],
+ [
+  "礙手礙腳",
+  "占據地方，妨礙別人做事，使人不便。",
+  "現在工作繁忙，你若不想幫忙，就不要在這{}，耽誤大家做事。"
+ ],
+ [
+  "紛至沓來",
+  "形容接連不斷的到來。",
+  "他考上了第一志願，親朋好友的道賀{}，十分熱鬧。"
+ ],
+ [
+  "乘風破浪",
+  "比喻志向遠大，不畏艱難，奮勇前進。",
+  "他像是一位船長，在人生的海洋上，{}的駛向不可知的未來。"
+ ]
+];
+const TQ = [
+ {
+  "q": "老太太說這句話，表現出什麼樣的含義？",
+  "o": [
+   "感嘆自己虛度光陰",
+   "表達對作者的感謝之意",
+   "對生命的熱情，勇往直前",
+   "面對未來的無奈"
+  ],
+  "a": 2,
+  "e": "老太太珍惜時間，把時間用來做想做的事，所以沒有時間流淚悲傷。",
+  "s": "年輕人，我沒有時間流淚，也沒有時間悲傷，這就是我的哲學！"
+ },
+ {
+  "q": "作者面對老太太種種失禮的舉動，反應為何？",
+  "o": [
+   "輕蔑鄙視",
+   "善意相待",
+   "大聲責罵",
+   "不知所措"
+  ],
+  "a": 1,
+  "e": "作者先愣住，後來決定用善意回應。",
+  "s": "我先是呆了一會兒，然後笑了，叫住她說：「讓我也來幫妳拍一張吧！」"
+ },
+ {
+  "q": "根據課文，老太太想要到處旅行的原因是什麼？",
+  "o": [
+   "體會思鄉的滋味",
+   "逃避貧窮生活中的不愉快",
+   "享受冒險的刺激感",
+   "品味新事物與開拓新視野"
+  ],
+  "a": 3,
+  "e": "老太太對世界充滿好奇，想看更多地方。",
+  "s": "年輕人，我還要去好多地方，一定要更節儉才行。"
+ },
+ {
+  "q": "老太太淚流不止，是出自於她對作者的何種情感？",
+  "o": [
+   "對作者視如己出的疼惜之情",
+   "對作者不懷好意的行為感到害怕",
+   "對作者的感恩與珍惜之情",
+   "對作者的贈禮無以回報的愧疚之情"
+  ],
+  "a": 2,
+  "e": "陌生人的情誼讓她感動落淚。",
+  "s": "我拿出一捲中文音樂卡帶送她，不可抑遏的淚水從她的老花眼鏡背後潸潸流下。"
+ },
+ {
+  "q": "老太太當下的心情最接近下列何者？",
+  "o": [
+   "感到憤怒，覺得同行的人毫無同理心",
+   "感到害怕，擔心自己的身體狀況不佳",
+   "感到難為情，卻捨不得放棄阿波羅神殿",
+   "感到很懊惱，後悔參加這麼勞累的行程"
+  ],
+  "a": 2,
+  "e": "她紅著臉是難為情，卻仍努力往上爬。",
+  "s": "後面的人不耐煩地抱怨這行動遲緩的老太太，她其實是聽到了，卻假裝不知道，紅著臉努力拖著胖身軀，一步一步往上爬。"
+ },
+ {
+  "q": "下列何者是作者在希臘旅行時「捕捉到的最美麗的一幅風景」？",
+  "o": [
+   "阿波羅神殿遺蹟",
+   "雅典有點陰霾的清晨",
+   "刻有塔列斯名言「人需要了解自我」的石刻",
+   "老太太對生命持續不斷的熱情，與對新事物不斷追求的勇氣"
+  ],
+  "a": 3,
+  "e": "銀髮指老太太，她的熱情與勇氣是作者最難忘的風景。",
+  "s": "那頭銀髮是我春天在希臘旅行，捕捉到的最美麗的一幅風景。"
+ },
+ {
+  "q": "這段文字呈現下列何種氛圍？",
+  "o": [
+   "溫馨感人",
+   "哀傷抑鬱",
+   "熱情澎湃",
+   "喜氣洋洋"
+  ],
+  "a": 0,
+  "e": "老太太像長輩疼愛孩子，氣氛溫暖。",
+  "s": "她平靜下來，恢復了笑容，珍惜地將薄荷糖棒折了半條給我，摸著我的臉，彷彿我還是個小孩子。"
+ },
+ {
+  "q": "下列何者可以看出老太太對事物充滿好奇與興味？",
+  "o": [
+   "她發現我在注意，怯生生地向我打了招呼",
+   "她不顧禁止標誌，興奮地來回撫摸著刻有塔列斯「人需要了解自我」那句名言的石刻",
+   "她平靜下來，恢復了笑容，珍惜地將薄荷糖棒折了半條給我",
+   "我會坐在老房子的窗邊，看著一張張春天旅行時的照片，於是所有的回憶就全都回來了"
+  ],
+  "a": 1,
+  "e": "她不顧標示、興奮撫摸石刻，可見想親近、了解新事物。"
+ }
+];
+const TR = [
+ {
+  "t": "韓良露〈心靈的風景〉",
+  "p": "有一年，在歐洲旅行，一路大山大水看遍，享盡壯麗山河之美。／這些風景，都是眼上的風光，當下見了心喜，但很少念念不忘。／有一次，從奧地利因斯布魯克的火車站步出，正向市區走去，抬頭突然看到眼前不遠處的山景，龐大的山形像巨人的身軀，端坐在路的盡頭，我眼中完全出乎意料的突然充滿了淚水。／我呆呆的站在路上，看著眼前的山，整個人被感動充滿。在那一剎那，心靈深處浮現了另一個山景，和眼前的山形重疊在一塊兒。／我想起了大屯山。",
+  "n": "",
+  "qs": [
+   {
+    "q": "「這些風景，都是眼上的風光，當下見了心喜，但很少念念不忘。」這句話的含義，與下列何者不同？",
+    "o": [
+     "走馬看花",
+     "置之腦後",
+     "浮光掠影",
+     "刻骨銘心"
+    ],
+    "a": 3,
+    "e": "原句是說很少念念不忘；走馬看花、置之腦後、浮光掠影都是印象不深，只有刻骨銘心是印象很深刻，意思不同。"
+   },
+   {
+    "q": "文中作者眼眶充滿淚水的原因為何？",
+    "o": [
+     "奧地利當地龐大的山形令作者感到壓迫",
+     "對於山，有著異於常人的喜愛",
+     "勾起了對另一座山的回憶",
+     "眼前的山形狀獨特，前所未見"
+    ],
+    "a": 2,
+    "e": "看到眼前的山，心裡浮現了大屯山，是勾起對另一座山的回憶。"
+   }
+  ]
+ },
+ {
+  "t": "艾倫．狄波頓〈旅行的藝術〉",
+  "p": "福樓拜一生與埃及的情緣讓人感動，我們對某些國家的思慕因此更深。打從青少年時代開始，福樓拜就堅持他不是法國人。他對法國和法國人民厭惡極深，諷刺的是他自己也是法國人。因此，他提出一個國籍認同的新方式：不是出生地，也不是家族來自的地方，而是最吸引一個人的地方。／「一個國家是不是指地圖上的一片土地，以紅色或藍色線條來與其他地方相隔之地？不是的。我的祖國就是我摯愛的地方，讓我有夢、有感覺的地方。如果說我是法國人，那麼說我是中國人也可以。阿拉伯人被擊潰，我一點歡喜之情都沒有，反倒覺得難過。我欣賞這個能吃苦耐勞、堅毅不拔的民族。……」／「我可說是今之古人，法國人當中的中國人。如果說在地圖上一塊用紅色或藍色標示出來的地方就是祖國，其他用綠色或黑色畫出來的地方就是令人討厭的地方，那麼我覺得這種觀念偏狹、局促一隅，而且愚蠢之至。四海之內，所有的生物都是我的兄弟，包括長頸鹿和鱷魚。」",
+  "n": "",
+  "qs": [
+   {
+    "q": "根據本文，福樓拜的「國籍」定義為何？",
+    "o": [
+     "脫離母體，獨立發展的自我期許",
+     "心靈上依歸與認同的所在",
+     "對自身血緣的追本溯源",
+     "對一個更大世界的嚮往"
+    ],
+    "a": 1,
+    "e": "福樓拜說祖國是摯愛、讓他有夢有感覺的地方，也就是心靈上依歸與認同的所在。"
+   },
+   {
+    "q": "關於本文的說明，下列何者正確？",
+    "o": [
+     "對於國籍，認命比認同有意義",
+     "善用想像力可以省去旅行的舟車勞頓",
+     "作者希望自己和土耳其人民一樣驍勇善戰",
+     "福樓拜著迷於一地的文化風情，更勝於國土領地"
+    ],
+    "a": 3,
+    "e": "福樓拜欣賞阿拉伯人等不同文化，也不在意地圖上的國界，所以著迷文化風情勝過國土領地。"
+   }
+  ]
+ }
+];
+const TIP = {
+ "1": "先想整個詞語的意思，再找出要寫的那一個字。形近字（邁／萬、遏／揭）要看偏旁和字義。",
+ "2": "先連最有把握的；再把解釋放回原本的詞語裡讀一讀，通不通順。",
+ "3": "先看字音和字義，想出是哪一個字，寫在字形欄；再把字放進右邊的詞語，讀讀看通不通順。",
+ "4": "疊字詞：先看句子描寫的畫面（人很多？地很溼？），再選最像的疊字詞；名言：整句讀完，想想空格前後的意思。",
+ "5": "先看成語拆開的字面意思（手／足／無／措），再把成語放回句子，確認意思通順。",
+ "6": "回到課文那一句話；先刪掉明顯錯的選項；再用自己的話說一次句意。",
+ "7": "先讀題目、再讀文章；把答案的線索用螢光筆畫起來；選項要在文中找得到證據。"
+};
+/* ===== 試卷組版（mode：stu 學生版、tch 教師版、live 互動版）===== */
+const L = "ＡＢＣＤ", NO = "①②③④⑤⑥⑦⑧", ZH = "一二三四五六七";
+const ak = (m, t) => m === "stu" ? "" : m === "tch" ? `<b class="a">${t}</b>` : `<b class="a rv">${t}</b>`;
+const ex = (m, e) => m === "live" && e ? `<div class="rv ex2">💬 ${e}</div>` : "";
+const it = (m, h, c = "") => `<div class="${m === "live" ? "it " : ""}${c}">${h}</div>`;
+const sq = (m, t) => `<span class="sq">${ak(m, t)}</span>`;
+const ops = o => o.map((t, j) => `<span class="op">（${L[j]}）${t}</span>`).join("");
+const lines = s => s.replace(/／/g, "<br>");
+const rot = (a, k) => a.map((_, i) => a[(i + k) % a.length]);
+const wrap = (m, k, t, d, b) => `<div class="sx"><h2 class="sh">${ZH[k - 1]}、${t}<small>${d}</small>${m === "live" ? '<button class="tipb">💡 答題小錦囊</button>' : ""}</h2>${m === "live" ? `<div class="tip">${TIP[k]}</div>` : ""}${b}</div>`;
+const paren = (m, t) => `（<span class="bk">${m === "stu" ? "" : ak(m, t)}</span>）`;
+const SEC = {
+  1: m => wrap(m, 1, "國字注音", "請寫出「　」中字的注音，或把注音寫成正確的國字。", `<div class="g2i">${TZY.map((z, i) => it(m, `${i + 1}. ${z[0]}${sq(m, z[1])}${ex(m, z[2])}`, "zy")).join("")}</div>`),
+  2: m => { const r = rot(TN.map((_, i) => i), 3); return wrap(m, 2, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", TN.map((n, i) => it(m, `<div class="mt"><div class="ml">${NO[i]} ${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${TN[r[i]][1]} ${ak(m, NO[r[i]])}</div></div>`)).join("")); },
+  3: m => wrap(m, 3, "形音義填空", "看字形選項，依字音、字義寫出字，再填入詞語（　）。", TX.map(g => `<div class="bank fx">字形選項：${rot(g.c.map(c => c[0]), 2).map(x => `<span>${x}</span>`).join("")}</div><table class="tx"><tr><th>字形</th><th>字音</th><th>字義</th><th>詞彙填空</th></tr>${g.c.map(c => `<tr class="${m === "live" ? "it" : ""}"><td class="c0">${sq(m, c[0])}</td><td>${c[1]}</td><td>${c[2]}</td><td class="vw">${c[3].replace("（　）", paren(m, c[0]))}</td></tr>`).join("")}</table>`).join("")),
+  4: m => { const bk = (t, w) => `（<span class="bk" style="min-width:${w}em">${m === "stu" ? "" : ak(m, t)}</span>）`, bank = x => x.map(w => `<span>${w}</span>`).join("");
+    return wrap(m, 4, "應用練習", "（一）詞語疊疊樂　（二）旅行名言錄", `<div class="bank">（一）選出適合的疊字詞填入：${bank(TY1.b)}</div>${TY1.q.map((t, i) => it(m, `${i + 1}. ${t[0].replace("{}", bk(t[1], 4.2))}${ex(m, t[2])}`, "zy6")).join("")}<div class="bank" style="margin-top:2mm">（二）選出適合的詞語填入：${bank(TY2.b)}</div>${TY2.q.map((t, i) => it(m, `${i + 1}. ${t[0].replace("{}", bk(t[1], 2.8))}${ex(m, t[2])}`, "zy6")).join("")}`); },
+  5: m => { const w = TI.map(x => x[0]), o = [3, 0, 4, 2, 1]; return wrap(m, 5, "成語填空", "先看語意，從選項選出成語；再把成語填入例句。", `<div class="bank">成語選項：${rot(w, 2).map(x => `<span>${x}</span>`).join("")}</div><div>${TI.map((t, i) => it(m, `${i + 1}. ${t[1]}<span class="bl">${ak(m, t[0])}</span>`, "zy5")).join("")}</div><div class="sp">${o.map((k, i) => it(m, `${i + 1}. ${TI[k][2].replace("{}", `（<span class="bk12">${m === "stu" ? "" : ak(m, TI[k][0])}</span>）`)}`, "zy6")).join("")}</div>`); },
+  6: m => wrap(m, 6, "選擇題", "每題只有一個答案，把代號填入（　）中。", `<div class="cl2">${TQ.map((x, i) => it(m, `<div class="qt">${paren(m, L[x.a])}${i + 1}. ${x.q}</div>${x.s ? `<div class="qs">課文：「${x.s.replace(/／/g, "　")}」</div>` : ""}<div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`),
+  7: m => { let n = 0; return wrap(m, 7, "閱讀題組", "先讀文本，再回答問題。", `<div class="g2">${TR.map(g => `<div><div class="qt">${g.t}</div><div class="rp">${lines(g.p)}${g.n ? `<div class="nt">${g.n}</div>` : ""}</div>${g.qs.map(x => it(m, `<div class="qt">${paren(m, L[x.a])}${++n}. ${x.q}</div><div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`).join("")}</div>`); }
+};
+const SS = ["國字注音", "注釋連連看", "形音義填空", "應用練習", "成語填空", "選擇題", "閱讀題組"];
+const CHECK = `<div class="ck"><div class="ckh"><b>我的學習檢核</b><span>寫完後，每個大題圈一個最像你的表情（30 秒就好）　😀 很熟　😐 還好　😟 要再練</span></div><div class="ckg">${SS.map((x, i) => `<div class="ckb"><b>${ZH[i]}、${x}</b><div class="fc">😀　😐　😟</div></div>`).join("")}</div></div>`;
+const page = (n, b) => `<div class="tp"><div class="th"><h1>〈${LESSON.short}〉測驗</h1><span>姓名：<i></i></span></div><div class="tb">${b}</div><div class="tf">第 ${n} 頁　／　共 4 頁</div></div>`;
+const g2 = (a, b) => `<div class="g2"><div>${a}</div><div>${b}</div></div>`;
+const pages = m => { const S = k => SEC[k](m); return page(1, g2(S(1) + S(2), S(3))) + page(2, g2(S(4), S(5))) + page(3, S(6)) + page(4, S(7) + (m === "stu" ? CHECK : "")); };
+const TCSS = `
+.tp,.tp *{box-sizing:border-box}
+.tp{width:353mm;height:249mm;background:#fff;color:#222;margin:12px auto;padding:8mm 12mm 6mm;overflow:hidden;font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;font-size:13.7pt;line-height:1.5;display:flex;flex-direction:column;box-shadow:0 0 14px rgba(0,0,0,.45);break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.tp:last-child{break-after:auto;page-break-after:auto}
+.tp .th{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #333;padding-bottom:1.5mm;margin-bottom:3mm}
+.tp .th h1{font-size:19pt;font-weight:500;letter-spacing:.2em}.tp .th span{font-size:14pt}.tp .th i{display:inline-block;border-bottom:.8pt solid #222;width:70mm;height:1em}
+.tp .tb{flex:1;min-height:0;overflow:hidden}
+.tp .tf{text-align:center;font-size:10pt;color:#555;padding-top:1mm;border-top:.5pt solid #bbb}
+.tp .g2{display:grid;grid-template-columns:1fr 1fr;gap:0 12mm;align-items:start}
+.tp .g2i{display:grid;grid-template-columns:1fr 1fr;gap:0 6mm}
+.tp h2{font-size:14.5pt;font-weight:500;letter-spacing:.1em;border-left:3pt solid #333;padding-left:2.5mm;margin:0 0 1.5mm}
+.tp h2 small{font-size:10pt;font-weight:400;color:#555;letter-spacing:0;margin-left:3mm}
+.tp .sx{margin-bottom:3mm}
+.tp .zy{line-height:2.7;white-space:nowrap}
+.tp .sq{display:inline-block;width:13mm;height:13mm;border:1pt solid #333;vertical-align:middle;text-align:center;line-height:12mm;margin-left:2mm;font-size:12pt;white-space:nowrap}
+.tp .bk{display:inline-block;min-width:1.4em;text-align:center;border-bottom:.6pt solid #333}.tp .bk12{display:inline-block;min-width:12em;text-align:center}
+.tp .bl{display:inline-block;min-width:34mm;border-bottom:.8pt solid #222;text-align:center;margin-left:2mm}
+.tp .zy5{line-height:2.7}.tp .zy6{line-height:2.1}.tp .sp{margin-top:1.5mm;border-top:.5pt dashed #999;padding-top:1.5mm}
+.tp .a{color:#B3261E;font-weight:500}
+.tp .mt{display:grid;grid-template-columns:60mm 1fr;align-items:center;min-height:11mm;border-bottom:.4pt dotted #aaa;font-size:13pt;line-height:1.35}
+.tp .ml{text-align:right;padding-right:2mm}.tp .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #333;border-radius:50%;margin:0 2mm;vertical-align:middle}
+.tp table{border-collapse:collapse;width:100%;font-size:10.5pt;margin-bottom:1mm}.tp td,.tp th{border:.5pt solid #555;padding:.3mm 1.5mm;text-align:left;font-weight:400}.tp th{background:#eee}
+.tp table.tx{table-layout:fixed;margin-bottom:1.8mm}.tp .bank.fx{margin:0 0 1mm;padding:.8mm 3mm;font-size:13.7pt}.tp .bank.fx span{margin-right:7mm;font-size:15pt}.tp .tx th:nth-child(1){width:19mm}.tp .tx th:nth-child(2){width:24mm}.tp .tx th:nth-child(4){width:50mm}.tp .tx td{font-size:12pt;line-height:1.4;vertical-align:middle}.tp .tx .vw{font-size:13.7pt}.tp .tx .sq{margin:0;width:11.5mm;height:11.5mm;line-height:10.5mm}.tp .tx td{padding:.2mm 1.5mm}.tp .tx .c0{text-align:center}
+.tp .bank{border:.8pt solid #333;padding:1.2mm 3mm;margin-bottom:2mm;font-size:12.5pt}.tp .bank span{margin-right:5mm}
+.tp .poem{border:.6pt solid #333;background:#f4f4ee;padding:1.5mm 3mm;font-size:12.5pt;line-height:1.45;margin:0 0 .5mm}.tp .ra{text-align:right;margin-bottom:1.5mm}
+.tp .q{margin-bottom:2.2mm;break-inside:avoid}.tp .qt{font-weight:500}.tp .qs{border-left:2pt solid #999;background:#f4f4ee;padding:.3mm 2.5mm;margin:.5mm 0;font-size:12.5pt}.tp .op{display:inline-block;margin-right:3.5mm}
+.tp .cl2{column-count:2;column-gap:12mm}
+.tp .rp{border:.6pt solid #333;padding:1.5mm 3mm;text-align:justify;line-height:1.55;margin-bottom:1.5mm;font-size:13pt}.tp .nt{font-size:10.5pt;margin-top:.5mm}
+.tp .rv,.tp .ex2{display:none}
+.tp .it{cursor:pointer}.tp .it:hover{background:rgba(236,192,102,.15)}
+.tp .it.open .rv{display:inline}.tp .it.open .rv.ex2{display:block;font-size:11pt;line-height:1.45;color:#333;background:#FFF8D6;padding:.8mm 2mm;margin:.5mm 0 1.5mm;white-space:normal}
+.tp .tip{display:none}
+.tp .ck{border-top:1.2pt dashed #555;margin-top:3mm;padding-top:2mm;font-size:11pt}.tp .ckh{display:flex;gap:6mm;align-items:baseline;margin-bottom:1.5mm}.tp .ckh span{font-size:10pt;color:#444}.tp .ckg{display:grid;grid-template-columns:repeat(7,1fr);gap:2mm}.tp .ckb{border:.6pt solid #555;padding:1mm 1.5mm;text-align:center;font-size:10.5pt;line-height:1.5}.tp .ckb b{display:block;font-weight:500}.tp .fc{font-size:13pt;white-space:nowrap}
+@media print{.tp{margin:0!important;box-shadow:none!important;zoom:1!important}}`;
+$("#tcss").textContent = TCSS + `
+.live .tp{height:auto;min-height:249mm;zoom:var(--z,1)}.live .tp .tb{overflow:visible}
+.live .tp .sh{cursor:pointer}.live .tp .tipb{background:#FFF3B0;border:1px solid #E0C34A;padding:1mm 3mm;font-size:10pt;margin-left:3mm}
+.live .tp .tip{font-size:12pt;background:#FFF8D6;border-left:4px solid #D9AE4E;padding:1.5mm 3mm;margin:1mm 0 2mm}.live .tp .tip.on{display:block}`;
+/* ===== 重點複習（翻牌＋答案詳解）===== */
+const flip = (n, f, b) => `<div class="fl"><div class="fi"><div class="ff"><span class="nb">${n}</span><div>${f}</div></div><div class="fb"><span class="nb">${n}</span><div>${b}</div></div></div></div>`;
+const rcard = (k, t, d, body) => `<section class="rc"><h2 class="sh" style="cursor:default">${ZH[k - 1]}、${t}<small>${d}</small></h2><div class="tip">💡 答題小錦囊：${TIP[k]}</div>${body}</section>`;
+function buildReview() {
+  const sx = k => SEC[k]("live").replace(/<h2 class="sh">.*?<\/h2>/, "").replace(/<div class="tip">.*?<\/div>/, "");
+  const sxw = k => `<div class="sx live"><div class="tp" style="all:unset;display:block;font-family:inherit">${sx(k)}</div></div>`;
+  return rcard(1, "國字注音", "點卡片翻面看答案與小叮嚀", `<div class="flg">${TZY.map((z, i) => flip(i + 1, z[0].replace("「", "<b>「").replace("」", "」</b>") + "<br>？", `<b>${z[1]}</b>${z[2]}`)).join("")}</div>`)
+    + rcard(2, "注釋連連看", "點卡片翻面看解釋", `<div class="flg">${TN.map((n, i) => flip(i + 1, n[0], n[1])).join("")}</div>`)
+    + rcard(3, "形音義填空", "點小題看答案", sxw(3)) + rcard(4, "應用練習", "點小題看答案與詳解", sxw(4))
+    + rcard(5, "成語填空", "點卡片翻面看語意與例句", `<div class="flg">${TI.map((t, i) => flip(i + 1, t[0], `${t[1]}<br><small>${t[2].replace("{}", "<b style='font-size:1rem;display:inline'>" + t[0] + "</b>")}</small>`)).join("")}</div>`)
+    + rcard(6, "選擇題", "點小題看答案與詳解", sxw(6)) + rcard(7, "閱讀題組", "點小題看答案與詳解", sxw(7));
+}
+/* ===== 介面 ===== */
+const dl = (html, name) => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([html], { type: "text/html" })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); };
+const doc = m => `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><title>${LESSON.name} 測驗${m === "tch" ? "（教師版）" : ""}</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#4a463f}${TCSS}@page{size:353mm 250mm;margin:0}.bar{padding:8px;text-align:center}.bar button{padding:8px 16px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}@media print{.bar{display:none}body{background:#fff}}</style></head><body><div class="bar"><button onclick="print()">🖨️ 列印（B4 橫式）</button></div>${pages(m)}</body></html>`;
+const tabs = $("#tabs"), acts = $("#acts"), rv = $("#review"), pp = $("#paper"), note = $("#note");
+const mk = (p, t, c, f) => { const b = document.createElement("button"); b.className = "b " + c; b.textContent = t; b.onclick = f; p.append(b); return b; };
+function view(v) { rv.hidden = v !== 0; pp.hidden = v !== 1; t0.classList.toggle("on", v === 0); t1.classList.toggle("on", v === 1); fit();
+  note.textContent = v === 0 ? "快速複習：點卡片翻面；點小題看答案與詳解；點大標題一次看整大題。" : "試卷互動版：點大標題＝顯示整大題答案；點小題＝只顯示該題答案與詳解；每大題有💡答題小錦囊。"; }
+const t0 = mk(tabs, "📘 重點複習", "", () => view(0)), t1 = mk(tabs, "📝 測驗試卷", "", () => view(1));
+mk(acts, "⛶ 全螢幕測驗", "g", () => { view(1); (pp.requestFullscreen || pp.webkitRequestFullscreen).call(pp); });
+mk(acts, "⬇ 下載測驗（學生版）", "r", () => dl(doc("stu"), `${LESSON.name}_測驗_學生版.html`));
+mk(acts, "⬇ 下載測驗（教師版）", "r", () => dl(doc("tch"), `${LESSON.name}_測驗_教師版.html`));
+acts.insertAdjacentHTML("afterbegin", '<a class="b" href="2_05_another_spring.html" style="text-decoration:none">← 回電子書</a>');
+rv.innerHTML = buildReview(); pp.innerHTML = pages("live");
+function fit() { const w = document.fullscreenElement ? innerWidth - 24 : Math.min(innerWidth - 30, 1400); pp.style.setProperty("--z", Math.min(w / 1334, 1.5).toFixed(3)); }
+addEventListener("resize", fit); document.addEventListener("fullscreenchange", fit);
+document.addEventListener("click", e => {
+  const h = e.target.closest(".sh"), s = h && h.closest(".sx");
+  if (e.target.closest(".tipb")) { e.target.closest(".sx").querySelector(".tip").classList.toggle("on"); return; }
+  if (h && s && h.closest(".tp")) { const its = [...s.querySelectorAll(".it")], all = its.every(i => i.classList.contains("open")); its.forEach(i => i.classList.toggle("open", !all)); return; }
+  const i = e.target.closest(".it"); if (i) { i.classList.toggle("open"); return; }
+  const f = e.target.closest(".fl"); if (f) f.classList.toggle("on");
+});
+view(0);
+</script>
+</body>
+</html>
