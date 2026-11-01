@@ -1034,40 +1034,51 @@ const HCSS = `
 .ho{font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;color:#222;font-size:13.7pt;line-height:1.5}
 .ho *{box-sizing:border-box}
 .ho .hp{width:210mm;height:296mm;background:#fff;margin:12px auto;padding:7mm 10mm 5mm;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 14px rgba(0,0,0,.45);break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.ho .hp:last-child{break-after:auto;page-break-after:auto}
-.ho .hb{flex:1;min-height:0;overflow:hidden}
-.ho .hf{text-align:center;font-size:9.5pt;color:#666;border-top:.5pt solid #bbb;padding-top:1mm}
-.ho .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #B8932F;padding-bottom:2mm;margin-bottom:3mm}
+.ho .pgw:last-child .hp{break-after:auto;page-break-after:auto}
+.ho .hbd{flex:1;min-height:0;overflow:hidden}
+.ho .hf{text-align:center;font-size:9.5pt;color:#444;border-top:.5pt solid #bbb;padding-top:1mm}
+.ho .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #444;padding-bottom:2mm;margin-bottom:3mm}
 .ho .hd h1{font-size:18pt;font-weight:500;letter-spacing:.15em}
-.ho .hd h1 small{display:block;font-size:9.5pt;letter-spacing:.1em;color:#666;font-weight:400}
+.ho .hd h1 small{display:block;font-size:9.5pt;letter-spacing:.1em;color:#444;font-weight:400}
 .ho .nm{font-size:12pt}.ho .nm span{display:inline-block;border-bottom:.6pt solid #222;min-width:24mm;margin:0 2mm 0 1mm}
 .ho .hs{margin-bottom:2mm}
-.ho h2{font-size:14.5pt;font-weight:500;letter-spacing:.1em;border-left:3pt solid #B8932F;padding:.3mm 0 .3mm 2.5mm;margin-bottom:1.5mm;background:linear-gradient(90deg,#F5EFD9,#fff)}
-.ho .ex{font-size:9.5pt;color:#666;margin-bottom:.5mm;line-height:1.3}
+.ho h2{font-size:14.5pt;font-weight:500;letter-spacing:.1em;border-left:3pt solid #444;padding:.3mm 0 .3mm 2.5mm;margin-bottom:1.5mm}
+.ho .ex{font-size:9.5pt;color:#444;margin-bottom:.5mm;line-height:1.3}
 .ho .hq{margin-bottom:1.5mm;break-inside:avoid}.ho .hqt{font-weight:500}
 .ho .op{display:inline-block;margin-right:3.5mm}
 .ho .ln{border-bottom:.6pt solid #999;height:6.6mm}
 .ho .ln22{border-bottom:.6pt solid #999;height:10.6mm}.ho .cq{font-size:15.5pt;line-height:1.4}
 .ho .duo{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.65;height:84mm;letter-spacing:.03em}
-.ho .art{display:block;height:100%;border:.6pt solid #B8932F;padding:2.5mm 3.5mm;margin-left:4mm;font-size:13pt}
-.ho .qz{display:block;height:100%;border:.6pt solid #bbb;background:#FAF8F0;padding:2.5mm 3.5mm}
-.ho .vb{margin-left:2.5mm}.ho .vb b{margin-left:1mm;color:#7a5a10;font-weight:500}.ho .vb p{display:inline}
+.ho .art{display:block;height:100%;border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:4mm;font-size:13pt}
+.ho .qz{display:block;height:100%;border:.6pt solid #bbb;background:#fff;padding:2.5mm 3.5mm}
+.ho .vb{margin-left:2.5mm}.ho .vb b{margin-left:1mm;color:#222;font-weight:500}.ho .vb p{display:inline}
 .ho .vq2{margin-left:3mm}.ho .vqt{font-weight:500;margin-left:1mm}.ho .vop{margin-left:1mm}
 .ho .mrow{display:grid;grid-template-columns:62mm 1fr;align-items:center;min-height:7.2mm;border-bottom:.4pt dotted #bbb;line-height:1.3}
 .ho .ml{text-align:right;font-size:14pt;letter-spacing:.08em}.ho .mr{font-size:13pt}
-.ho .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #B8932F;border-radius:50%;vertical-align:middle;margin:0 2mm}
+.ho .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #444;border-radius:50%;vertical-align:middle;margin:0 2mm}
 .ho .cols2{column-count:2;column-gap:7mm}
-.ho .gl{font-weight:500;color:#7a5a10;margin:.5mm 0}
-.ho .bank{border:.6pt solid #B8932F;padding:1.5mm 3mm;margin-bottom:1.5mm;font-size:13.5pt}.ho .bank span{display:inline-block;margin-right:5mm}
+.ho .gl{font-weight:500;color:#222;margin:.5mm 0}
+.ho .bank{border:.6pt solid #444;padding:1.5mm 3mm;margin-bottom:1.5mm;font-size:13.5pt}.ho .bank span{display:inline-block;margin-right:5mm}
 .ho .fill{line-height:2.7}
 .ho .bl{display:inline-block;min-width:30mm;border-bottom:.8pt solid #222;margin:0 1mm}
 .ho .rd{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:3mm;break-inside:avoid}
-.ho .pp{border:.6pt solid #B8932F;padding:2mm 3mm;text-align:justify;line-height:1.65;font-size:13pt}
+.ho .pp{border:.6pt solid #444;padding:2mm 3mm;text-align:justify;line-height:1.65;font-size:13pt}
 .ho table{border-collapse:collapse;width:100%;font-size:11pt;margin-bottom:2mm}
-.ho th,.ho td{border:.5pt solid #B8932F;padding:.6mm 2mm;text-align:left}.ho th{background:#F5EFD9;font-weight:500}
+.ho th,.ho td{border:.5pt solid #444;padding:.6mm 2mm;text-align:left}.ho th{font-weight:700}
 .ho .t3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
-.ho .rp{background:#FFF6D6;border-left:2pt solid #B8932F;padding:2mm 3mm;text-align:center;margin-bottom:1.5mm}
+.ho .rp{background:#fff;border:.6pt solid #444;border-left:2pt solid #222;padding:2mm 3mm;text-align:center;margin-bottom:1.5mm}
 .ho .sub{font-weight:500;margin:1.5mm 0}
+
+@page{size:A4;margin:0}
+@page land{size:A4 landscape;margin:0}
+.ho .pgw.pl{page:land}.ho .hp.land{width:297mm;height:209mm}
+.ho .hbd.vt{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.4;letter-spacing:.03em;--vh:184mm}
+.ho .vsec{margin-left:5mm}
+.ho .vh{font-size:14.5pt;font-weight:500;letter-spacing:.12em;border-left:2.5pt solid #222;padding-left:2mm;margin-left:2.5mm;line-height:1.5}
+.ho .vex{font-size:10pt;color:#444;margin-left:2.5mm}
+.ho .hbd.vt .art{display:block;height:var(--vh);border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:2.5mm;font-size:13pt;line-height:1.5;background:#fff}
+.ho .hbd.vt .qz{display:block;height:var(--vh);border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:2.5mm;background:#fff}
+.ho .vqi{margin-left:3mm}.ho .vqt{font-weight:500;margin-left:1mm}
 .hbar{display:flex;gap:8px;justify-content:center;padding:8px;position:sticky;top:0;z-index:3;background:#3a362f}
 .hbar button{font:inherit;font-size:.9rem;padding:8px 16px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}
 @media print{
@@ -1083,31 +1094,32 @@ function dl(html, name) { const a = document.createElement("a"); a.href = URL.cr
 function buildHandout() {
   const ZH = "一二三四五六七八", FW = n => String.fromCharCode(0xFF10 + n), OL = "ＡＢＣ";
   const sec = (n, t, d, b) => `<section class="hs"><h2>${ZH[n]}、${t}</h2>${d ? `<div class="ex">${d}</div>` : ""}${b}</section>`;
+  const vsec = (n, t, d, b) => `<section class="vsec"><h2 class="vh">${ZH[n]}、${t}</h2>${d ? `<div class="vex">${d}</div>` : ""}${b}</section>`;
   const ops = o => o.map((t, j) => `<span class="op">（${OL[j]}）${t}</span>`).join("");
   const q = (x, i) => `<div class="hq"><div class="hqt">（　）${i}. ${x.q}</div><div>${ops(x.o)}</div></div>`;
+  const vq = (x, i) => `<div class="vqi"><div class="vqt">（　）${FW(i)}．${x.q}</div><div>${x.o.map((t, j) => `（${OL[j]}）${t}`).join("　")}</div></div>`;
   const rot = (a, k) => a.map((_, i) => a[(i + k) % a.length]);
-  const pg = (n, b, head) => `<div class="hp">${head || ""}<div class="hb">${b}</div><div class="hf">第 ${n} 頁　／　共 4 頁</div></div>`;
+  const pg = (n, b, head, cls) => `<div class="pgw${cls ? " pl" : ""}"><div class="hp${cls ? " " + cls : ""}">${head || ""}<div class="hbd${cls ? " vt" : ""}">${b}</div><div class="hf">第 ${n} 頁　／　共 4 頁</div></div></div>`;
   const head = `<div class="hd"><h1>${LESSON.name}　學習講義<small>${LESSON.ver}　${LESSON.author}</small></h1><div class="nm">班級<span></span>姓名<span></span></div></div>`;
   const s1 = sec(0, "核心問題", "", CORE.map((c, i) => `<div class="hq"><div class="hqt cq">${i + 1}. ${c}</div><div class="ln22"></div></div>`).join(""));
-  const art = `<div class="art">${SUP.map(([t, x]) => `<div class="vb">${t ? `<b>${t}</b>` : ""}<p>${x}</p></div>`).join("")}</div>`;
-  const qz = `<div class="qz">${SUPQ.map((x, i) => `<div class="vq2"><div class="vqt">（　）${FW(i + 1)}．${x.q}</div>${x.o.map((t, j) => `<div class="vop">（${OL[j]}）${t}</div>`).join("")}</div>`).join("")}</div>`;
-  const s2 = sec(1, "課文補給站", "先讀右邊的短文，再回答左邊的題目，把答案代號填進（　）。", `<div class="duo">${art}${qz}</div>`);
   const rights = rot(NOTES.map(n => n[1]), 3);
-  const s3 = sec(2, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", NOTES.map((n, i) => `<div class="mrow"><div class="ml">${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${rights[i]}</div></div>`).join(""));
-  let c = 0;
-  const s4 = sec(3, "課文理解問答題", "", `<div class="cols2">${PARAS.map((p, i) => `<div class="gl">第${ZH[i]}部分</div>${p.q.slice(0, i < 4 ? 2 : 1).map(x => q(x, ++c)).join("")}`).join("")}</div>`);
+  const s2 = sec(1, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", NOTES.map((n, i) => `<div class="mrow"><div class="ml">${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${rights[i]}</div></div>`).join(""));
   const words = IDIOMS.map(x => x[0]);
-  const s5 = sec(4, "成語填空", "看解釋，從成語選項選一個，抄寫在底線上。", `<div class="bank"><b>成語選項：</b>${rot(words, 2).map(w => `<span>${w}</span>`).join("")}</div>` + IDIOMS.map((x, i) => `<div class="fill">${i + 1}. ${x[1]}<span class="bl"></span></div>`).join(""));
+  const s3 = sec(2, "成語填空", "看解釋，從成語選項選一個，抄寫在底線上。", `<div class="bank"><b>成語選項：</b>${rot(words, 2).map(w => `<span>${w}</span>`).join("")}</div>` + IDIOMS.map((x, i) => `<div class="fill">${i + 1}. ${x[1]}<span class="bl"></span></div>`).join(""));
+  const art = `<div class="art">${SUP.map(([t, x]) => `<div class="vb">${t ? `<b>${t}</b>` : ""}<p>${x}</p></div>`).join("")}</div>`;
+  const s4 = vsec(3, "課文補給站", "先讀短文，再回答題目，把答案代號填進（　）。", art + `<div class="qz">${SUPQ.map((x, i) => vq(x, i + 1)).join("")}</div>`);
+  const per = Math.ceil(6 / PARAS.length); let c = 0; const allq = PARAS.flatMap(p => p.q.slice(0, per)), pick6 = allq.length <= 6 ? allq : [0, 1, 2, 3, 4, 5].map(k => allq[Math.round(k * (allq.length - 1) / 5)]);
+  const s5 = vsec(4, "課文理解問答題", "把答案代號填進（　）。", `<div class="qz">${pick6.map(x => vq(x, ++c)).join("")}</div>`);
   const s6 = sec(5, "相關閱讀", "", READ.map((s, i) => `<div class="rd"><div class="pp"><div class="sub">題組 ${i + 1}</div>${s.psg}</div><div>${s.qs.map((x, k) => q(x, k + 1)).join("")}</div></div>`).join(""));
   const s7 = sec(6, "應用小挑戰", "", `<div class="sub">任務一：旅行小日記　<span class="ex" style="display:inline">① 圈一個旅行情境　② 看提示詞　③ 補完 3 行（用說的也可以，3 行完成就很棒）</span></div>
     <table><tr><th>情境</th><th>我看到</th><th>我聽到</th><th>我覺得</th></tr>${OBJS.map(o => `<tr><td>○ ${o.n}</td><td>${o.look.join("、")}</td><td>${o.sound.join("、")}</td><td>${o.like.join("、")}</td></tr>`).join("")}</table>
     <div class="fill">1. 我在 <span class="bl"></span> 的時候，看到 <span class="bl"></span>。</div><div class="fill">2. 我聽到 <span class="bl"></span>。</div><div class="fill">3. 我覺得 <span class="bl"></span>，因為 <span class="bl" style="min-width:45mm"></span>。</div>
     <div class="sub" style="margin-top:3mm">任務二：夢想小訪談　<span class="ex" style="display:inline">問問家裡或附近的長輩，把答案寫（或錄）下來，下次和同學分享</span></div><div class="t3">${INTERVIEW.map((q, i) => `<div class="hq"><div class="hqt">${i + 1}. ${q}</div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>`).join("")}</div>`);
-  return pg(1, s1 + s2 + s3, head) + pg(2, s4 + s5) + pg(3, s6) + pg(4, s7);
+  return pg(1, s1 + s2 + s3, head) + pg(2, s4 + s5, "", "land") + pg(3, s6) + pg(4, s7);
 }
-const HQN = 3;
+
 function handout() {
-  setPage("@page{size:A4;margin:0}");
+  setPage("@page{size:A4;margin:0}@page land{size:A4 landscape;margin:0}");
   const ov = $("#hov"); ov.innerHTML = `<div class="hbar"><button id="hp">🖨️ 列印（紙本）</button><button id="hp2">📄 存成 PDF（電子）</button><button id="hd">⬇ 下載講義網頁檔</button><button id="hx">✕ 關閉</button></div><div class="ho">${buildHandout()}</div>`;
   ov.classList.add("on");
   $("#hp").onclick = () => print(); $("#hp2").onclick = () => { alert("在列印視窗的「目的地」選擇「另存為 PDF」，即可存成電子講義。"); print(); };
