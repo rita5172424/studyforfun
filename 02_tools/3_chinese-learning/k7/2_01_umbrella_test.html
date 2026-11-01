@@ -140,8 +140,8 @@ const SEC = {
   6: m => wrap(m, 6, "選擇題", "每題只有一個答案，把代號填入（　）中。", `<div class="cl2">${TQ.map((x, i) => it(m, `<div class="qt">${paren(m, L[x.a])}${i + 1}. ${x.q}</div>${x.s ? `<div class="qs">課文：「${x.s.replace(/／/g, "　")}」</div>` : ""}<div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`),
   7: m => { let n = 0; return wrap(m, 7, "閱讀題組", "先讀文本，再回答問題。", `<div class="g2">${TR.map(g => `<div><div class="qt">${g.t}</div><div class="rp">${lines(g.p)}${g.n ? `<div class="nt">${g.n}</div>` : ""}</div>${g.qs.map(x => it(m, `<div class="qt">${paren(m, L[x.a])}${++n}. ${x.q}</div><div>${ops(x.o)}</div>${ex(m, x.e)}`, "q")).join("")}</div>`).join("")}</div>`); }
 };
-const SS = [["國字注音", TZY.length, "先想詞意再拆字"], ["注釋連連看", TN.length, "先連有把握的"], ["形音義填空", TX.reduce((a, g) => a + g.c.length, 0), "字義代入詞語"], ["應用練習", TY1.length + TY2.length, "抓形狀、聲音、功用"], ["成語填空", TI.length * 2, "拆開看字面意思"], ["選擇題", TQ.length, "回到課文那一句"], ["閱讀題組", TR.reduce((a, g) => a + g.qs.length, 0), "先讀題再找線索"]];
-const CHECK = `<div class="ck"><div class="ckh"><b>我的學習檢核</b><span>寫完後，圈出每個大題的掌握程度，再勾一個下次想用的小方法（1 分鐘就好）</span><span>最想再複習：第 ＿＿ 大題</span></div><div class="ckg">${SS.map((x, i) => `<div class="ckb"><b>${ZH[i]}、${x[0]}</b><div>答對 ＿＿ ／ ${x[1]}</div><div class="fc">😀 很熟　😐 還好　😟 要練</div><div>☐ ${x[2]}</div></div>`).join("")}</div></div>`;
+const SS = ["國字注音", "注釋連連看", "形音義填空", "應用練習", "成語填空", "選擇題", "閱讀題組"];
+const CHECK = `<div class="ck"><div class="ckh"><b>我的學習檢核</b><span>寫完後，每個大題在方框裡打勾，30 秒就好</span></div><div class="ckg">${SS.map((x, i) => `<div class="ckb"><b>${ZH[i]}、${x}</b><div class="fc"><span><i class="cb"></i>很熟</span><span><i class="cb"></i>還好</span><span><i class="cb"></i>要練</span></div></div>`).join("")}</div></div>`;
 const page = (n, b) => `<div class="tp"><div class="th"><h1>〈${LESSON.short}〉測驗</h1><span>姓名：<i></i></span></div><div class="tb">${b}</div><div class="tf">第 ${n} 頁　／　共 4 頁</div></div>`;
 const g2 = (a, b) => `<div class="g2"><div>${a}</div><div>${b}</div></div>`;
 const pages = m => { const S = k => SEC[k](m); return page(1, g2(S(1) + S(2), S(3))) + page(2, g2(S(4), S(5))) + page(3, S(6)) + page(4, S(7) + (m === "stu" ? CHECK : "")); };
@@ -177,7 +177,7 @@ const TCSS = `
 .tp .it{cursor:pointer}.tp .it:hover{background:rgba(236,192,102,.15)}
 .tp .it.open .rv{display:inline}.tp .it.open .rv.ex2{display:block;font-size:11pt;line-height:1.45;color:#333;background:#FFF8D6;padding:.8mm 2mm;margin:.5mm 0 1.5mm;white-space:normal}
 .tp .tip{display:none}
-.tp .ck{border-top:1.2pt dashed #555;margin-top:2mm;padding-top:1.5mm;font-size:11pt}.tp .ckh{display:flex;justify-content:space-between;gap:6mm;align-items:baseline;margin-bottom:1.5mm}.tp .ckh span{font-size:9.5pt;color:#444}.tp .ckg{display:grid;grid-template-columns:repeat(7,1fr);gap:2mm}.tp .ckb{border:.6pt solid #555;padding:1mm 1.5mm;line-height:1.45;font-size:10pt}.tp .ckb b{display:block;font-size:10.5pt}.tp .fc{font-size:9.5pt;white-space:nowrap}
+.tp .ck{border-top:1.2pt dashed #555;margin-top:3mm;padding-top:2mm;font-size:11pt}.tp .ckh{display:flex;gap:6mm;align-items:baseline;margin-bottom:1.5mm}.tp .ckh span{font-size:10pt;color:#444}.tp .ckg{display:grid;grid-template-columns:repeat(7,1fr);gap:2mm}.tp .ckb{border:.6pt solid #555;padding:1mm 1.5mm;text-align:center;font-size:10.5pt;line-height:1.5}.tp .ckb b{display:block;font-weight:500}.tp .fc{font-size:9.5pt;white-space:nowrap}.tp .fc span{margin-right:2.2mm}.tp .fc span:last-child{margin-right:0}.tp .cb{display:inline-block;width:3.2mm;height:3.2mm;border:.7pt solid #222;vertical-align:-.5mm;margin-right:1mm}
 @media print{.tp{margin:0!important;box-shadow:none!important;zoom:1!important}}`;
 $("#tcss").textContent = TCSS + `
 .live .tp{height:auto;min-height:249mm;zoom:var(--z,1)}.live .tp .tb{overflow:visible}
