@@ -133,7 +133,8 @@ mark{background:#FFE45C;padding:0 .1em}
 .vq .mq .opt.ok{background:#DCEBDD;border-color:var(--ok)}.vq .mq .opt.no{background:#EBD6D6;border-color:var(--red)}
 .vq .sum{margin:0 0 0 .4em;max-height:calc(var(--sh) - 40px);padding:6px 8px;font-size:1.05rem}
 .vq .ex{max-height:calc(var(--sh) - 40px);font-size:1.05rem}
-.vq .hb{writing-mode:horizontal-tb;margin:0 0 0 .4em}
+.vq .hb{writing-mode:vertical-rl;display:block;height:fit-content;margin:0 0 0 .4em;padding:8px 4px;font-size:1rem;letter-spacing:.08em}
+.vq .sum .hb{display:inline-block;margin:.4em 0 0 0;padding:6px 3px;font-size:.95rem}
 .row2{display:flex;align-items:center;gap:18px;margin:8px 0 10px}
 .pick{font-family:"Noto Serif TC",serif;font-size:2.4rem;letter-spacing:.1em;color:var(--red)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -479,12 +480,13 @@ const HCSS = `
 .ho .hq{margin-bottom:1.5mm;break-inside:avoid}.ho .hqt{font-weight:500}
 .ho .op{display:inline-block;margin-right:3.5mm}
 .ho .ln{border-bottom:.6pt solid #999;height:6.6mm}
-.ho .duo{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.65;height:88mm;letter-spacing:.03em}
+.ho .ln22{border-bottom:.6pt solid #999;height:10.6mm}.ho .cq{font-size:15.5pt;line-height:1.4}
+.ho .duo{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.65;height:84mm;letter-spacing:.03em}
 .ho .art{display:block;height:100%;border:.6pt solid #B8932F;padding:2.5mm 3.5mm;margin-left:4mm;font-size:13pt}
 .ho .qz{display:block;height:100%;border:.6pt solid #bbb;background:#FAF8F0;padding:2.5mm 3.5mm}
 .ho .vb{margin-left:2.5mm}.ho .vb b{margin-left:1mm;color:#7a5a10;font-weight:500}.ho .vb p{display:inline}
 .ho .vq2{margin-left:3mm}.ho .vqt{font-weight:500;margin-left:1mm}.ho .vop{margin-left:1mm}
-.ho .mrow{display:grid;grid-template-columns:62mm 1fr;align-items:center;min-height:8mm;border-bottom:.4pt dotted #bbb;line-height:1.3}
+.ho .mrow{display:grid;grid-template-columns:62mm 1fr;align-items:center;min-height:7.2mm;border-bottom:.4pt dotted #bbb;line-height:1.3}
 .ho .ml{text-align:right;font-size:14pt;letter-spacing:.08em}.ho .mr{font-size:13pt}
 .ho .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #B8932F;border-radius:50%;vertical-align:middle;margin:0 2mm}
 .ho .cols2{column-count:2;column-gap:7mm}
@@ -519,7 +521,7 @@ function buildHandout() {
   const rot = (a, k) => a.map((_, i) => a[(i + k) % a.length]);
   const pg = (n, b, head) => `<div class="hp">${head || ""}<div class="hb">${b}</div><div class="hf">第 ${n} 頁　／　共 4 頁</div></div>`;
   const head = `<div class="hd"><h1>${LESSON.name}　學習講義<small>${LESSON.ver}　${LESSON.author}</small></h1><div class="nm">班級<span></span>姓名<span></span></div></div>`;
-  const s1 = sec(0, "核心問題", "", CORE.map((c, i) => `<div class="hq"><div class="hqt">${i + 1}. ${c}</div><div class="ln"></div><div class="ln"></div></div>`).join(""));
+  const s1 = sec(0, "核心問題", "", CORE.map((c, i) => `<div class="hq"><div class="hqt cq">${i + 1}. ${c}</div><div class="ln22"></div></div>`).join(""));
   const art = `<div class="art">${SUP.map(([t, x]) => `<div class="vb">${t ? `<b>${t}</b>` : ""}<p>${x}</p></div>`).join("")}</div>`;
   const qz = `<div class="qz">${SUPQ.map((x, i) => `<div class="vq2"><div class="vqt">（　）${FW(i + 1)}．${x.q}</div>${x.o.map((t, j) => `<div class="vop">（${OL[j]}）${t}</div>`).join("")}</div>`).join("")}</div>`;
   const s2 = sec(1, "課文補給站", "先讀右邊的短文，再回答左邊的題目，把答案代號填進（　）。", `<div class="duo">${art}${qz}</div>`);
