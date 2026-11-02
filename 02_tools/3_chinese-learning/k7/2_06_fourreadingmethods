@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>康軒七年級｜四種讀書的方法</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1C1B1A;--tab:#322E2B;--tt:#D3BC8E;--gold:#ECC066;--gl:#D9AE4E;--jade:#F5F3ED;--pale:#EFECE3;--board:#E4DFD1;--ink:#2D2B2A;--soft:#6B645B;--red:#8B1E1E;--ok:#3F7D4E;--h:min(84vh,800px);--sh:min(54vh,440px)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--jade);font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif;line-height:1.7;min-height:100vh}
+.wrap{max-width:1320px;margin:0 auto;padding:8px 14px 16px}
+a,button{font:inherit;color:inherit}
+button{cursor:pointer;border:0}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.back{color:var(--tt);text-decoration:none;font-size:.85rem}
+.layout{display:grid;grid-template-columns:128px minmax(0,1fr) 128px;gap:12px;align-items:start;margin-top:4px}
+.side{display:flex;flex-direction:column;gap:16px}
+.grp{display:flex;flex-direction:column;gap:6px}
+.grp h3{font-size:.72rem;font-weight:400;letter-spacing:.25em;color:rgba(245,243,237,.5);border-bottom:1px solid rgba(211,188,142,.25);padding-bottom:3px}
+.b{--c:8px;text-align:left;font-size:.82rem;letter-spacing:.06em;padding:7px 10px;clip-path:polygon(var(--c) 0,100% 0,100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,0 100%,0 var(--c))}
+.g1 .b{background:#3B3326;color:var(--gold)}
+.g2 .b{background:var(--tab);color:var(--tt)}
+.g4 .b{background:#3E2B2B;color:#EBC9BE}
+.g3 .b{background:#2F3B39;color:#BCD3CA}
+.b:hover{filter:brightness(1.25)}
+.b.on{background:var(--gold)!important;color:var(--ink)!important}
+.stage{position:relative;overflow:hidden;background:var(--board);color:var(--ink);border:1px solid var(--gl)}
+.scroller{height:var(--h);overflow-x:auto;overflow-y:hidden;padding:14px 36px}
+.vt{writing-mode:vertical-rl;font-family:"Noto Serif TC",serif;font-size:1.75rem;line-height:2.2;letter-spacing:.1em;height:100%;padding-left:60vw}
+.vtitle{font-size:1.5rem;font-weight:500;letter-spacing:.3em;margin-left:2.6em;color:#5a4a1e;border-left:1px solid var(--gl);padding-left:.6em}
+.vtitle small{font-size:.95rem;font-weight:400;letter-spacing:.2em;color:var(--soft);margin-block-start:1em;display:inline-block}
+.para{margin-left:2.6em}
+.para.say{background:rgba(236,192,102,.22)}
+.para button{writing-mode:horizontal-tb;font-size:.8rem;line-height:1;padding:6px 8px;margin:.3em 0;background:var(--pale);border:1px solid var(--gl);color:var(--soft)}
+.para button:hover{background:#F7EBC9}
+.kw{padding:0}
+.circ .kw{padding:.2em;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M12 55C4 25 40 6 74 14c22 6 28 40 14 62C72 98 22 96 10 66' fill='none' stroke='%238B1E1E' stroke-width='2.5' vector-effect='non-scaling-stroke' stroke-linecap='round'/%3E%3C/svg%3E") center/100% 100% no-repeat}
+/* 段落理解題：直排，由右至左 */
+.pq{display:none;height:calc(var(--h) - 28px);margin-left:1.2em;padding:0 1em;border-left:1px solid var(--gl);border-right:1px solid var(--gl);background:rgba(245,243,237,.65);font-family:"Noto Sans TC",sans-serif;font-size:1.3rem;line-height:2.1;letter-spacing:.06em}
+.pq.open{display:block;animation:op .18s ease-out}
+.pq .mq{margin:0 0 0 1.8em;display:block}
+.pq .qt{font-weight:500;max-height:calc(var(--h) - 64px);margin-left:.6em}
+.pq .mq .opt{writing-mode:vertical-rl;display:block;width:auto;height:fit-content;max-height:calc(var(--h) - 64px);margin:0 0 0 .4em;padding:8px 4px;font-size:1.2rem;line-height:2;letter-spacing:.06em;background:var(--jade);border:1px solid #DDD8C9;text-align:start}
+.pq .ex{max-height:calc(var(--h) - 64px);font-size:1.05rem}
+@keyframes op{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.opt{display:block;cursor:pointer;background:var(--jade);border:1px solid #DDD8C9;font-family:inherit}
+.opt:hover{border-color:var(--gl)}
+.opt.ok{background:#DCEBDD;border-color:var(--ok)}
+.opt.no{background:#EBD6D6;border-color:var(--red)}
+.ex{color:var(--soft);font-size:.95rem}
+.ruler{position:absolute;top:0;bottom:0;width:3.4rem;left:50%;display:none;pointer-events:none;background:rgba(236,192,102,.2);border-inline:1px solid var(--gl);box-shadow:0 0 0 100vmax rgba(28,27,26,.28);z-index:2}
+.ruler.on{display:block}
+.hint{color:rgba(245,243,237,.5);font-size:.8rem;text-align:center;margin-top:8px}
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(28,27,26,.8);display:none;place-items:center;z-index:9;padding:14px}
+.ov.on{display:grid}
+.md{position:relative;background:var(--board);color:var(--ink);width:min(820px,100%);max-height:90vh;overflow:auto;padding:28px;border:1px solid var(--gl);font-size:1.15rem;animation:op .18s ease-out}
+.md h2{font-family:"Noto Serif TC",serif;font-weight:500;letter-spacing:.15em;margin-bottom:14px;font-size:1.5rem}
+.x{position:absolute;top:8px;right:10px;background:none;font-size:1.3rem;color:var(--soft)}
+.card{background:var(--jade);border:1px solid #DDD8C9;padding:14px 16px;margin-bottom:10px;font-size:1.15rem}
+.card:hover{border-color:var(--gl)}
+.mq{margin-bottom:16px}
+.md .mq .opt{width:100%;padding:8px 12px;margin:5px 0;font-size:1.1rem;text-align:left}
+.qt{margin-bottom:2px}
+.psg{background:var(--jade);border-inline-start:3px solid var(--gl);padding:12px 16px;margin-bottom:12px;text-align:justify;font-size:1.2rem;line-height:2.05}
+mark{background:#FFE45C;padding:0 .1em}
+.hb{background:#FFF3B0;border:1px solid #E0C34A;padding:3px 10px;font-size:.85rem;margin:4px 0;color:var(--ink)}
+.mt{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:12px 90px}
+.mt button{background:var(--jade);border:1px solid #DDD8C9;padding:10px 12px;text-align:left;font-size:1.15rem}
+.mt button.sel{border-color:var(--gl);box-shadow:0 0 0 1px var(--gl)}
+.mt button.ok{background:#DCEBDD}.mt button.bad{background:#EBD6D6}
+.mt svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.chk{background:var(--ink);color:var(--gold);padding:8px 20px;margin:14px 8px 0 0;font-size:.95rem}
+/* 翻牌 */
+.flg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.fl{perspective:900px;height:170px;cursor:pointer}
+.fi{position:relative;height:100%;transition:transform .35s;transform-style:preserve-3d}
+.fl.on .fi{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;inset:0;backface-visibility:hidden;padding:16px;display:grid;place-items:center;text-align:center;border:1px solid var(--gl);overflow:auto}
+.ff{background:var(--ink);color:var(--gold);font-size:1.25rem;letter-spacing:.1em}
+.ff small{display:block;font-size:.8rem;color:var(--tt);margin-top:6px}
+.fb{background:var(--jade);transform:rotateY(180deg);font-size:1.1rem;line-height:1.8}
+/* 計時與抽籤 */
+.tm{font-size:4rem;text-align:center;font-family:"Noto Serif TC",serif;letter-spacing:.1em}
+.tm.end{color:var(--red);animation:bl .6s infinite}
+@keyframes bl{50%{opacity:.3}}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:12px 0}
+.row .b{background:var(--tab);color:var(--tt);font-size:.95rem}
+.row .b.on{background:var(--ink)!important;color:var(--gold)!important}
+.podium{background:var(--ink);color:var(--gold);text-align:center;letter-spacing:.6em;padding:8px;margin-top:6px}
+.seats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+.seat{background:var(--jade);border:1px solid #DDD8C9;padding:20px 0;text-align:center;font-size:1.6rem;font-family:"Noto Serif TC",serif}
+.seat.done{opacity:.45}.seat.hit{background:var(--gold);border-color:var(--gl);opacity:1}
+#hov{position:fixed;inset:0;background:#4a463f;overflow:auto;z-index:20;display:none}
+#hov.on{display:block}
+#chip{position:fixed;right:14px;bottom:14px;background:var(--ink);color:var(--gold);border:1px solid var(--gl);padding:8px 14px;display:none;z-index:5}
+#chip.end{color:#fff;background:var(--red)}
+.jump{display:flex;flex-direction:row-reverse;align-items:flex-end;gap:4px}
+.jump .jl{font-size:.72rem;color:rgba(245,243,237,.55);letter-spacing:.2em;margin-left:6px;align-self:center}
+.jb{width:30px;height:26px;background:var(--tab);color:var(--tt);font-size:.85rem;border:1px solid var(--gl);border-bottom:0}
+.jb:hover,.jb.on{background:var(--gold);color:var(--ink)}
+.slips{display:flex;gap:18px;justify-content:center;align-items:flex-start;margin:6px 0}
+.slip{padding:12px;background-color:var(--ink);background-image:linear-gradient(rgba(217,174,78,.55) 1px,transparent 1px),linear-gradient(90deg,rgba(217,174,78,.55) 1px,transparent 1px);background-size:14px 14px;border:1px solid var(--gl)}
+.slip>div{writing-mode:vertical-rl;text-orientation:upright;background:var(--jade);color:var(--ink);border:1px solid var(--gl);box-shadow:inset 0 0 0 4px var(--jade),inset 0 0 0 5px var(--gl);font-family:"Noto Serif TC",serif;font-size:2.3rem;letter-spacing:.35em;padding:30px 22px;min-height:300px;display:flex;align-items:center;justify-content:center}
+.slip.sm>div{font-size:1.6rem;min-height:200px;padding:22px 14px}
+.slip.drop{animation:drop .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes drop{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+[hidden]{display:none!important}
+.sum{font-size:1rem;margin:6px 0;padding:8px 12px;background:var(--pale);border-left:3px solid var(--gl)}
+.sum .hb{margin-left:8px}
+.md.wide{width:min(1120px,100%)}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;margin-bottom:20px}
+.rg .psg{position:sticky;top:0;max-height:78vh;overflow:auto;margin:0}
+.mt button:nth-child(odd){font-size:1.5rem;font-family:"Noto Serif TC",serif;letter-spacing:.1em;font-weight:500}
+.card b.idw{font-size:1.6rem;font-family:"Noto Serif TC",serif;letter-spacing:.1em}
+.nb{position:absolute;top:8px;left:8px;min-width:24px;height:24px;display:grid;place-items:center;border:1px solid var(--gl);font-size:.8rem;font-family:"Noto Serif TC",serif}
+.ff .nb{color:var(--gold)}.fb .nb{color:var(--ink)}
+.vsup{writing-mode:vertical-rl;font-family:"Noto Serif TC",serif;font-size:1.4rem;line-height:2.1;letter-spacing:.06em;height:var(--sh);flex:0 0 auto;max-width:52%;overflow-x:auto;overflow-y:hidden;background:var(--jade);border:1px solid var(--gl);padding:16px 22px}
+.vs{margin-left:1.4em}.vs h4{font-size:1.2rem;color:#7a5a10;font-weight:500;margin-left:.5em;letter-spacing:.2em}
+.tabs2{display:inline-flex;gap:8px;flex-wrap:wrap}
+.tabs2 .b{font-size:1.2rem;padding:9px 18px;background:var(--tab);color:var(--tt)}
+.big{font-size:1.3rem}
+.big .card{font-size:1.3rem}.big .qt{font-size:1.4rem}.big .opt{font-size:1.25rem}.big .chk{font-size:1.15rem}.big .hb{font-size:1rem}.big .sum,.big .ex{font-size:1.1rem}
+.ln2{border-bottom:1px solid #B8932F;height:34px}
+.chip{display:inline-block;background:#FFF6D6;border:1px solid var(--gl);padding:1px 12px;margin:2px 6px 2px 0}
+.psg.poem{background:#FFF6D6;border-left:4px solid var(--gl);font-size:1.6rem;line-height:2.1;letter-spacing:.08em;text-align:center}
+.big .rg .psg.poem{font-size:1.6rem}
+.vduo{display:flex;flex-direction:row-reverse;gap:14px;align-items:flex-start;margin-top:8px}
+.vq{writing-mode:vertical-rl;height:var(--sh);flex:1 1 0;min-width:0;overflow-x:auto;overflow-y:hidden;background:var(--board);border:1px solid var(--gl);padding:14px 18px;font-family:"Noto Sans TC",sans-serif;font-size:1.3rem;line-height:2}
+.vq .mq{margin:0 0 0 1.6em;display:block}
+.vq .qt{font-weight:500;max-height:calc(var(--sh) - 40px);margin-left:.5em}
+.vq .mq .opt{writing-mode:vertical-rl;display:block;width:auto;height:fit-content;max-height:calc(var(--sh) - 40px);margin:0 0 0 .4em;padding:8px 4px;font-size:1.15rem;line-height:1.9;text-align:start;background:var(--jade);border:1px solid #DDD8C9}
+.vq .mq .opt.ok{background:#DCEBDD;border-color:var(--ok)}.vq .mq .opt.no{background:#EBD6D6;border-color:var(--red)}
+.vq .sum{margin:0 0 0 .4em;max-height:calc(var(--sh) - 40px);padding:6px 8px;font-size:1.05rem}
+.vq .ex{max-height:calc(var(--sh) - 40px);font-size:1.05rem}
+.vq .hb{writing-mode:vertical-rl;display:block;height:fit-content;margin:0 0 0 .4em;padding:8px 4px;font-size:1rem;letter-spacing:.08em}
+.vq .sum .hb{display:inline-block;margin:.4em 0 0 0;padding:6px 3px;font-size:.95rem}
+.row2{display:flex;align-items:center;gap:18px;margin:8px 0 10px}
+.pick{font-family:"Noto Serif TC",serif;font-size:2.4rem;letter-spacing:.1em;color:var(--red)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pane{background:var(--jade);border:1px solid var(--gl);padding:10px 16px}
+.pane.poem2{background:#FFF6D6}
+.vr{margin-bottom:6px}.vr b{display:block}
+.fr{margin:8px 0;line-height:2.2}.fr small{color:var(--soft);font-size:.9rem}
+.bl{display:inline-block;min-width:4.5em;border-bottom:2px solid var(--ink);margin:0 4px}
+@media (max-width:900px){.vduo{flex-direction:column}.vsup{max-width:100%}.two{grid-template-columns:1fr}.rg{grid-template-columns:1fr}.rg .psg{position:static;max-height:none}.layout{grid-template-columns:1fr}.side{flex-direction:row;flex-wrap:wrap}.grp{flex-direction:row;flex-wrap:wrap;align-items:center}.scroller{padding:20px}.vt{font-size:1.45rem}}
+@media (prefers-reduced-motion:reduce){.fi,.pq.open,.md{animation:none;transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../k7.html">← 康軒七年級・下學期</a>
+  <div class="layout">
+    <aside class="side" id="sl"></aside>
+    <div class="mid"><div class="jump" id="jump"><span class="jl">段落</span></div>
+    <div class="stage" id="stage">
+      <div class="ruler" id="ruler"></div>
+      <div class="scroller" id="sc"><div class="vt" id="vt"></div></div>
+    </div></div>
+    <aside class="side" id="sr"></aside>
+  </div>
+  <p class="hint">直排由右至左閱讀・段落末端按「？」展開理解題・開啟閱讀尺後，移動滑鼠或手指即可移動</p>
+</div>
+<div id="hov"></div>
+<button id="chip" aria-label="計時器"></button>
+<div class="ov" id="ov"><div class="md"><button class="x" id="cl" aria-label="關閉">✕</button><div id="mb"></div></div></div>
+
+<script>
+/* ========= 資料區（內容取自備課檔、in講義、課次卷；題目為自編）========= */
+const PARAS = [
+ {
+  "t": "一　有關讀書方法，只要是念書，人大都各有一套。最簡易的是教小孩子念書，如「眼到、口到、心到、手到」，久之就有心得。如果想由一本書獲益，那麼方法不外乎以下四種：精讀、略讀、重讀、默讀。",
+  "kw": [
+   "獲益",
+   "不外乎",
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀"
+  ],
+  "q": [
+   {
+    "q": "教小孩子念書的簡易口訣是哪一個？",
+    "o": [
+     "精讀、略讀、重讀、默讀",
+     "眼到、口到、心到、手到",
+     "逐字逐句、反覆念誦"
+    ],
+    "a": 1,
+    "e": "課文說最簡易的是教小孩子念書，如「眼到、口到、心到、手到」。"
+   },
+   {
+    "q": "作者說想由一本書獲益，方法有哪四種？",
+    "o": [
+     "朗讀、背誦、抄寫、複習",
+     "快讀、慢讀、跳讀、倒讀",
+     "精讀、略讀、重讀、默讀"
+    ],
+    "a": 2,
+    "e": "第一段最後一句就列出四種方法。"
+   },
+   {
+    "q": "「方法不外乎以下四種」是什麼意思？",
+    "o": [
+     "方法大致就是這四種，沒有超出這個範圍",
+     "方法很多，數都數不清",
+     "只有第一種方法最好"
+    ],
+    "a": 0,
+    "e": "不外乎是不超出某種範圍之外。"
+   }
+  ]
+ },
+ {
+  "t": "二　精讀是為了專業知識或個人興趣，好像尋找涉水過河時的立足點或墊腳石。若想站得穩、走得快，自然非有精讀的細密工夫（‧ㄈㄨ）不可。我對於中文書籍的精讀，主要是為了記住關鍵人物與術語，須到順手拈來、出口成章的地步。像《論語》、《孟子》，我是逐字逐句認真念了不知多少遍，才敢上臺講課。",
+  "kw": [
+   "墊腳石",
+   "工夫",
+   "術語",
+   "順手拈來",
+   "出口成章",
+   "逐字逐句"
+  ],
+  "q": [
+   {
+    "q": "作者用什麼來比喻「精讀」？",
+    "o": [
+     "飛翔的翅膀",
+     "涉水過河時的墊腳石",
+     "夜晚的燈火"
+    ],
+    "a": 1,
+    "e": "精讀就像涉水過河時要找立足點或墊腳石，一步一步踏穩。"
+   },
+   {
+    "q": "作者精讀中文書籍，主要是為了什麼？",
+    "o": [
+     "增廣見聞",
+     "讓心情放輕鬆",
+     "記住關鍵人物與術語"
+    ],
+    "a": 2,
+    "e": "課文說主要是為了記住關鍵人物與術語。"
+   },
+   {
+    "q": "作者說《論語》、《孟子》「逐字逐句認真念了不知多少遍」，想表達什麼？",
+    "o": [
+     "要認真念很多遍，才能熟悉到可以教別人",
+     "這兩本書很短，一下就讀完",
+     "他不喜歡這兩本書"
+    ],
+    "a": 0,
+    "e": "作者念了很多遍之後，才敢上臺講課。"
+   }
+  ]
+ },
+ {
+  "t": "三　略讀是為了增廣見聞，並且許多書原本就是為了提供訊息的。訊息隨時代而改變，我們只須保持大概的認識即可。對於非本行的書，如自然科學與社會科學的著作，我採用略讀法，專挑幾個章節，甚至幾個觀念就夠了。",
+  "kw": [
+   "增廣見聞",
+   "本行"
+  ],
+  "q": [
+   {
+    "q": "作者為什麼用略讀？",
+    "o": [
+     "為了增廣見聞，因為許多書本來就是提供訊息",
+     "因為他不喜歡讀書",
+     "因為這些書都很簡單"
+    ],
+    "a": 0,
+    "e": "課文說略讀是為了增廣見聞。"
+   },
+   {
+    "q": "作者對哪一類書使用略讀法？",
+    "o": [
+     "自己專精的哲學書",
+     "非本行的書，像自然科學與社會科學的著作",
+     "小孩子的故事書"
+    ],
+    "a": 1,
+    "e": "課文說對於非本行的書，採用略讀法。"
+   },
+   {
+    "q": "略讀的時候，作者怎麼讀？",
+    "o": [
+     "逐字逐句讀完每一頁",
+     "只看書名和封面",
+     "專挑幾個章節，甚至幾個觀念"
+    ],
+    "a": 2,
+    "e": "專挑幾個章節，甚至幾個觀念就夠了。"
+   }
+  ]
+ },
+ {
+  "t": "四　重讀是比較特別的。我在美國念書時，每週必讀《紐約時報》星期專刊裡的「書評附冊」。有一次年關將屆，看到一輯專號，題目是「重讀的書」，內容則是訪問十一位知名作家的談話，從此我才明白重讀（就是重複去讀同一本書）的重要性。真正的念書是重讀，如此才可配合自己的人生體驗，起一種共鳴作用。初次閱讀一本書，有如初識一位朋友，只是交換名片、記得相貌而已；重讀則像老友重逢，有漸成知己的可能。如果每隔一段時間，就重讀幾本書，其效果十分微妙，可以測知自己在這段時間內的成長歷程。",
+  "kw": [
+   "年關將屆",
+   "專號",
+   "共鳴",
+   "知己"
+  ],
+  "q": [
+   {
+    "q": "作者是怎麼明白重讀的重要性的？",
+    "o": [
+     "老師叫他重讀",
+     "看到報紙專刊裡作家們談「重讀的書」",
+     "考試考不好"
+    ],
+    "a": 1,
+    "e": "他看到專號，訪問十一位知名作家談重讀，才明白重讀的重要。"
+   },
+   {
+    "q": "作者把「初次閱讀」比成什麼？",
+    "o": [
+     "剛認識一位朋友，只交換名片、記得相貌",
+     "老朋友重逢",
+     "涉水過河"
+    ],
+    "a": 0,
+    "e": "初次閱讀像初識朋友；重讀才像老友重逢。"
+   },
+   {
+    "q": "每隔一段時間重讀幾本書，有什麼效果？",
+    "o": [
+     "可以背得更快",
+     "可以省下買書的錢",
+     "可以測知自己這段時間的成長歷程"
+    ],
+    "a": 2,
+    "e": "課文最後一句說明這個效果。"
+   }
+  ]
+ },
+ {
+  "t": "五　至於默讀，是就且讀且思而言，並非只是安靜念書。外表安靜，內心卻不妨澎湃奔騰、起伏周旋，跟隨作者走一趟心路歷程。譬如，我在中學時，偶然讀到「強（ㄑㄧㄤˇ）行者有志」這句話，我當時很受啟發，常常在心中默念，提醒自己：要做個有志向的年輕人，就須勉強（ㄑㄧㄤˇ）自己往前努力。又如我們讀詩時，有時簡單的一句「萬物靜觀皆自得」，就能使人心平氣和。我想，宗教聖典、哲理格言、詩詞小品，皆以默讀為宜。",
+  "kw": [
+   "澎湃奔騰",
+   "起伏周旋",
+   "勉強",
+   "萬物靜觀皆自得"
+  ],
+  "q": [
+   {
+    "q": "默讀是什麼意思？",
+    "o": [
+     "不出聲念書",
+     "邊讀邊思考，不只是安靜念書",
+     "快速把書翻完"
+    ],
+    "a": 1,
+    "e": "課文說默讀是「且讀且思」，並非只是安靜念書。"
+   },
+   {
+    "q": "作者中學時讀到「強行者有志」，做了什麼？",
+    "o": [
+     "常在心中默念，提醒自己勉強自己往前努力",
+     "把這句話抄下來就忘了",
+     "覺得這句話很無聊"
+    ],
+    "a": 0,
+    "e": "這就是他舉的默讀例子。"
+   },
+   {
+    "q": "作者認為哪些書適合默讀？",
+    "o": [
+     "報紙和雜誌",
+     "字典和地圖",
+     "宗教聖典、哲理格言、詩詞小品"
+    ],
+    "a": 2,
+    "e": "課文最後一句列出了適合默讀的書。"
+   }
+  ]
+ },
+ {
+  "t": "六　總之，人生不可不讀書，否則無以開拓心靈潛力，只能坐困狹隘的個人世界。讀書不可不講求方法，否則徒然變成兩腳書櫥，人云亦云，何樂之有？",
+  "kw": [
+   "開拓",
+   "狹隘",
+   "徒然",
+   "兩腳書櫥",
+   "人云亦云"
+  ],
+  "q": [
+   {
+    "q": "作者說人生為什麼不可不讀書？",
+    "o": [
+     "因為考試要考",
+     "才能開拓心靈潛力，不會坐困狹隘的世界",
+     "因為大家都在讀"
+    ],
+    "a": 1,
+    "e": "否則無以開拓心靈潛力，只能坐困狹隘的個人世界。"
+   },
+   {
+    "q": "「兩腳書櫥」比喻什麼樣的人？",
+    "o": [
+     "死讀書、不知活用的人",
+     "很會收藏書的人",
+     "身材很高的人"
+    ],
+    "a": 0,
+    "e": "兩腳書櫥是比喻死讀書，不知活用的人。"
+   },
+   {
+    "q": "最後一句「何樂之有？」用反問，主要想表達什麼？",
+    "o": [
+     "讀書一定很快樂",
+     "大家都不需要方法",
+     "不講方法、人云亦云地讀書，就沒有讀書的樂趣"
+    ],
+    "a": 2,
+    "e": "用反問來強調：沒有方法又盲目跟從，就失去讀書的樂趣。"
+   }
+  ]
+ }
+];
+const NOTES = [
+ [
+  "順手拈來",
+  "比喻寫文章時取材、下筆不須多加思索，就可以寫出來"
+ ],
+ [
+  "出口成章",
+  "比喻才思敏捷，談吐風雅"
+ ],
+ [
+  "本行",
+  "本身專精的行業"
+ ],
+ [
+  "年關",
+  "指農曆年底"
+ ],
+ [
+  "狹隘",
+  "寬度窄小，形容見識短淺"
+ ],
+ [
+  "兩腳書櫥",
+  "比喻死讀書，不知活用的人"
+ ],
+ [
+  "人云亦云",
+  "形容沒有獨立的見解，只會盲目跟從他人的意見"
+ ]
+];
+const IDIOMS = [
+ [
+  "學富五車",
+  "形容人書讀很多，學問淵博。"
+ ],
+ [
+  "溫故知新",
+  "指複習學過的知識，而獲得新的知識、體會。"
+ ],
+ [
+  "一目十行",
+  "比喻閱讀迅速。"
+ ],
+ [
+  "囫圇吞棗",
+  "比喻理解事物籠統含糊，或為學不求甚解。"
+ ],
+ [
+  "兩腳書櫥",
+  "比喻死讀書，不知活用的人。"
+ ]
+];
+const CORE = [
+ "分享你平常最常用的一個讀書方法。它帶給你什麼幫助？",
+ "什麼是「適合自己的讀書方法」？你怎麼知道一個方法適不適合你？",
+ "如何讓同一本喜歡的書，在不同時候重讀，每次都有新的發現？"
+];
+const FUN = [
+ [
+  "👀 「眼到、口到、心到、手到」是什麼？",
+  "這是教小孩子念書的口訣：眼睛仔細看、嘴巴念出聲、心神要專注、再動手查閱或抄寫。簡單又好用！"
+ ],
+ [
+  "📰 重讀有多重要？",
+  "作者在美國念書時，看到報紙專刊的「重讀的書」專號，訪問十一位知名作家談重讀，從此他才明白重讀的重要。"
+ ],
+ [
+  "🔁 重讀武俠小說，看到不一樣的人",
+  "作者會定期重讀武俠小說：以前注重精采情節、善惡分明，後來開始注意角色「善中有惡」、「惡中有善」，也看出自己的心境變了。"
+ ],
+ [
+  "💪 「強行者有志」是誰說的？",
+  "它出自老子的《道德經》。作者把它當座右銘：每晚睡前勉強自己再念十分鐘書，週末多念一小時。"
+ ],
+ [
+  "⚔️ 蘇軾的「八面受敵」讀書法",
+  "把讀書比成作戰：一次鎖定一個目標，鑽研透澈後，再換下一個，最後就能一一攻破。"
+ ],
+ [
+  "🛋️ 比爾．蓋茲的「思考週」",
+  "他每年安排兩次「思考週」，獨自待在房間裡，專心閱讀和思考，一年至少讀五十本書。"
+ ]
+];
+const EXAM = [
+ {
+  "psg": "請依課文內容作答，點選答案後會顯示解析。",
+  "qs": [
+   {
+    "q": "「我對於中文書籍的精讀，主要是為了記住關鍵人物與術語，須到順手拈來、出口成章的地步。像《論語》、《孟子》，我是逐字逐句認真念了不知多少遍，才敢上臺講課。」關於這段文字的說明，下列何者正確？",
+    "o": [
+     "作者指出自己對《論語》、《孟子》採用精讀的原因",
+     "強調《論語》、《孟子》是眾人必讀的經典作品",
+     "作者解釋自己成為老師是受《論語》、《孟子》的啟發",
+     "凸顯《論語》、《孟子》內容能為人帶來勇氣的特點"
+    ],
+    "a": 0,
+    "e": "作者逐字逐句、多次精讀是為了熟記關鍵人物與術語，教學時才能輕鬆運用。"
+   },
+   {
+    "q": "根據本文，下列何者為「略讀」的做法？",
+    "o": [
+     "專注的反覆閱讀，期可倒背如流",
+     "挑選章節閱讀非本行的書，以增廣見聞",
+     "一邊閱讀一邊思考作者所欲傳達的道理，直到讀通為止",
+     "每隔一段時間就重複去讀之前看過的書，希望得到不同的體會"
+    ],
+    "a": 1,
+    "e": "略讀是專挑幾個章節或觀念，為了增廣見聞。"
+   },
+   {
+    "q": "根據本文，「真正的念書是重讀」一句，其含義與下列何者最接近？",
+    "o": [
+     "反覆讀一本書，才能確實牢記精華內容",
+     "加重力氣讀出聲音，可協助了解文章內涵",
+     "不斷的重讀作品，有助理解作家風格的轉變",
+     "比較不同時期的閱讀感受，能了解自身的成長變化"
+    ],
+    "a": 3,
+    "e": "重讀可以測知自己在不同時期的差異，了解成長歷程。"
+   },
+   {
+    "q": "有關本文的寫作手法，下列敘述何者正確？",
+    "o": [
+     "首段由作者自己讀書的回憶起筆，再一一介紹讀書方法",
+     "在說明四種讀書方法時，作者均舉名言佳句作為例證",
+     "於解說不同讀書方法時，均列出選用目的及實行方式",
+     "末段總結四種讀書方法的特色，與首段內容前後呼應"
+    ],
+    "a": 2,
+    "e": "(A)首段未提及讀書的回憶；(B)僅「默讀」舉名言佳句為例；(D)末段並未總結讀書方法的特色。"
+   }
+  ]
+ }
+];
+const READ = [
+ {
+  "psg": "小凱準備段考時，把每一科的課本都從頭到尾讀了三遍，卻覺得越讀越累。老師看了他的筆記說：「你不用每一頁都讀得一樣仔細。」於是他把課本分成兩種：像數學公式、國文注釋這些要考的內容，就逐字逐句慢慢讀，還動手整理成表格；像課外補充資料，就只挑標題和幾個重點來看。兩週後，小凱不但覺得輕鬆多了，成績也進步了。他發現，原來讀書不是比誰讀得多，而是要知道什麼時候該慢慢讀，什麼時候可以快快看。老師笑著說，這就是「用對方法」。",
+  "qs": [
+   {
+    "q": "老師建議小凱怎麼讀書？",
+    "o": [
+     "每一頁都讀得一樣慢",
+     "依內容不同，有的仔細讀，有的快速看",
+     "只讀最簡單的部分"
+    ],
+    "a": 1,
+    "e": "老師要他把課本分成兩種：要考的內容仔細讀，補充資料挑重點看。",
+    "h": "像數學公式、國文注釋這些要考的內容，就逐字逐句慢慢讀"
+   },
+   {
+    "q": "小凱最後有什麼發現？",
+    "o": [
+     "讀書重要的是方法，不是讀得越多越好",
+     "考試前不用再複習",
+     "補充資料一定不用看"
+    ],
+    "a": 0,
+    "e": "文章最後說，他發現讀書不是比誰讀得多，而是要懂得調整讀法。",
+    "h": "讀書不是比誰讀得多，而是要知道什麼時候該慢慢讀，什麼時候可以快快看"
+   }
+  ]
+ },
+ {
+  "psg": "外婆有一本舊舊的食譜，書頁都被油漬染黃了。她說這本書她從年輕時就開始看，每隔幾年就拿出來重讀一次。「剛結婚的時候，我只看得懂怎麼切菜、怎麼煮。」外婆笑著說，「後來有了孩子，才發現食譜裡寫的『少許』、『適量』，其實是在教我要用心觀察。」現在，外婆翻到某一頁，會突然想起當年為孩子煮粥的情景，彷彿書裡的每一行字，都記著一段日子。小琪聽了，覺得那本舊食譜好像變成了一位陪伴多年的老朋友。回到家，小琪也翻出自己小時候的繪本，打算過一陣子再讀一次。",
+  "qs": [
+   {
+    "q": "外婆為什麼每隔幾年就重讀這本食譜？",
+    "o": [
+     "因為怕自己忘記字",
+     "因為想把書賣掉",
+     "每次讀，都會因為人生經驗不同而有新的體會"
+    ],
+    "a": 2,
+    "e": "外婆說有了孩子後，才讀懂「少許」、「適量」的用意。",
+    "h": "後來有了孩子，才發現食譜裡寫的『少許』、『適量』，其實是在教我要用心觀察"
+   },
+   {
+    "q": "「那本舊食譜好像變成了一位老朋友」，是在表達什麼？",
+    "o": [
+     "反覆重讀的書，像陪伴多年的朋友",
+     "食譜會說話",
+     "外婆很討厭這本書"
+    ],
+    "a": 0,
+    "e": "每一行字都記著一段日子，所以像老朋友。",
+    "h": "彷彿書裡的每一行字，都記著一段日子"
+   }
+  ]
+ }
+];
+/* ========= 工具 ========= */
+const $ = s => document.querySelector(s), el = (t, c, h) => { const e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; };
+const nl = s => s.replace(/\n/g, "<br>");
+function mcq(qs, onHint, fold) {
+  const w = el("div");
+  qs.forEach((x, i) => {
+    const d = el("div", "mq"); d.append(el("div", "qt", `${i + 1}. ${x.q}`));
+    if (onHint && x.h) { const hb = el("button", "hb", "💡 重點提示"); let on = false;
+      hb.onclick = () => { on = !on; onHint(on ? x.h : null); hb.textContent = on ? "💡 取消提示" : "💡 重點提示"; }; d.append(hb); }
+    const ex = el("div", "ex"); ex.hidden = true; ex.textContent = "解析：" + x.e;
+    const sum = el("div", "sum"); sum.hidden = true; const opts = [], L = "ＡＢＣＤ";
+    x.o.forEach((t, j) => {
+      const b = el("div", "opt", `（${L[j]}）${t}`); b.tabIndex = 0; b.setAttribute("role", "button");
+      b.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); b.click(); } };
+      b.onclick = () => {
+        opts.forEach((o, k) => { o.classList.toggle("ok", k === x.a); o.classList.toggle("no", k === j && j !== x.a); });
+        ex.hidden = false;
+        if (fold) { opts.forEach(o => o.hidden = true); sum.hidden = false;
+          sum.innerHTML = (j === x.a ? "✔ 答對了" : `✘ 你選了（${L[j]}）`) + `　正解：（${L[x.a]}）${x.o[x.a]} <button class="hb">▾ 重新作答</button>`;
+          sum.querySelector("button").onclick = () => { opts.forEach(o => { o.hidden = false; o.classList.remove("ok", "no"); }); ex.hidden = true; sum.hidden = true; }; }
+      };
+      opts.push(b); d.append(b);
+    });
+    d.append(sum, ex); w.append(d);
+  });
+  return w;
+}
+function modal(title, node, wide) { document.querySelector(".md").classList.toggle("wide", !!wide); const b = $("#mb"); b.innerHTML = ""; b.append(el("h2", "", title), node); $("#ov").classList.add("on"); }
+$("#cl").onclick = () => $("#ov").classList.remove("on");
+$("#ov").onclick = e => { if (e.target.id === "ov") $("#ov").classList.remove("on"); };
+
+/* ========= 課文 ========= */
+const vt = $("#vt"), sc = $("#sc"); let synth = window.speechSynthesis, cur = null;
+vt.append(el("h1", "vtitle", "四種讀書的方法<small>傅佩榮</small>"));
+function stop() { synth && synth.cancel(); document.querySelectorAll(".say").forEach(p => p.classList.remove("say")); cur = null; }
+function speak(i) {
+  if (!synth) return alert("此瀏覽器不支援朗讀");
+  const same = cur === i; stop(); if (same) return;
+  cur = i; const p = document.getElementById("p" + i); p.classList.add("say");
+  const u = new SpeechSynthesisUtterance(PARAS[i].t.replace(/\n/g, "，")); u.lang = "zh-TW"; u.rate = .85;
+  u.onend = () => { if (cur === i) stop(); }; synth.speak(u);
+}
+function alignRight(e) { const a = sc.getBoundingClientRect(), r = e.getBoundingClientRect(); sc.scrollBy({ left: r.right - (a.right - 28), behavior: "smooth" }); }
+function jump(i) { document.querySelectorAll(".jb").forEach((b, k) => b.classList.toggle("on", k === i)); alignRight(i === 0 ? vt.querySelector(".vtitle") : document.getElementById("p" + i)); }
+PARAS.forEach((p, i) => {
+  let h = nl(p.t); (p.kw || []).forEach(k => h = h.split(k).join(`<span class="kw">${k}</span>`));
+  const d = el("div", "para"); d.id = "p" + i;
+  const pl = el("button", "", "▶ 朗讀"); pl.onclick = () => speak(i);
+  const t = el("span", "", h);
+  const qm = el("button", "", "？"); qm.setAttribute("aria-label", "段落理解題");
+  const q = el("div", "pq"); q.append(mcq(p.q || []));
+  qm.onclick = () => { q.classList.toggle("open"); if (q.classList.contains("open")) setTimeout(() => alignRight(q), 220); };
+  d.append(pl, t, qm, q); vt.append(d);
+});
+
+/* ========= 連連看（idioms 先看正確版本，再測驗；可重新連線）========= */
+function match(title, pairs, study) {
+  if (study) {
+    const s = el("div"); s.append(el("p", "ex", "先看一遍正確的意思，記住後再開始配對測驗。"));
+    pairs.forEach(p => s.append(el("div", "card", `<b class="idw">${p[0]}</b>　${p[1]}`)));
+    const go = el("button", "chk", "我記好了，開始測驗"); go.onclick = () => match(title, pairs, false); s.append(go);
+    return modal(title + "・先看答案", s);
+  }
+  const wrap = el("div"), g = el("div", "mt"), svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  const order = pairs.map((_, i) => i).sort(() => Math.random() - .5);
+  const L = pairs.map(p => el("button", "", p[0])), R = order.map(i => { const b = el("button", "", pairs[i][1]); b.dataset.id = i; return b; });
+  const link = {}; let sel = null, res = {};
+  const draw = () => {
+    svg.innerHTML = ""; const gb = g.getBoundingClientRect();
+    Object.entries(link).forEach(([l, r]) => {
+      const a = L[l].getBoundingClientRect(), b = R[r].getBoundingClientRect(), n = document.createElementNS(svg.namespaceURI, "line");
+      n.setAttribute("x1", a.right - gb.left); n.setAttribute("y1", a.top + a.height / 2 - gb.top);
+      n.setAttribute("x2", b.left - gb.left); n.setAttribute("y2", b.top + b.height / 2 - gb.top);
+      n.setAttribute("stroke", res[l] === true ? "#3F7D4E" : res[l] === false ? "#8B1E1E" : "#D9AE4E"); n.setAttribute("stroke-width", 2.5); svg.append(n);
+    });
+  };
+  L.forEach((b, i) => b.onclick = () => { delete link[i]; res = {}; sel = sel === i ? null : i; L.forEach((x, k) => x.className = k === sel ? "sel" : ""); R.forEach(x => x.className = ""); draw(); });
+  R.forEach((b, r) => b.onclick = () => {
+    if (sel == null) return; for (const k in link) if (link[k] === r) delete link[k];
+    link[sel] = r; sel = null; res = {}; L.forEach(x => x.className = ""); R.forEach(x => x.className = ""); draw();
+  });
+  const msg = el("p", "", ""), ck = el("button", "chk", "檢查答案"), rt = el("button", "chk", "↺ 重新連線");
+  ck.onclick = () => {
+    let ok = 0; L.forEach((b, i) => { const r = link[i]; res[i] = r != null && +R[r].dataset.id === i; if (res[i]) ok++; b.className = r == null ? "" : res[i] ? "ok" : "bad"; });
+    draw(); msg.textContent = ok === pairs.length ? "🎉 全部連對了！" : `連對 ${ok} / ${pairs.length}，按「重新連線」再試一次。`;
+  };
+  rt.onclick = () => match(title, pairs, false);
+  g.append(...L.flatMap((b, i) => [b, R[i]]), svg);
+  wrap.append(el("p", "ex", "先點左邊詞語，再點右邊對應的解釋，即可連線。"), g, ck, rt, msg);
+  modal(title, wrap); requestAnimationFrame(draw);
+}
+
+PARAS.forEach((_, i) => { const b = el("button", "jb", String(i + 1)); b.onclick = () => jump(i); b.setAttribute("aria-label", "跳到第 " + (i + 1) + " 段"); $("#jump").append(b); });
+
+/* ========= 班級經營：計時器／座位抽籤／朗讀方式抽籤 ========= */
+const chip = $("#chip");
+let tmTotal = 300, tmLeft = 300, tmEnd = 0, tmRun = null, tmDone = false;
+const fmt = s => String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+function beep() {
+  try { const a = new (window.AudioContext || window.webkitAudioContext)();
+    [0, .4, .8].forEach(t => { const o = a.createOscillator(), g = a.createGain(); o.frequency.value = 880; o.connect(g); g.connect(a.destination);
+      g.gain.setValueAtTime(.25, a.currentTime + t); g.gain.exponentialRampToValueAtTime(.001, a.currentTime + t + .3); o.start(a.currentTime + t); o.stop(a.currentTime + t + .35); });
+  } catch (e) {}
+}
+function upd() {
+  const d = document.getElementById("tmd");
+  const txt = tmDone ? "時間到" : fmt(tmLeft);
+  if (d) { d.textContent = txt; d.classList.toggle("end", tmDone); }
+  chip.style.display = (tmRun || tmDone) ? "block" : "none"; chip.textContent = "⏱ " + txt; chip.classList.toggle("end", tmDone);
+}
+function tmSet(m) { clearInterval(tmRun); tmRun = null; tmDone = false; tmTotal = tmLeft = Math.max(1, Math.round(m * 60)); upd(); }
+function tmStart() {
+  if (tmRun) return; if (tmDone || tmLeft <= 0) { tmDone = false; tmLeft = tmTotal; }
+  tmEnd = Date.now() + tmLeft * 1000;
+  tmRun = setInterval(() => { tmLeft = Math.max(0, Math.round((tmEnd - Date.now()) / 1000)); if (tmLeft <= 0) { clearInterval(tmRun); tmRun = null; tmDone = true; beep(); } upd(); }, 250); upd();
+}
+function tmPause() { clearInterval(tmRun); tmRun = null; upd(); }
+chip.onclick = () => timer();
+function timer() {
+  const w = el("div"); w.append(el("div", "tm", fmt(tmLeft))); w.firstChild.id = "tmd";
+  const r1 = el("div", "row"); [1, 3, 5, 10, 15].forEach(m => { const b = el("button", "b", m + " 分鐘"); b.onclick = () => tmSet(m); r1.append(b); });
+  const inp = el("input"); inp.type = "number"; inp.min = 1; inp.max = 120; inp.placeholder = "自訂分鐘"; inp.style.cssText = "width:100px;padding:6px";
+  const sb = el("button", "b", "設定"); sb.onclick = () => inp.value && tmSet(+inp.value); r1.append(inp, sb);
+  const r2 = el("div", "row"); [["▶ 開始", tmStart], ["⏸ 暫停", tmPause], ["↺ 重設", () => tmSet(tmTotal / 60)]].forEach(([n, f]) => { const b = el("button", "b on", n); b.onclick = f; r2.append(b); });
+  w.append(r1, r2, el("p", "ex", "關閉視窗後，右下角會保留剩餘時間；時間到會響三聲。"));
+  modal("班級計時器", w); upd();
+}
+
+/* 抽籤動畫：快速跳動後停在結果 */
+function spin(list, tick, done) {
+  const f = list[Math.floor(Math.random() * list.length)]; let i = 0;
+  const iv = setInterval(() => { if (++i > 14) { clearInterval(iv); tick(f); done(f); } else tick(list[Math.floor(Math.random() * list.length)]); }, 80);
+}
+const SL = "ABCDEFGH";
+let seatDone = [];
+function seatDraw() {
+  const w = el("div"), g = el("div", "seats"), msg = el("p", "", ""); const S = [];
+  msg.style.cssText = "text-align:center;min-height:2.4em";
+  for (let i = 0; i < 8; i++) { const s = el("div", "seat" + (seatDone.includes(i) ? " done" : ""), SL[i]); S[i] = s; g.append(s); }
+  const lab = el("label", "ex", '<input type="checkbox" id="norep" checked> 不重複抽（抽過的座位不再抽中）');
+  const r = el("div", "row"), go = el("button", "b on", "🎲 抽籤"), rs = el("button", "b", "重設");
+  go.onclick = () => {
+    const pool = [0, 1, 2, 3, 4, 5, 6, 7].filter(n => !$("#norep").checked || !seatDone.includes(n));
+    if (!pool.length) { msg.textContent = "8 個座位都抽過了，請按「重設」。"; return; }
+    go.disabled = true; msg.textContent = "";
+    spin(pool, n => S.forEach((s, k) => s.classList.toggle("hit", k === n)), n => { go.disabled = false; if (!seatDone.includes(n)) seatDone.push(n); S[n].classList.add("done"); msg.innerHTML = `<b style="font-size:1.5rem">座位 ${SL[n]}</b>　請同學起立！`; });
+  };
+  rs.onclick = () => { seatDone = []; S.forEach(s => s.classList.remove("hit", "done")); msg.textContent = "已重設。"; };
+  r.append(go, rs); w.append(el("div", "podium", "講台"), g, el("p", "ex", "第一排 A～D，第二排 E～H（由講台方向看）"), lab, r, msg); modal("座位抽籤（2 排 × 4 人）", w);
+}
+const METHODS = [
+  ["全班一起念", "全班一起朗讀，可打開「閱讀尺」帶讀。"],
+  ["順時針接力", "從起始座位開始，遇到句號就換下一位（順時針）接著念。"],
+  ["逆時針接力", "從起始座位開始，遇到句號就換下一位（逆時針）接著念。"],
+  ["師生對念", "老師念一句，同學們念一句。"],
+  ["兩兩互念", "兩人一組，輪流把課文念給對方聽。"]
+];
+function slip(t, sm) { const e = el("div", "slip" + (sm ? " sm" : ""), `<div>${t}</div>`); return e; }
+function methodDraw() {
+  const w = el("div"), box = el("div", "slips"), s1 = slip("？"), s2 = slip("", true), msg = el("p", ""), r = el("div", "row"), go = el("button", "b on", "🎲 抽朗讀方式");
+  s2.hidden = true; box.append(s1, s2); msg.style.cssText = "text-align:center;min-height:3.4em";
+  const pop = e => { e.classList.remove("drop"); void e.offsetWidth; e.classList.add("drop"); };
+  go.onclick = () => { go.disabled = true; msg.textContent = ""; s2.hidden = true;
+    spin(METHODS, m => s1.firstChild.textContent = m[0], m => { go.disabled = false; pop(s1);
+      if (/接力/.test(m[0])) { s2.firstChild.textContent = "座位" + SL[Math.floor(Math.random() * 8)]; s2.hidden = false; pop(s2); }
+      msg.textContent = m[1]; }); };
+  r.append(go); w.append(box, r, msg); modal("朗讀方式抽籤", w);
+}
+
+const SUP = [
+ [
+  "讀書的「三力」",
+  "除了四種讀書方法，作者還提出學習過程須仰賴三力的協助：理解力、想像力、創造力。"
+ ],
+ [
+  "",
+  "理解力可幫助學生讀懂文字的表面意義、找出掩藏於文字之下的重要意涵，並且讀出文章的用意、作者的觀點等。其次，想像力則能帶領學生想像作者的視角如何觀察事物，從中學習作者的思考架構。"
+ ],
+ [
+  "",
+  "至於創造力，則是配合讀者個人體驗，取其合乎當下時空的新意，讓所讀的知識能真正內化為自身所用。「學貴心悟，守舊無功」、「溫故而知新」，正是提升自我的讀書法門之一。"
+ ]
+];
+const SUPQ = [
+ {
+  "h": "理解力、想像力、創造力",
+  "q": "作者說學習過程須仰賴哪「三力」？",
+  "o": [
+   "記憶力、體力、財力",
+   "理解力、想像力、創造力",
+   "速度、力氣、聽力"
+  ],
+  "a": 1,
+  "e": "第一段就列出理解力、想像力、創造力。"
+ },
+ {
+  "h": "想像作者的視角如何觀察事物，從中學習作者的思考架構",
+  "q": "「想像力」可以幫助讀者怎麼學習？",
+  "o": [
+   "想像作者怎麼觀察事物，學習他的思考架構",
+   "想像自己變成書中的人物",
+   "想像考試會考哪些題目"
+  ],
+  "a": 0,
+  "e": "想像力帶領讀者想像作者的視角，學習他的思考架構。"
+ },
+ {
+  "h": "讓所讀的知識能真正內化為自身所用",
+  "q": "「創造力」要讓所讀的知識變成什麼？",
+  "o": [
+   "背得滾瓜爛熟",
+   "真正內化為自己所用",
+   "寫在筆記本上"
+  ],
+  "a": 1,
+  "e": "創造力是配合個人體驗，讓知識能真正內化為自己所用。"
+ }
+];
+const OBJS = [
+ {
+  "n": "準備國文注釋默寫",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ },
+ {
+  "n": "想知道最新的新聞",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ },
+ {
+  "n": "重看小時候的繪本",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ },
+ {
+  "n": "讀一首詩",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ },
+ {
+  "n": "預習新的一課",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ },
+ {
+  "n": "找資料做報告",
+  "look": [
+   "記得更牢",
+   "了解大概",
+   "發現新的體會",
+   "心裡有感覺",
+   "讀得更快"
+  ],
+  "sound": [
+   "精讀",
+   "略讀",
+   "重讀",
+   "默讀",
+   "先略讀再精讀"
+  ],
+  "like": [
+   "逐字逐句慢慢讀",
+   "只挑幾個重點章節",
+   "隔一陣子再翻出來讀",
+   "邊讀邊想、慢慢體會",
+   "把重要的地方畫起來"
+  ]
+ }
+];
+const LAB = [
+ "我選的讀書方法是：（精讀／略讀／重讀／默讀），用在：",
+ "我實際是這樣做的（做了幾天、怎麼讀）：",
+ "我的發現：這個方法有沒有幫助？為什麼？"
+];
+
+function challenge() {
+  const w = el("div", "big"), A = el("div"), B = el("div"), tabs = el("span", "tabs2");
+  const ta = el("button", "b on", "✏️ 任務一：讀書方法配對"), tb = el("button", "b", "🧪 任務二：我的讀書小實驗");
+  const show = a => { A.hidden = !a; B.hidden = a; ta.classList.toggle("on", a); tb.classList.toggle("on", !a); };
+  ta.onclick = () => show(true); tb.onclick = () => show(false); tabs.append(ta, tb);
+  const big = el("span", "pick", "？"), vocab = el("div", "pane"), frame = el("div", "pane poem2"), top = el("div", "row2");
+  big.style.fontSize = "1.7rem";
+  const chips = a => a.map(t => `<span class="chip">${t}</span>`).join(""), go = el("button", "chk", "🎲 抽一個讀書情境");
+  const init = () => { vocab.innerHTML = '<p class="ex">抽到情境後，這裡會出現可以挑選的詞。</p>'; frame.innerHTML = '<p class="ex">這裡會出現 3 行句子。</p>'; }; init();
+  go.onclick = () => { go.disabled = true; init(); spin(OBJS, o => big.textContent = o.n, o => { go.disabled = false;
+    vocab.innerHTML = `<div class="vr"><b>🎯 我想達成</b>${chips(o.look)}</div><div class="vr"><b>📖 讀書方法</b>${chips(o.sound)}</div><div class="vr"><b>✋ 我會這樣做</b>${chips(o.like)}</div>`;
+    frame.innerHTML = `<div class="fr">1. 我現在要「${o.n}」，我想 <span class="bl"></span><small>（我想達成）</small>。</div><div class="fr">2. 我選擇 <span class="bl"></span><small>（讀書方法）</small>。</div><div class="fr">3. 我會 <span class="bl"></span><small>（我會這樣做）</small>，因為 <span class="bl"></span>。</div><p class="ex">左邊挑詞、右邊填空；3 行完成就很棒，用說的也可以！</p>`; }); };
+  top.append(go, big);
+  A.append(top, Object.assign(el("div", "two"), {}));
+  A.lastChild.append(vocab, frame);
+  B.append(el("p", "", "選一個你想試的讀書方法，用一個星期，把紀錄寫下來，下次上課和同學分享。"));
+  LAB.forEach((q, i) => B.append(Object.assign(el("div", "card"), { innerHTML: `<b>小紀錄 ${i + 1}</b><br>${q}<div class="ln2"></div><div class="ln2"></div>` })));
+  B.hidden = true; w.append(A, B); modal("應用小挑戰", w, true);
+  const h = $("#mb h2"); h.style.cssText = "display:flex;align-items:center;flex-wrap:wrap;gap:6px 22px"; h.append(tabs);
+}
+
+/* ========= 講義（列印／存成 PDF／下載網頁檔）=========
+   換課時改 LESSON；內容全部取自上方資料區。 */
+const LESSON = { name: "四種讀書的方法", author: "傅佩榮", ver: "康軒七年級下學期　第 3 課" };
+const HCSS = `
+.ho{font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;color:#222;font-size:13.7pt;line-height:1.5}
+.ho *{box-sizing:border-box}
+.ho .hp{width:210mm;height:296mm;background:#fff;margin:12px auto;padding:7mm 10mm 5mm;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 14px rgba(0,0,0,.45);break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.ho .pgw:last-child .hp{break-after:auto;page-break-after:auto}
+.ho .hbd{flex:1;min-height:0;overflow:hidden}
+.ho .hf{text-align:center;font-size:9.5pt;color:#444;border-top:.5pt solid #bbb;padding-top:1mm}
+.ho .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5pt solid #444;padding-bottom:2mm;margin-bottom:3mm}
+.ho .hd h1{font-size:18pt;font-weight:500;letter-spacing:.15em}
+.ho .hd h1 small{display:block;font-size:9.5pt;letter-spacing:.1em;color:#444;font-weight:400}
+.ho .nm{font-size:12pt}.ho .nm span{display:inline-block;border-bottom:.6pt solid #222;min-width:24mm;margin:0 2mm 0 1mm}
+.ho .hs{margin-bottom:2mm}
+.ho h2{font-size:14.5pt;font-weight:500;letter-spacing:.1em;border-left:3pt solid #444;padding:.3mm 0 .3mm 2.5mm;margin-bottom:1.5mm}
+.ho .ex{font-size:9.5pt;color:#444;margin-bottom:.5mm;line-height:1.3}
+.ho .hq{margin-bottom:1.5mm;break-inside:avoid}.ho .hqt{font-weight:500}
+.ho .op{display:inline-block;margin-right:3.5mm}
+.ho .ln{border-bottom:.6pt solid #999;height:6.6mm}
+.ho .ln22{border-bottom:.6pt solid #999;height:10.6mm}.ho .cq{font-size:15.5pt;line-height:1.4}
+.ho .duo{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.65;height:84mm;letter-spacing:.03em}
+.ho .art{display:block;height:100%;border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:4mm;font-size:13pt}
+.ho .qz{display:block;height:100%;border:.6pt solid #bbb;background:#fff;padding:2.5mm 3.5mm}
+.ho .vb{margin-left:2.5mm}.ho .vb b{margin-left:1mm;color:#222;font-weight:500}.ho .vb p{display:inline}
+.ho .vq2{margin-left:3mm}.ho .vqt{font-weight:500;margin-left:1mm}.ho .vop{margin-left:1mm}
+.ho .mrow{display:grid;grid-template-columns:62mm 1fr;align-items:center;min-height:7.2mm;border-bottom:.4pt dotted #bbb;line-height:1.3}
+.ho .ml{text-align:right;font-size:14pt;letter-spacing:.08em}.ho .mr{font-size:13pt}
+.ho .dot{display:inline-block;width:3.2mm;height:3.2mm;border:.8pt solid #444;border-radius:50%;vertical-align:middle;margin:0 2mm}
+.ho .cols2{column-count:2;column-gap:7mm}
+.ho .gl{font-weight:500;color:#222;margin:.5mm 0}
+.ho .bank{border:.6pt solid #444;padding:1.5mm 3mm;margin-bottom:1.5mm;font-size:13.5pt}.ho .bank span{display:inline-block;margin-right:5mm}
+.ho .fill{line-height:2.7}
+.ho .bl{display:inline-block;min-width:30mm;border-bottom:.8pt solid #222;margin:0 1mm}
+.ho .rd{display:grid;grid-template-columns:1fr 1fr;gap:5mm;margin-bottom:3mm;break-inside:avoid}
+.ho .pp{border:.6pt solid #444;padding:2mm 3mm;text-align:justify;line-height:1.65;font-size:13pt}
+.ho table{border-collapse:collapse;width:100%;font-size:11pt;margin-bottom:2mm}
+.ho th,.ho td{border:.5pt solid #444;padding:.6mm 2mm;text-align:left}.ho th{font-weight:700}
+.ho .t3{display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.ho .rp{background:#fff;border:.6pt solid #444;border-left:2pt solid #222;padding:2mm 3mm;text-align:center;margin-bottom:1.5mm}
+.ho .sub{font-weight:500;margin:1.5mm 0}
+
+@page{size:A4;margin:0}
+@page land{size:A4 landscape;margin:0}
+.ho .pgw.pl{page:land}.ho .hp.land{width:297mm;height:209mm}
+.ho .hbd.vt{writing-mode:vertical-rl;font-size:13.7pt;line-height:1.4;letter-spacing:.03em;--vh:184mm}
+.ho .vsec{margin-left:5mm}
+.ho .vh{font-size:14.5pt;font-weight:500;letter-spacing:.12em;border-left:2.5pt solid #222;padding-left:2mm;margin-left:2.5mm;line-height:1.5}
+.ho .vex{font-size:10pt;color:#444;margin-left:2.5mm}
+.ho .hbd.vt .art{display:block;height:var(--vh);border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:2.5mm;font-size:13pt;line-height:1.5;background:#fff}
+.ho .hbd.vt .qz{display:block;height:var(--vh);border:.6pt solid #444;padding:2.5mm 3.5mm;margin-left:2.5mm;background:#fff}
+.ho .vqi{margin-left:3mm}.ho .vqt{font-weight:500;margin-left:1mm}
+.hbar{display:flex;gap:8px;justify-content:center;padding:8px;position:sticky;top:0;z-index:3;background:#3a362f}
+.hbar button{font:inherit;font-size:.9rem;padding:8px 16px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}
+@media print{
+  body>*:not(#hov){display:none!important}
+  body{background:#fff!important}
+  #hov{position:static!important;display:block!important;background:none!important;padding:0!important;overflow:visible!important}
+  .hbar{display:none!important}
+  .ho .hp{margin:0!important;box-shadow:none!important}
+}`;
+document.head.append(Object.assign(document.createElement("style"), { textContent: HCSS }));
+function setPage(css) { let s = document.getElementById("pgs"); if (!s) { s = document.createElement("style"); s.id = "pgs"; document.head.append(s); } s.textContent = css; }
+function dl(html, name) { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([html], { type: "text/html" })); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+function buildHandout() {
+  const ZH = "一二三四五六七八", FW = n => String.fromCharCode(0xFF10 + n), OL = "ＡＢＣ";
+  const sec = (n, t, d, b) => `<section class="hs"><h2>${ZH[n]}、${t}</h2>${d ? `<div class="ex">${d}</div>` : ""}${b}</section>`;
+  const vsec = (n, t, d, b) => `<section class="vsec"><h2 class="vh">${ZH[n]}、${t}</h2>${d ? `<div class="vex">${d}</div>` : ""}${b}</section>`;
+  const ops = o => o.map((t, j) => `<span class="op">（${OL[j]}）${t}</span>`).join("");
+  const q = (x, i) => `<div class="hq"><div class="hqt">（　）${i}. ${x.q}</div><div>${ops(x.o)}</div></div>`;
+  const vq = (x, i) => `<div class="vqi"><div class="vqt">（　）${FW(i)}．${x.q}</div><div>${x.o.map((t, j) => `（${OL[j]}）${t}`).join("　")}</div></div>`;
+  const rot = (a, k) => a.map((_, i) => a[(i + k) % a.length]);
+  const pg = (n, b, head, cls) => `<div class="pgw${cls ? " pl" : ""}"><div class="hp${cls ? " " + cls : ""}">${head || ""}<div class="hbd${cls ? " vt" : ""}">${b}</div><div class="hf">第 ${n} 頁　／　共 4 頁</div></div></div>`;
+  const head = `<div class="hd"><h1>${LESSON.name}　學習講義<small>${LESSON.ver}　${LESSON.author}</small></h1><div class="nm">班級<span></span>姓名<span></span></div></div>`;
+  const s1 = sec(0, "核心問題", "", CORE.map((c, i) => `<div class="hq"><div class="hqt cq">${i + 1}. ${c}</div><div class="ln22"></div></div>`).join(""));
+  const rights = rot(NOTES.map(n => n[1]), 3);
+  const s2 = sec(1, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", NOTES.map((n, i) => `<div class="mrow"><div class="ml">${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${rights[i]}</div></div>`).join(""));
+  const words = IDIOMS.map(x => x[0]);
+  const s3 = sec(2, "成語填空", "看解釋，從成語選項選一個，抄寫在底線上。", `<div class="bank"><b>成語選項：</b>${rot(words, 2).map(w => `<span>${w}</span>`).join("")}</div>` + IDIOMS.map((x, i) => `<div class="fill">${i + 1}. ${x[1]}<span class="bl"></span></div>`).join(""));
+  const art = `<div class="art">${SUP.map(([t, x]) => `<div class="vb">${t ? `<b>${t}</b>` : ""}<p>${x}</p></div>`).join("")}</div>`;
+  const s4 = vsec(3, "課文補給站", "先讀短文，再回答題目，把答案代號填進（　）。", art + `<div class="qz">${SUPQ.map((x, i) => vq(x, i + 1)).join("")}</div>`);
+  const per = Math.ceil(6 / PARAS.length); let c = 0; const allq = PARAS.flatMap(p => p.q.slice(0, per)), pick6 = allq.length <= 6 ? allq : [0, 1, 2, 3, 4, 5].map(k => allq[Math.round(k * (allq.length - 1) / 5)]);
+  const s5 = vsec(4, "課文理解問答題", "把答案代號填進（　）。", `<div class="qz">${pick6.map(x => vq(x, ++c)).join("")}</div>`);
+  const s6 = sec(5, "相關閱讀", "", READ.map((s, i) => `<div class="rd"><div class="pp"><div class="sub">題組 ${i + 1}</div>${s.psg}</div><div>${s.qs.map((x, k) => q(x, k + 1)).join("")}</div></div>`).join(""));
+  const s7 = sec(6, "應用小挑戰", "", `<div class="sub">任務一：讀書方法配對　<span class="ex" style="display:inline">① 圈一個情境　② 看提示詞　③ 補完 3 行（3 行完成就很棒）</span></div>
+    <div class="bank"><b>情境：</b>${OBJS.map(o => `<span>○ ${o.n}</span>`).join("")}</div>
+    <table><tr><th>我想達成</th><th>讀書方法</th><th>我會這樣做</th></tr><tr><td>${OBJS[0].look.join("、")}</td><td>${OBJS[0].sound.join("、")}</td><td>${OBJS[0].like.join("、")}</td></tr></table>
+    <div class="fill">1. 我現在要 <span class="bl" style="min-width:45mm"></span>，我想 <span class="bl"></span>。</div><div class="fill">2. 我選擇 <span class="bl"></span>。</div><div class="fill">3. 我會 <span class="bl"></span>，因為 <span class="bl" style="min-width:45mm"></span>。</div>
+    <div class="sub" style="margin-top:3mm">任務二：我的讀書小實驗　<span class="ex" style="display:inline">選一個讀書方法試一個星期，把紀錄寫下來，下次和同學分享</span></div><div class="t3">${LAB.map((q, i) => `<div class="hq"><div class="hqt">${i + 1}. ${q}</div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>`).join("")}</div>`);
+  return pg(1, s1 + s2 + s3, head) + pg(2, s4 + s5, "", "land") + pg(3, s6) + pg(4, s7);
+}
+
+function handout() {
+  setPage("@page{size:A4;margin:0}@page land{size:A4 landscape;margin:0}");
+  const ov = $("#hov"); ov.innerHTML = `<div class="hbar"><button id="hp">🖨️ 列印（紙本）</button><button id="hp2">📄 存成 PDF（電子）</button><button id="hd">⬇ 下載講義網頁檔</button><button id="hx">✕ 關閉</button></div><div class="ho">${buildHandout()}</div>`;
+  ov.classList.add("on");
+  $("#hp").onclick = () => print(); $("#hp2").onclick = () => { alert("在列印視窗的「目的地」選擇「另存為 PDF」，即可存成電子講義。"); print(); };
+  $("#hx").onclick = () => ov.classList.remove("on");
+  $("#hd").onclick = () => {
+    const html = `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${LESSON.name} 學習講義</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@400;500&display=swap" rel="stylesheet"><style>body{margin:0;background:#4a463f}${HCSS}</style></head><body><div id="hov"><div class="hbar"><button onclick="print()">🖨️ 列印／存成 PDF</button></div><div class="ho">${buildHandout()}</div></div></body></html>`;
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([html], { type: "text/html" })); a.download = `${LESSON.name}_學習講義.html`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  };
+}
+
+/* ========= 字謎（7×7，可下載單頁）=========
+   詞庫＝課文圈詞＋預習單字形字音＋習作靜心戀字＋in講義國字注音；數字＝出處數量（越多越容易被抽到）。 */
+const WS_POOL = [["墊腳石", 3], ["澎湃", 3], ["狹隘", 4], ["勉強", 2], ["出口成章", 3], ["順手拈來", 2], ["逐字逐句", 3], ["涉水", 2], ["工夫", 2], ["本行", 2], ["相貌", 2], ["周旋", 2], ["更迭", 2], ["起伏", 1], ["歷程", 1], ["啟發", 1], ["書櫥", 2], ["兩腳書櫥", 2], ["潛力", 1], ["哲理", 1], ["格言", 1], ["奔騰", 2], ["獲益", 2], ["精讀", 1], ["略讀", 1], ["重讀", 1], ["默讀", 1], ["人云亦云", 1], ["年關將屆", 1], ["學富五車", 1], ["溫故知新", 1], ["一目十行", 1], ["囫圇吞棗", 1]];
+function wsMake() {
+  const N = 7, D = [[1, 0], [0, 1], [1, 1], [1, -1], [0, -1]], R = n => Math.floor(Math.random() * n);
+  for (let t = 0; t < 300; t++) {
+    const D2 = D.filter(d => !(d[0] === 1 && d[1] === 0)), pick = () => Math.random() < .65 ? [1, 0] : D2[R(D2.length)];
+    const n = 7 + R(4), pool = WS_POOL.flatMap(([w, k]) => Array(k).fill(w)), ws = [];
+    while (ws.length < n) { const w = pool[R(pool.length)]; if (!ws.includes(w)) ws.push(w); }
+    ws.sort((a, b) => b.length - a.length);
+    const g = Array.from({ length: N }, () => Array(N).fill("")), pos = []; let ok = true;
+    for (const w of ws) { let done = false;
+      for (let k = 0; k < 120 && !done; k++) { const [dr, dc] = pick(), r = R(N), c = R(N), cells = [];
+        let good = true; for (let i = 0; i < w.length; i++) { const rr = r + dr * i, cc = c + dc * i;
+          if (rr < 0 || cc < 0 || rr >= N || cc >= N || (g[rr][cc] && g[rr][cc] !== w[i])) { good = false; break; } cells.push([rr, cc]); }
+        if (good) { cells.forEach(([rr, cc], i) => g[rr][cc] = w[i]); pos.push({ w, cells }); done = true; } }
+      if (!done) { ok = false; break; } }
+    if (!ok) continue;
+    const chars = [...new Set(WS_POOL.map(p => p[0]).join("").split(""))];
+    g.forEach(row => row.forEach((v, i) => { if (!v) row[i] = chars[R(chars.length)]; }));
+    return { g, pos };
+  }
+}
+function wsPage(g, pos) {
+  return `<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>〈四種讀書的方法〉字謎</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet"><style>
+body{margin:0;padding:14px;background:#1C1B1A;color:#F5F3ED;font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif}
+h1{font-weight:500;color:#ECC066;text-align:center;letter-spacing:.25em;margin:2px 0 4px}
+.t{text-align:center;color:#D3BC8E;margin:0 auto 14px;max-width:760px;font-size:1.05rem}
+.w{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.g{--c:clamp(42px,min(10.5vw,8.4vh),70px);display:grid;grid-template-columns:repeat(7,var(--c));gap:4px}
+.g button{width:var(--c);height:var(--c);padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:500;font-size:calc(var(--c)*.6);line-height:1;font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;background:#F5F3ED;color:#2D2B2A;border:1px solid #D9AE4E}
+.g button.s{background:#ECC066}
+.l{background:#322E2B;border:1px solid #D9AE4E;padding:12px 18px;width:270px;max-width:100%}
+.l b{display:block;color:#ECC066;margin-bottom:6px;letter-spacing:.2em}
+.l span{display:inline-block;font:500 1.4rem "Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;margin:3px 12px 3px 0}
+.l span.d{text-decoration:line-through;opacity:.45}
+.bar{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.bar button{font:inherit;padding:8px 18px;background:#322E2B;color:#ECC066;border:1px solid #D9AE4E;cursor:pointer}
+#m{text-align:center;color:#ECC066;font-size:1.3rem;min-height:2em;margin-top:6px}
+@media print{body{background:#fff;color:#000}.bar{display:none}.l{background:#fff;border-color:#000}.l b,h1,.t{color:#000}}
+</style></head><body><h1>〈四種讀書的方法〉字謎</h1>
+<p class="t">在方格裡找出右邊的詞語。詞語大多由上往下念，也可能橫著或斜著排，少數會由右往左念。先點第一個字，再點最後一個字。</p>
+<div class="w"><div class="g" id="g"></div><div class="l"><b>要找的詞（<span id="n" style="font:inherit;margin:0"></span>）</b><div id="L"></div></div></div>
+<div id="m"></div><div class="bar"><button onclick="ans()">顯示答案</button><button onclick="reset()">重設</button><button onclick="print()">列印</button></div>
+<script>
+const G=${JSON.stringify(g)},POS=${JSON.stringify(pos)},PAL=["#F4B6A6","#BFE0C8","#BBD3F0","#F6DF8E","#D8C3EC","#F3C4DC","#BFE6E4","#E6CDA5","#CBE3A0","#F0B77E"];
+const gd=document.getElementById("g"),L=document.getElementById("L"),B=[];let st=null,found=[];
+G.forEach((row,r)=>row.forEach((ch,c)=>{const b=document.createElement("button");b.textContent=ch;b.onclick=()=>pick(r,c);gd.append(b);B.push(b)}));
+L.innerHTML=POS.map(p=>'<span id="w_'+p.w+'">'+p.w+'</span>').join("");document.getElementById("n").textContent=POS.length+" 個";
+const cell=(r,c)=>B[r*7+c];
+function mark(p,k){found.push(p.w);p.cells.forEach(([r,c])=>{cell(r,c).style.background=PAL[k%PAL.length];cell(r,c).classList.remove("s")});document.getElementById("w_"+p.w).classList.add("d");if(found.length===POS.length)document.getElementById("m").textContent="🎉 全部找到了！"}
+function pick(r,c){
+  if(!st){st=[r,c];cell(r,c).classList.add("s");return}
+  const [r0,c0]=st,dr=r-r0,dc=c-c0;B.forEach(b=>b.classList.remove("s"));
+  if(!dr&&!dc){st=null;return}
+  if(dr&&dc&&Math.abs(dr)!==Math.abs(dc)){st=[r,c];cell(r,c).classList.add("s");return}
+  const n=Math.max(Math.abs(dr),Math.abs(dc))+1,sr=Math.sign(dr),sc=Math.sign(dc),cs=[];let s="";
+  for(let i=0;i<n;i++){cs.push([r0+sr*i,c0+sc*i]);s+=G[r0+sr*i][c0+sc*i]}
+  const rv=[...s].reverse().join(""),p=POS.find(q=>!found.includes(q.w)&&(q.w===s||q.w===rv));
+  if(p)mark(p,POS.indexOf(p));st=null;
+}
+function ans(){POS.forEach((p,k)=>{if(!found.includes(p.w))mark(p,k)})}
+function reset(){found=[];st=null;B.forEach(b=>{b.style.background="";b.classList.remove("s")});L.querySelectorAll("span").forEach(s=>s.classList.remove("d"));document.getElementById("m").textContent=""}
+<\/script></body></html>`;
+}
+function wordsearch() {
+  const w = el("div"), bar = el("div", "row"), fr = el("iframe"); fr.style.cssText = "width:100%;height:min(72vh,720px);border:1px solid #D9AE4E;background:#1C1B1A";
+  let cur; const make = () => { cur = wsMake(); fr.srcdoc = wsPage(cur.g, cur.pos); };
+  const nb = el("button", "b on", "🔀 換一組"), db = el("button", "b", "⬇ 下載這一頁（.html）");
+  nb.onclick = make; db.onclick = () => dl(wsPage(cur.g, cur.pos), `${LESSON.name}_字謎.html`);
+  bar.append(nb, db); w.append(bar, fr); make(); modal("字謎（7×7）", w, true);
+}
+/* ========= 功能列 ========= */
+const act = {
+  "字謎": wordsearch, "前往測驗頁": () => { location.href = "2_06_fourreadingmethods_test.html"; },
+  "下載講義": handout,
+  "課文補給站": () => { const w = el("div"), art = el("div", "vsup"), duo = el("div", "vduo"), qb = el("div", "vq");
+    const draw = h => { art.innerHTML = SUP.map(([t, x]) => `<div class="vs">${t ? `<h4>${t}</h4>` : ""}<p>${h && x.includes(h) ? x.replace(h, `<mark>${h}</mark>`) : x}</p></div>`).join(""); }; draw(null);
+    qb.append(mcq(SUPQ, draw, true)); duo.append(art, qb);
+    w.append(el("p", "ex", "右邊是課文，左邊是題目，都由右至左閱讀。卡住時按「💡 重點提示」，答案線索會用螢光筆標在課文上。"), duo); modal("課文補給站", w, true); },
+  "應用小挑戰": challenge,
+  "計時器": timer, "座位抽籤": seatDraw, "朗讀方式抽籤": methodDraw,
+  "圈詞": b => { vt.classList.toggle("circ"); b.classList.toggle("on"); },
+  "閱讀尺": b => { $("#ruler").classList.toggle("on"); b.classList.toggle("on"); },
+  "全文朗讀": () => { stop(); if (!synth) return; PARAS.forEach(p => { const u = new SpeechSynthesisUtterance(p.t.replace(/\n/g, "，")); u.lang = "zh-TW"; u.rate = .85; synth.speak(u); }); },
+  "停止朗讀": stop,
+  "注釋": () => match("注釋連連看", NOTES),
+  "核心問題": () => modal("核心問題", Object.assign(el("div"), { innerHTML: CORE.map((c, i) => `<div class="card"><b>問題 ${i + 1}</b><br>${c}</div>`).join("") })),
+  "成語配對": () => match("延伸成語意義配對", IDIOMS, true),
+  "趣味常識": () => { const w = el("div", "flg"); FUN.forEach((f, i) => { const c = el("div", "fl", `<div class="fi"><div class="ff"><span class="nb">${i + 1}</span><div>${f[0]}</div></div><div class="fb"><span class="nb">${i + 1}</span><div>${f[1]}</div></div></div>`); c.onclick = () => c.classList.toggle("on"); w.append(c); }); const wr = el("div"); wr.append(el("p", "ex", "點卡片可以翻面，再點一次翻回來。"), w); modal("趣味語文常識", wr); },
+  "試題練習": () => { const w = el("div"); EXAM.forEach(s => { w.append(el("div", "psg", nl(s.psg)), mcq(s.qs, null, true)); }); modal("課文應用練習", w); },
+  "相關閱讀": () => { const w = el("div"); READ.forEach((s, i) => { const box = el("div", "psg", s.psg), g = el("div", "rg");
+    g.append(box, mcq(s.qs, h => { box.innerHTML = h ? s.psg.replace(h, `<mark>${h}</mark>`) : s.psg; }, true)); w.append(el("h3", "", `題組 ${i + 1}`), g); });
+    modal("相關閱讀理解", w, true); }
+};
+const GROUPS = [["L", "閱讀輔助", "g1", ["圈詞", "閱讀尺", "全文朗讀", "停止朗讀"]], ["R", "學習活動", "g2", ["核心問題", "趣味常識", "課文補給站", "注釋", "試題練習", "成語配對", "相關閱讀", "應用小挑戰", "字謎"]], ["L", "班級經營", "g3", ["計時器", "座位抽籤", "朗讀方式抽籤"]], ["L", "講義", "g4", ["下載講義", "前往測驗頁"]]];
+GROUPS.forEach(([side, name, cls, items]) => { const g = el("div", "grp " + cls); g.append(el("h3", "", name));
+  items.forEach(k => { const b = el("button", "b", k); b.onclick = () => act[k](b); g.append(b); }); $(side === "L" ? "#sl" : "#sr").append(g); });
+
+/* ========= 閱讀尺：跟隨滑鼠／手指 ========= */
+const stage = $("#stage"), ruler = $("#ruler");
+const mv = e => { const r = stage.getBoundingClientRect(); ruler.style.left = Math.max(0, Math.min(e.clientX - r.left - ruler.offsetWidth / 2, r.width - ruler.offsetWidth)) + "px"; };
+stage.addEventListener("pointermove", mv); stage.addEventListener("pointerdown", mv);
+</script>
+</body>
+</html>
