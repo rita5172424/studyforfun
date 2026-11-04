@@ -1029,7 +1029,7 @@ function challenge() {
 
 /* ========= 講義（列印／存成 PDF／下載網頁檔）=========
    換課時改 LESSON；內容全部取自上方資料區。 */
-const LESSON = { name: "另一個春天", author: "褚士瑩", ver: "康軒七年級下學期　第 10 課" };
+const LESSON = { name: "另一個春天", author: "褚士瑩", ver: "康軒七年級下學期" };
 const HCSS = `
 .ho{font-family:"Noto Sans TC","jf-openhuninn-2.0","jf open 粉圓體","Microsoft JhengHei",sans-serif;color:#222;font-size:13.7pt;line-height:1.5}
 .ho *{box-sizing:border-box}
@@ -1105,7 +1105,7 @@ function buildHandout() {
   const rights = rot(NOTES.map(n => n[1]), 3);
   const s2 = sec(1, "注釋連連看", "用線把左邊的詞語和右邊正確的解釋連起來。", NOTES.map((n, i) => `<div class="mrow"><div class="ml">${n[0]}<i class="dot"></i></div><div class="mr"><i class="dot"></i>${rights[i]}</div></div>`).join(""));
   const words = IDIOMS.map(x => x[0]);
-  const s3 = sec(2, "成語填空", "看解釋，從成語選項選一個，抄寫在底線上。", `<div class="bank"><b>成語選項：</b>${rot(words, 2).map(w => `<span>${w}</span>`).join("")}</div>` + IDIOMS.map((x, i) => `<div class="fill">${i + 1}. ${x[1]}<span class="bl"></span></div>`).join(""));
+  const s3 = sec(2, "成語填空", "看解釋，從成語選項選一個，抄寫在底線上。", `<div class="bank"><b>成語選項：</b>${rot(words, 2).map(w => `<span>${w}</span>`).join("")}</div>` + IDIOMS.map((x, i) => `<div class="fill">${i + 1}. ${x[1]}<span class="bl" style="min-width:58mm"></span></div>`).join(""));
   const art = `<div class="art">${SUP.map(([t, x]) => `<div class="vb">${t ? `<b>${t}</b>` : ""}<p>${x}</p></div>`).join("")}</div>`;
   const s4 = vsec(3, "課文補給站", "先讀短文，再回答題目，把答案代號填進（　）。", art + `<div class="qz">${SUPQ.map((x, i) => vq(x, i + 1)).join("")}</div>`);
   const per = Math.ceil(6 / PARAS.length); let c = 0; const allq = PARAS.flatMap(p => p.q.slice(0, per)), pick6 = allq.length <= 6 ? allq : [0, 1, 2, 3, 4, 5].map(k => allq[Math.round(k * (allq.length - 1) / 5)]);
@@ -1114,7 +1114,7 @@ function buildHandout() {
   const s7 = sec(6, "應用小挑戰", "", `<div class="sub">任務一：旅行小日記　<span class="ex" style="display:inline">① 圈一個旅行情境　② 看提示詞　③ 補完 3 行（用說的也可以，3 行完成就很棒）</span></div>
     <table><tr><th>情境</th><th>我看到</th><th>我聽到</th><th>我覺得</th></tr>${OBJS.map(o => `<tr><td>○ ${o.n}</td><td>${o.look.join("、")}</td><td>${o.sound.join("、")}</td><td>${o.like.join("、")}</td></tr>`).join("")}</table>
     <div class="fill">1. 我在 <span class="bl"></span> 的時候，看到 <span class="bl"></span>。</div><div class="fill">2. 我聽到 <span class="bl"></span>。</div><div class="fill">3. 我覺得 <span class="bl"></span>，因為 <span class="bl" style="min-width:45mm"></span>。</div>
-    <div class="sub" style="margin-top:3mm">任務二：夢想小訪談　<span class="ex" style="display:inline">問問家裡或附近的長輩，把答案寫（或錄）下來，下次和同學分享</span></div><div class="t3">${INTERVIEW.map((q, i) => `<div class="hq"><div class="hqt">${i + 1}. ${q}</div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>`).join("")}</div>`);
+    <div class="sub" style="margin-top:3mm">任務二：夢想小訪談　<span class="ex" style="display:inline">問問家裡或附近的長輩，把答案寫（或錄）下來，下次和同學分享</span></div>${INTERVIEW.map((q, i) => `<div class="hq"><div class="hqt"><b>問題 ${i + 1}</b>　${q}</div><div class="ln"></div><div class="ln"></div></div>`).join("")}`);
   return pg(1, s1 + s2 + s3, head) + pg(2, s4 + s5, "", "land") + pg(3, s6) + pg(4, s7);
 }
 
